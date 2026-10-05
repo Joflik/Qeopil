@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="main-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Qeopil</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        @font-face {
+            font-family: 'Departure Mono';
+            src: url('DepartureMono-Regular.woff2') format('woff2');
+            font-weight: normal; 
+            font-style: normal;
+        }
+
+        :root {
+            --bg-color: #000000; 
+            --font-main: 'IBM Plex Sans Arabic', sans-serif;
+            --font-en: 'Departure Mono', monospace;
+            --accent-color: #ff007f; 
+            --text-light: #ff80bf;   
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-light);
+            font-family: var(--font-main);
+            margin: 0; 
+            padding: 40px 20px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #bg-grid-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header, #content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        [lang="en"], .en-only, .btn-lang, .btn-audio { 
+            font-family: var(--font-en) !important; 
+        }
+
+        header { 
+            width: 100%; 
+            max-width: 650px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 40px; 
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        #content-wrapper { width: 100%; max-width: 650px; }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .brand { 
+            font-size: 32px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            color: var(--accent-color); 
+        }
+        
+        .intro-title { 
+            font-size: 40px; 
+            font-weight: 700; 
+            text-align: center; 
+            color: var(--accent-color); 
+            margin-bottom: 12px; 
+            line-height: 1.3;
+        }
+
+        .bio-text { 
+            font-size: 20px; 
+            text-align: center; 
+            color: var(--text-light); 
+            font-weight: 400; 
+            line-height: 1.7;
+        }
+
+        .article-link { 
+            display: block; 
+            font-size: 22px; 
+            margin-bottom: 20px; 
+            cursor: pointer; 
+            color: var(--accent-color); 
+            text-decoration: none; 
+            font-weight: 700;
+        }
+
+        .image-box { 
+            position: relative; 
+            width: 100%; 
+            max-width: 400px; 
+            aspect-ratio: 400 / 250; 
+            margin: 0 auto 40px auto; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            cursor: ew-resize; 
+            direction: ltr; 
+        }
+        
+        .image-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+        }
+
+        .img-normal { 
+            z-index: 2; 
+            clip-path: inset(0 0 0 var(--clip-pos, 50%)); 
+        }
+        .img-normal img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            background: #000; 
+        }
+
+        .img-ascii { 
+            z-index: 1; 
+            clip-path: inset(0 calc(100% - var(--clip-pos, 50%)) 0 0); 
+            background: #000; 
+            color: var(--accent-color); 
+            font-family: 'Departure Mono', monospace; 
+            font-size: 10px; 
+            line-height: 12px; 
+            white-space: pre; 
+            padding: 10px; 
+            overflow: hidden; 
+            direction: ltr;
+            text-align: left;
+        }
+
+        .scanner-line { 
+            position: absolute; 
+            top: 0; 
+            left: var(--clip-pos, 50%); 
+            width: 2px; 
+            height: 100%; 
+            background: var(--accent-color); 
+            box-shadow: 0 0 15px var(--accent-color); 
+            z-index: 10; 
+            transform: translateX(-50%); 
+            pointer-events: none; 
+        }
+
+        .controls .btn-lang, .controls .btn-audio { 
+            cursor: pointer; 
+            font-size: 14px; 
+            border: 2px solid var(--accent-color); 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            color: var(--accent-color); 
+            background: transparent; 
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+        }
+
+        .controls .btn-audio.playing {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .controls .btn-audio.error {
+            border-color: #ff3333;
+            color: #ff3333;
+        }
+
+        .back-btn {
+            background: none; 
+            border: none; 
+            color: var(--accent-color); 
+            cursor: pointer; 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-top: 30px; 
+            font-family: var(--font-main);
+        }
+
+        [lang="en"] .ar-only, [lang="ar"] .en-only { display: none; }
+        .ripple-active { position: relative; display: inline-block; cursor: pointer; user-select: none; }
+    </style>
+</head>
+<body id="body-tag">
+
+    <!-- تم التعديل إلى song.m4a مع خيار احتياطي song.mp3 -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="song.m4a" type="audio/mp4">
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <canvas id="bg-grid-canvas"></canvas>
+
+    <header>
+        <div class="controls">
+            <button class="btn-lang" onclick="triggerLanguageSwitch()" id="lang-btn">EN</button>
+            <button class="btn-audio" onclick="toggleAudio()" id="audio-btn" title="Sound">♫</button>
+        </div>
+        <div class="brand" onclick="navigate('home')">
+            <span class="ar-only ripple-active">كيوبيل</span>
+            <span class="en-only ripple-active">Qeopil</span>
+        </div>
+    </header>
+
+    <div id="content-wrapper">
+        <div id="home" class="section active">
+            <div class="image-box" id="scannerArea">
+                <div class="scanner-line"></div>
+                <div class="image-layer img-normal">
+                    <img src="https://i.ibb.co/j9wpyDDT/Picsart-26-10-06-00-49-12-576.png" alt="Qeopil">
+                </div>
+                <div class="image-layer img-ascii" id="asciiContent"></div>
+            </div>
+            
+            <h1 class="intro-title">
+                <span class="ar-only ripple-active">مرحباً، أنا كيوبيل</span>
+                <span class="en-only ripple-active" lang="en">Hi, I'm Qeopil</span>
+            </h1>
+            <p class="bio-text">
+                <span class="ar-only">هذه مساحة هادئة للكلمات والأفكار، حيث نكتب لنبقى.</span>
+                <span class="en-only" lang="en">A quiet space for words and thoughts.</span>
+            </p>
+            <div class="articles-list" style="margin-top: 50px;">
+                <a class="article-link" onclick="navigate('art1')">
+                    <span class="ar-only ripple-active">حياة بلا هروب مستمر</span>
+                    <span class="en-only ripple-active" lang="en">Life Without Escaping</span>
+                </a>
+                <a class="article-link" onclick="navigate('art2')">
+                    <span class="ar-only ripple-active">عام كامل من قول "لا" للجميع</span>
+                    <span class="en-only ripple-active" lang="en">A Year of Saying No</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="art1" class="section">
+            <h2 class="intro-title">
+                <span class="ar-only ripple-active">حياة بلا هروب مستمر</span>
+                <span class="en-only ripple-active" lang="en">Life Without Escaping</span>
+            </h2>
+            <div class="bio-text">
+                <p class="ar-only">هنا نكتب المحتوى بخط متناسق وتعديلات دقيقة للتراكيب والمحاذاة.</p>
+                <p class="en-only" lang="en" style="margin-top:20px;">Exploring digital boundaries and inner peace.</p>
+            </div>
+            <button class="back-btn" onclick="navigate('home')">
+                <span class="ar-only ripple-active">العودة</span>
+                <span class="en-only ripple-active" lang="en">Back</span>
+            </button>
+        </div>
+
+        <div id="art2" class="section">
+            <h2 class="intro-title">
+                <span class="ar-only ripple-active">عام كامل من قول "لا" للجميع</span>
+                <span class="en-only ripple-active" lang="en">A Year of Saying No</span>
+            </h2>
+            <div class="bio-text">
+                <p class="ar-only">تعلمت أن "لا" هي البداية الحقيقية لكل "نعم" صادقة.</p>
+                <p class="en-only" lang="en" style="margin-top:20px;">Learning the art of setting healthy boundaries.</p>
+            </div>
+            <button class="back-btn" onclick="navigate('home')">
+                <span class="ar-only ripple-active">العودة</span>
+                <span class="en-only ripple-active" lang="en">Back</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const audioEl = document.getElementById('bg-audio');
+        const audioBtn = document.getElementById('audio-btn');
+        let isPlaying = false;
+
+        function toggleAudio() {
+            if (isPlaying) {
+                audioEl.pause();
+                audioBtn.classList.remove('playing');
+                isPlaying = false;
+            } else {
+                audioEl.play().then(() => {
+                    audioBtn.classList.remove('error');
+                    audioBtn.classList.add('playing');
+                    isPlaying = true;
+                }).catch(e => {
+                    console.error("Audio error:", e);
+                    audioBtn.classList.add('error');
+                    alert("تعذر تشغيل الصوت. تأكد من أن ملف song.m4a موجود في نفس مجلد صفحة index.html");
+                });
+            }
+        }
+
+        const canvas = document.getElementById('bg-grid-canvas');
+        const ctx = canvas.getContext('2d');
+        const pixelSize = 12;
+        const gap = 4;
+        let cols = 0, rows = 0;
+        let pixels = [];
+
+        const palette = [
+            'rgb(255, 0, 127)',   
+            'rgb(255, 128, 191)', 
+            'rgb(186, 85, 211)',  
+            'rgb(0, 240, 255)',   
+            'rgb(255, 0, 212)'    
+        ];
+
+        function resizeFullGrid() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            cols = Math.ceil(canvas.width / (pixelSize + gap));
+            rows = Math.ceil(canvas.height / (pixelSize + gap));
+
+            pixels = [];
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    pixels.push({
+                        x: c * (pixelSize + gap),
+                        y: r * (pixelSize + gap),
+                        color: palette[Math.floor(Math.random() * palette.length)],
+                        baseAlpha: Math.random() * 0.08 + 0.02,
+                        currentAlpha: 0.05,
+                        targetAlpha: 0.05
+                    });
+                }
+            }
+        }
+
+        window.addEventListener('resize', resizeFullGrid);
+        resizeFullGrid();
+
+        function animateFullGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const now = Date.now() * 0.0015;
+
+            pixels.forEach(p => {
+                const wave = Math.sin(now + p.x * 0.02 + p.y * 0.02);
+                p.baseAlpha = 0.03 + Math.max(0, wave * 0.07);
+                p.targetAlpha = p.baseAlpha;
+                p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.1;
+
+                ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
+                ctx.fillRect(p.x, p.y, pixelSize, pixelSize);
+
+                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.4})`);
+                ctx.lineWidth = 0.5;
+                ctx.strokeRect(p.x, p.y, pixelSize, pixelSize);
+            });
+
+            requestAnimationFrame(animateFullGrid);
+        }
+
+        animateFullGrid();
+
+        const asciiContent = document.getElementById('asciiContent');
+        function generateImgAscii() {
+            const chars = "01#/*-+$%&";
+            let text = "";
+            for(let i=0; i<25; i++) {
+                for(let j=0; j<60; j++) text += chars.charAt(Math.floor(Math.random() * chars.length));
+                text += "\n";
+            }
+            asciiContent.textContent = text;
+        }
+        setInterval(generateImgAscii, 150);
+
+        const scannerArea = document.getElementById('scannerArea');
+        let isMoving = true; 
+        let resumeTimeout = null;
+
+        function updatePosition(clientX) {
+            const rect = scannerArea.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+            pos = percent;
+            scannerArea.style.setProperty('--clip-pos', percent + '%');
+        }
+
+        function handleUserInteraction(e) {
+            isMoving = false;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            updatePosition(clientX);
+
+            clearTimeout(resumeTimeout);
+            resumeTimeout = setTimeout(() => {
+                if (!isMoving) {
+                    isMoving = true;
+                    autoAnimate();
+                }
+            }, 3000);
+        }
+
+        scannerArea.addEventListener('mousemove', handleUserInteraction);
+        scannerArea.addEventListener('touchmove', handleUserInteraction);
+        
+        let pos = 0, dir = 0.5;
+        function autoAnimate() {
+            if (isMoving) {
+                pos += dir;
+                if (pos >= 100 || pos <= 0) dir *= -1;
+                scannerArea.style.setProperty('--clip-pos', pos + '%');
+                requestAnimationFrame(autoAnimate);
+            }
+        }
+        autoAnimate();
+
+        const initRipple = (el) => {
+            const originalText = el.innerText;
+            let isAnimating = false;
+            let waves = [];
+            const glitchChars = '.,·-─~+:;=*π""┐┌┘┴┬╗╔╝╚╬╠╣╩╦║░▒▓█▄▀▌▐■!?&#$@0123456789*';
+
+            const runAnimation = () => {
+                const now = Date.now();
+                waves = waves.filter(w => now - w.startTime < 800);
+                
+                if (waves.length === 0) {
+                    el.innerText = originalText;
+                    isAnimating = false;
+                    return;
+                }
+
+                el.innerText = originalText.split("").map((char, i) => {
+                    if (char === " " || char === "\n") return char;
+                    let result = char;
+                    waves.forEach(w => {
+                        const age = now - w.startTime;
+                        const progress = age / 800;
+                        const distance = Math.abs(i - w.startPos);
+                        const radius = (progress * (originalText.length + 5)) / 1.2;
+                        
+                        if (distance <= radius && distance > radius - 2.5) {
+                            result = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                        }
+                    });
+                    return result;
+                }).join("");
+
+                requestAnimationFrame(runAnimation);
+            };
+
+            const trigger = (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const pos = Math.max(0, Math.min(Math.round((x / rect.width) * originalText.length), originalText.length - 1));
+                
+                waves.push({ startPos: pos, startTime: Date.now() });
+                if (!isAnimating) {
+                    isAnimating = true;
+                    requestAnimationFrame(runAnimation);
+                }
+            };
+
+            el.addEventListener('mouseenter', trigger);
+            el.addEventListener('mousemove', trigger);
+        };
+
+        document.querySelectorAll('.ripple-active').forEach(initRipple);
+
+        function navigate(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function triggerLanguageSwitch() {
+            const html = document.getElementById('main-html');
+            const btn = document.getElementById('lang-btn');
+            const isAr = html.getAttribute('lang') === 'ar';
+            html.setAttribute('lang', isAr ? 'en' : 'ar');
+            html.setAttribute('dir', isAr ? 'ltr' : 'rtl');
+            btn.innerText = isAr ? 'AR' : 'EN';
+        }
+    </script>
+</body>
+</html>

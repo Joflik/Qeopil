@@ -426,7 +426,7 @@
 
         let isPlaying = false;
 
-        /* --- إعدادات Audio API للتحليل الطيفي لموجات الصوت --- */
+        /* --- Audio API --- */
         let audioCtx, analyser, dataArray;
         let isAudioInit = false;
 
@@ -435,7 +435,7 @@
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             audioCtx = new AudioContext();
             analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 64; // حجم العينات الصوتية
+            analyser.fftSize = 64;
             
             const source = audioCtx.createMediaElementSource(audioEl);
             source.connect(analyser);
@@ -481,47 +481,30 @@
             }
         }
 
-        /* --- Canvas Grid & Audio Pulse Effect --- */
+        /* --- محاكاة نسيج الزمكان (Spacetime Grid Warp) --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
-        const pixelSize = 12;
-        const gap = 4;
-        let cols = 0, rows = 0;
-        let pixels = [];
 
-        const palette = [
-            'rgb(255, 0, 127)',   
-            'rgb(255, 128, 191)', 
-            'rgb(186, 85, 211)',  
-            'rgb(0, 240, 255)',   
-            'rgb(255, 0, 212)'    
-        ];
+        const gridSpacing = 28; // مسافة عقد النسيج
+        let cols = 0, rows = 0;
+        let gridNodes = [];
 
         function resizeFullGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            cols = Math.ceil(canvas.width / (pixelSize + gap));
-            rows = Math.ceil(canvas.height / (pixelSize + gap));
+            cols = Math.ceil(canvas.width / gridSpacing) + 2;
+            rows = Math.ceil(canvas.height / gridSpacing) + 2;
 
-            pixels = [];
+            gridNodes = [];
             for (let r = 0; r < rows; r++) {
+                gridNodes[r] = [];
                 for (let c = 0; c < cols; c++) {
-                    // حساب المسافة القطرية من المركز لتوزيع ترددات الصوت بشكل دائرى ومتدرج
-                    const centerX = cols / 2;
-                    const centerY = rows / 2;
-                    const distFromCenter = Math.sqrt(Math.pow(c - centerX, 2) + Math.pow(r - centerY, 2));
-
-                    pixels.push({
-                        x: c * (pixelSize + gap),
-                        y: r * (pixelSize + gap),
-                        colIndex: c,
-                        rowIndex: r,
-                        distFromCenter: Math.floor(distFromCenter),
-                        color: palette[Math.floor(Math.random() * palette.length)],
-                        baseAlpha: Math.random() * 0.08 + 0.02,
-                        currentAlpha: 0.05,
-                        targetAlpha: 0.05
-                    });
+                    gridNodes[r][c] = {
+                        baseX: c * gridSpacing,
+                        baseY: r * gridSpacing,
+                        x: c * gridSpacing,
+                        y: r * gridSpacing
+                    };
                 }
             }
         }
@@ -529,49 +512,92 @@
         window.addEventListener('resize', resizeFullGrid);
         resizeFullGrid();
 
-        function animateFullGrid() {
+        function animateSpacetimeGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const now = Date.now() * 0.0015;
+            const time = Date.now() * 0.0012;
 
-            // الحصول على بيانات الترددات الصوتية عند التشغيل
-            let audioIntensity = 0;
+            // حساب شدة الجاذبية الترددية للموسيقى
+            let bassPulse = 0;
+            let midPulse = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
+                bassPulse = (dataArray[1] || 0) / 255.0; // ترددات الباس الانحنائية
+                midPulse = (dataArray[8] || 0) / 255.0;  // الترددات المتوسطة
             }
 
-            pixels.forEach(p => {
-                // الحركة الموجية الأساسية للخلفية
-                const wave = Math.sin(now + p.x * 0.02 + p.y * 0.02);
-                p.baseAlpha = 0.03 + Math.max(0, wave * 0.07);
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
 
-                // ربط النبض بدرجات الصوت حسب المسافة من المركز ورقم العمود
-                let audioBoost = 0;
-                if (isPlaying && dataArray && dataArray.length > 0) {
-                    const freqIndex = (p.distFromCenter + p.colIndex) % dataArray.length;
-                    const freqValue = dataArray[freqIndex] / 255; // قيمة مابين 0.0 و 1.0
-                    audioBoost = Math.pow(freqValue, 2) * 0.45; // التفاعل مع إيقاع الموسيقى
+            // 1. تحديث إحداثيات عقد النسيج الزمكاني
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const node = gridNodes[r][c];
+
+                    // تموج حركة الزمكان الطبيعية (Gravitational Ripples)
+                    const distToCenter = Math.hypot(node.baseX - centerX, node.baseY - centerY);
+                    const angle = Math.atan2(node.baseY - centerY, node.baseX - centerX);
+
+                    // انحناء الجاذبية المستمر
+                    let waveOffset = Math.sin(time * 2 - distToCenter * 0.015) * 6;
+
+                    // تشويه الزمكان بالموسيقى عند التشغيل (Gravitational Well Displacement)
+                    let audioDisplacement = 0;
+                    if (isPlaying) {
+                        const pulseFactor = Math.sin(time * 5 - distToCenter * 0.02);
+                        audioDisplacement = (bassPulse * 45) * Math.exp(-distToCenter * 0.0025) * pulseFactor;
+                    }
+
+                    const totalOffset = waveOffset + audioDisplacement;
+                    node.x = node.baseX + Math.cos(angle) * totalOffset;
+                    node.y = node.baseY + Math.sin(angle) * totalOffset;
                 }
+            }
 
-                p.targetAlpha = p.baseAlpha + audioBoost;
-                p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
+            // 2. رسم خيوط النسيج الزمكاني (Grid Mesh)
+            ctx.lineWidth = 0.8;
 
-                // تكبير وتمدد بسيط للمربع مع ضربات الصوت
-                const scale = 1 + (audioBoost * 0.4);
-                const currentSize = pixelSize * scale;
-                const offset = (currentSize - pixelSize) / 2;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const node = gridNodes[r][c];
 
-                ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
-                ctx.fillRect(p.x - offset, p.y - offset, currentSize, currentSize);
+                    // حساب درجة التوهج والشفافية حسب تشوه الزمكان من المركز
+                    const dist = Math.hypot(node.x - centerX, node.y - centerY);
+                    const alpha = Math.min(0.28, Math.max(0.03, 0.04 + (bassPulse * 0.25) * (1 - dist / (canvas.width * 0.8))));
 
-                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.6})`);
-                ctx.lineWidth = 0.5 + (audioBoost * 0.8);
-                ctx.strokeRect(p.x - offset, p.y - offset, currentSize, currentSize);
-            });
+                    // إعطاء ألوان نيون شفقية متدرجة للخطوط
+                    const hue = (280 + (dist * 0.1) + (bassPulse * 60)) % 360;
+                    ctx.strokeStyle = `hsla(${hue}, 100%, 65%, ${alpha})`;
 
-            requestAnimationFrame(animateFullGrid);
+                    // توصيل الخطوط الأفقية
+                    if (c < cols - 1) {
+                        const rightNode = gridNodes[r][c + 1];
+                        ctx.beginPath();
+                        ctx.moveTo(node.x, node.y);
+                        ctx.lineTo(rightNode.x, rightNode.y);
+                        ctx.stroke();
+                    }
+
+                    // توصيل الخطوط الرأسية
+                    if (r < rows - 1) {
+                        const bottomNode = gridNodes[r + 1][c];
+                        ctx.beginPath();
+                        ctx.moveTo(node.x, node.y);
+                        ctx.lineTo(bottomNode.x, bottomNode.y);
+                        ctx.stroke();
+                    }
+
+                    // رسم نقاط الربط الصغيرة (Nodes)
+                    if ((r + c) % 2 === 0) {
+                        ctx.fillStyle = `rgba(255, 0, 127, ${alpha * 1.5})`;
+                        ctx.fillRect(node.x - 1, node.y - 1, 2, 2);
+                    }
+                }
+            }
+
+            requestAnimationFrame(animateSpacetimeGrid);
         }
 
-        animateFullGrid();
+        animateSpacetimeGrid();
 
         const asciiContent = document.getElementById('asciiContent');
         function generateImgAscii() {

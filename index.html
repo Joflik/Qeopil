@@ -32,7 +32,7 @@
             color: var(--text-light);
             font-family: var(--font-main);
             margin: 0; 
-            padding: 40px 20px;
+            padding: 40px 20px 110px 20px;
             display: flex; 
             flex-direction: column; 
             align-items: center;
@@ -57,7 +57,7 @@
             z-index: 2;
         }
 
-        [lang="en"], .en-only, .btn-lang, .btn-audio { 
+        [lang="en"], .en-only, .btn-lang, .marquee-text { 
             font-family: var(--font-en) !important; 
         }
 
@@ -72,7 +72,156 @@
 
         .controls {
             display: flex;
+            align-items: center;
             gap: 10px;
+        }
+
+        .controls .btn-lang { 
+            cursor: pointer; 
+            font-size: 14px; 
+            border: 2px solid var(--accent-color); 
+            padding: 4px 10px; 
+            border-radius: 0px; 
+            color: var(--accent-color); 
+            background: transparent; 
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        /* --- شريط الموسيقى الشفاف كلياً مع الشفق الداخلي المحصور --- */
+        .bottom-player {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 220px;
+            max-width: calc(100vw - 40px);
+            z-index: 1000;
+
+            /* تدرج الشفق القطبي كخلفية داخلية فقط بدون أي توهج خارجي */
+            background: 
+                linear-gradient(125deg, rgba(255, 0, 127, 0.12), rgba(138, 43, 226, 0.12), rgba(0, 240, 255, 0.12), rgba(255, 0, 85, 0.12)),
+                rgba(255, 255, 255, 0.015);
+            background-size: 300% 300%, 100% 100%;
+            animation: auroraGlow 12s ease infinite;
+
+            backdrop-filter: blur(10px) saturate(180%);
+            -webkit-backdrop-filter: blur(10px) saturate(180%);
+            
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0px;
+            
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            direction: ltr;
+            
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            overflow: hidden; /* يضمن عدم خروج أي شيء خارج الحدود */
+            transition: all 0.3s ease;
+        }
+
+        @keyframes auroraGlow {
+            0% { background-position: 0% 50%, 0% 0%; }
+            50% { background-position: 100% 50%, 0% 0%; }
+            100% { background-position: 0% 50%, 0% 0%; }
+        }
+
+        /* العمود الأيسر للنص وشريط التقدم */
+        .player-info-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            flex: 1;
+            height: 44px;
+            overflow: hidden;
+        }
+
+        /* حاوية الشريط المتحرك (Marquee) */
+        .marquee-wrapper {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+        }
+
+        /* النص المتحرك مثل تطبيق الموسيقى */
+        .marquee-text {
+            display: inline-block;
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: marqueeAnim 8s linear infinite;
+        }
+
+        @keyframes marqueeAnim {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+            100% {
+                transform: translate3d(-100%, 0, 0);
+            }
+        }
+
+        /* المربع الداخلي للأيقونة */
+        .music-box-btn {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 0px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .music-box-btn .icon {
+            font-size: 18px;
+            line-height: 1;
+            filter: grayscale(100%) opacity(0.35);
+            transition: all 0.3s ease;
+        }
+
+        .music-box-btn.is-playing {
+            border-color: var(--accent-color);
+            background: rgba(255, 0, 127, 0.15);
+            box-shadow: 0 0 12px rgba(255, 0, 127, 0.35);
+        }
+
+        .music-box-btn.is-playing .icon {
+            filter: grayscale(0%) drop-shadow(0 0 6px var(--accent-color)) opacity(1);
+        }
+
+        /* شريط التقدم أسفل النص تماماً */
+        .progress-container {
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 0px;
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 6px var(--accent-color);
         }
 
         #content-wrapper { width: 100%; max-width: 650px; }
@@ -119,7 +268,7 @@
             max-width: 400px; 
             aspect-ratio: 400 / 250; 
             margin: 0 auto 40px auto; 
-            border-radius: 12px; 
+            border-radius: 0px; 
             overflow: hidden; 
             cursor: ew-resize; 
             direction: ltr; 
@@ -173,33 +322,6 @@
             pointer-events: none; 
         }
 
-        .controls .btn-lang, .controls .btn-audio { 
-            cursor: pointer; 
-            font-size: 14px; 
-            border: 2px solid var(--accent-color); 
-            padding: 4px 10px; 
-            border-radius: 4px; 
-            color: var(--accent-color); 
-            background: transparent; 
-            font-weight: bold;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 36px;
-        }
-
-        .controls .btn-audio.playing {
-            background: var(--accent-color);
-            color: var(--bg-color);
-            box-shadow: 0 0 10px var(--accent-color);
-        }
-
-        .controls .btn-audio.error {
-            border-color: #ff3333;
-            color: #ff3333;
-        }
-
         .back-btn {
             background: none; 
             border: none; 
@@ -217,18 +339,14 @@
 </head>
 <body id="body-tag">
 
-    <!-- تم التعديل إلى song.m4a مع خيار احتياطي song.mp3 -->
-    <audio id="bg-audio" loop preload="auto">
-        <source src="song.m4a" type="audio/mp4">
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
+    <!-- عنصر الصوت -->
+    <audio id="bg-audio" loop preload="auto" src="song.m4a"></audio>
 
     <canvas id="bg-grid-canvas"></canvas>
 
     <header>
         <div class="controls">
             <button class="btn-lang" onclick="triggerLanguageSwitch()" id="lang-btn">EN</button>
-            <button class="btn-audio" onclick="toggleAudio()" id="audio-btn" title="Sound">♫</button>
         </div>
         <div class="brand" onclick="navigate('home')">
             <span class="ar-only ripple-active">كيوبيل</span>
@@ -297,26 +415,57 @@
         </div>
     </div>
 
+    <!-- المشغل بتأثير الشفق المحصور داخلياً كلياً -->
+    <div class="bottom-player">
+        <div class="player-info-col">
+            <div class="marquee-wrapper">
+                <span class="marquee-text" id="trackName">Unethical</span>
+            </div>
+            <div class="progress-container" id="progressContainer" onclick="seekTrack(event)">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        <button class="music-box-btn" id="musicToggleBtn" onclick="togglePlay()" title="Play / Pause">
+            <span class="icon">🎵</span>
+        </button>
+    </div>
+
     <script>
         const audioEl = document.getElementById('bg-audio');
-        const audioBtn = document.getElementById('audio-btn');
+        const musicToggleBtn = document.getElementById('musicToggleBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressContainer = document.getElementById('progressContainer');
+
         let isPlaying = false;
 
-        function toggleAudio() {
+        function togglePlay() {
             if (isPlaying) {
                 audioEl.pause();
-                audioBtn.classList.remove('playing');
                 isPlaying = false;
+                musicToggleBtn.classList.remove('is-playing');
             } else {
                 audioEl.play().then(() => {
-                    audioBtn.classList.remove('error');
-                    audioBtn.classList.add('playing');
                     isPlaying = true;
-                }).catch(e => {
-                    console.error("Audio error:", e);
-                    audioBtn.classList.add('error');
-                    alert("تعذر تشغيل الصوت. تأكد من أن ملف song.m4a موجود في نفس مجلد صفحة index.html");
+                    musicToggleBtn.classList.add('is-playing');
+                }).catch(err => {
+                    console.error("Playback error:", err);
                 });
+            }
+        }
+
+        audioEl.addEventListener('timeupdate', () => {
+            if (audioEl.duration) {
+                const pct = (audioEl.currentTime / audioEl.duration) * 100;
+                progressBar.style.width = pct + '%';
+            }
+        });
+
+        function seekTrack(e) {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const pct = clickX / rect.width;
+            if (audioEl.duration) {
+                audioEl.currentTime = pct * audioEl.duration;
             }
         }
 

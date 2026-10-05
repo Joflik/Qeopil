@@ -97,7 +97,6 @@
             max-width: calc(100vw - 40px);
             z-index: 1000;
 
-            /* تدرج الشفق القطبي كخلفية داخلية فقط بدون أي توهج خارجي */
             background: 
                 linear-gradient(125deg, rgba(255, 0, 127, 0.12), rgba(138, 43, 226, 0.12), rgba(0, 240, 255, 0.12), rgba(255, 0, 85, 0.12)),
                 rgba(255, 255, 255, 0.015);
@@ -120,7 +119,7 @@
             direction: ltr;
             
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            overflow: hidden; /* يضمن عدم خروج أي شيء خارج الحدود */
+            overflow: hidden;
             transition: all 0.3s ease;
         }
 
@@ -130,7 +129,6 @@
             100% { background-position: 0% 50%, 0% 0%; }
         }
 
-        /* العمود الأيسر للنص وشريط التقدم */
         .player-info-col {
             display: flex;
             flex-direction: column;
@@ -140,7 +138,6 @@
             overflow: hidden;
         }
 
-        /* حاوية الشريط المتحرك (Marquee) */
         .marquee-wrapper {
             width: 100%;
             overflow: hidden;
@@ -152,7 +149,6 @@
             -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
         }
 
-        /* النص المتحرك مثل تطبيق الموسيقى */
         .marquee-text {
             display: inline-block;
             color: var(--text-light);
@@ -164,15 +160,10 @@
         }
 
         @keyframes marqueeAnim {
-            0% {
-                transform: translate3d(0, 0, 0);
-            }
-            100% {
-                transform: translate3d(-100%, 0, 0);
-            }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
         }
 
-        /* المربع الداخلي للأيقونة */
         .music-box-btn {
             width: 44px;
             height: 44px;
@@ -205,7 +196,6 @@
             filter: grayscale(0%) drop-shadow(0 0 6px var(--accent-color)) opacity(1);
         }
 
-        /* شريط التقدم أسفل النص تماماً */
         .progress-container {
             width: 100%;
             height: 3px;
@@ -339,8 +329,7 @@
 </head>
 <body id="body-tag">
 
-    <!-- عنصر الصوت -->
-    <audio id="bg-audio" loop preload="auto" src="song.m4a"></audio>
+    <audio id="bg-audio" loop preload="auto" src="song.m4a" crossorigin="anonymous"></audio>
 
     <canvas id="bg-grid-canvas"></canvas>
 
@@ -415,7 +404,6 @@
         </div>
     </div>
 
-    <!-- المشغل بتأثير الشفق المحصور داخلياً كلياً -->
     <div class="bottom-player">
         <div class="player-info-col">
             <div class="marquee-wrapper">
@@ -438,7 +426,31 @@
 
         let isPlaying = false;
 
+        /* --- إعدادات Audio API للتحليل الطيفي لموجات الصوت --- */
+        let audioCtx, analyser, dataArray;
+        let isAudioInit = false;
+
+        function initAudioContext() {
+            if (isAudioInit) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 64; // حجم العينات الصوتية
+            
+            const source = audioCtx.createMediaElementSource(audioEl);
+            source.connect(analyser);
+            analyser.connect(audioCtx.destination);
+            
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+            isAudioInit = true;
+        }
+
         function togglePlay() {
+            initAudioContext();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
             if (isPlaying) {
                 audioEl.pause();
                 isPlaying = false;
@@ -469,6 +481,7 @@
             }
         }
 
+        /* --- Canvas Grid & Audio Pulse Effect --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -493,9 +506,17 @@
             pixels = [];
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
+                    // حساب المسافة القطرية من المركز لتوزيع ترددات الصوت بشكل دائرى ومتدرج
+                    const centerX = cols / 2;
+                    const centerY = rows / 2;
+                    const distFromCenter = Math.sqrt(Math.pow(c - centerX, 2) + Math.pow(r - centerY, 2));
+
                     pixels.push({
                         x: c * (pixelSize + gap),
                         y: r * (pixelSize + gap),
+                        colIndex: c,
+                        rowIndex: r,
+                        distFromCenter: Math.floor(distFromCenter),
                         color: palette[Math.floor(Math.random() * palette.length)],
                         baseAlpha: Math.random() * 0.08 + 0.02,
                         currentAlpha: 0.05,
@@ -512,18 +533,39 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const now = Date.now() * 0.0015;
 
+            // الحصول على بيانات الترددات الصوتية عند التشغيل
+            let audioIntensity = 0;
+            if (isPlaying && analyser && dataArray) {
+                analyser.getByteFrequencyData(dataArray);
+            }
+
             pixels.forEach(p => {
+                // الحركة الموجية الأساسية للخلفية
                 const wave = Math.sin(now + p.x * 0.02 + p.y * 0.02);
                 p.baseAlpha = 0.03 + Math.max(0, wave * 0.07);
-                p.targetAlpha = p.baseAlpha;
-                p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.1;
+
+                // ربط النبض بدرجات الصوت حسب المسافة من المركز ورقم العمود
+                let audioBoost = 0;
+                if (isPlaying && dataArray && dataArray.length > 0) {
+                    const freqIndex = (p.distFromCenter + p.colIndex) % dataArray.length;
+                    const freqValue = dataArray[freqIndex] / 255; // قيمة مابين 0.0 و 1.0
+                    audioBoost = Math.pow(freqValue, 2) * 0.45; // التفاعل مع إيقاع الموسيقى
+                }
+
+                p.targetAlpha = p.baseAlpha + audioBoost;
+                p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
+
+                // تكبير وتمدد بسيط للمربع مع ضربات الصوت
+                const scale = 1 + (audioBoost * 0.4);
+                const currentSize = pixelSize * scale;
+                const offset = (currentSize - pixelSize) / 2;
 
                 ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
-                ctx.fillRect(p.x, p.y, pixelSize, pixelSize);
+                ctx.fillRect(p.x - offset, p.y - offset, currentSize, currentSize);
 
-                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.4})`);
-                ctx.lineWidth = 0.5;
-                ctx.strokeRect(p.x, p.y, pixelSize, pixelSize);
+                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.6})`);
+                ctx.lineWidth = 0.5 + (audioBoost * 0.8);
+                ctx.strokeRect(p.x - offset, p.y - offset, currentSize, currentSize);
             });
 
             requestAnimationFrame(animateFullGrid);

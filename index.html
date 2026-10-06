@@ -481,7 +481,7 @@
             }
         }
 
-        /* --- شبكة المربعات الأصلية (ثابتة تماماً وتتفاعل فقط عند تشغيل الصوت) --- */
+        /* --- الشبكة البكسلية: ثابتة تماماً عند التوقف وتنبض وتتحرك كالنسيج عند التشغيل --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -500,8 +500,8 @@
         function resizeFullGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            cols = Math.ceil(canvas.width / (pixelSize + gap));
-            rows = Math.ceil(canvas.height / (pixelSize + gap));
+            cols = Math.ceil(canvas.width / (pixelSize + gap)) + 2;
+            rows = Math.ceil(canvas.height / (pixelSize + gap)) + 2;
 
             pixels = [];
             const centerX = cols / 2;
@@ -509,16 +509,18 @@
 
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
+                    const baseX = c * (pixelSize + gap);
+                    const baseY = r * (pixelSize + gap);
                     const distFromCenter = Math.sqrt(Math.pow(c - centerX, 2) + Math.pow(r - centerY, 2));
 
                     pixels.push({
-                        x: c * (pixelSize + gap),
-                        y: r * (pixelSize + gap),
+                        baseX: baseX,
+                        baseY: baseY,
                         colIndex: c,
                         rowIndex: r,
                         distFromCenter: Math.floor(distFromCenter),
                         color: palette[Math.floor(Math.random() * palette.length)],
-                        baseAlpha: Math.random() * 0.08 + 0.02,
+                        baseAlpha: 0.05,
                         currentAlpha: 0.05,
                         targetAlpha: 0.05
                     });
@@ -531,39 +533,63 @@
 
         function animateFullGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const now = Date.now() * 0.001;
+            const time = Date.now() * 0.002;
 
-            // تحديث قراءة الصوت إذا كانت الموسيقى تعمل فقط
+            const canvasCenterX = canvas.width / 2;
+            const canvasCenterY = canvas.height / 2;
+
+            // تحديث الترددات الصوتية فقط إذا كانت الموسيقى تعمل
+            let isAudioActive = false;
+            let bassBoost = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
+                isAudioActive = true;
+                bassBoost = (dataArray[1] || 0) / 255; // التقاط النبض والجهير
             }
 
             pixels.forEach(p => {
-                // الوضع الافتراضي: إضاءة هادئة وثابتة للمربعات مثل نسختك الأصلية تماماً
-                const waveAlpha = Math.sin(now + p.x * 0.02 + p.y * 0.02);
-                p.baseAlpha = 0.03 + Math.max(0, waveAlpha * 0.07);
-
+                let renderX = p.baseX;
+                let renderY = p.baseY;
                 let audioBoost = 0;
-                // التأثير الإضافي (النسيج الموجي) يعمل حصرياً عند تشغيل الموسيقى
-                if (isPlaying && dataArray && dataArray.length > 0) {
+
+                if (isAudioActive) {
+                    // --- حالة التشغيل: تفعيل تأثير النسيج الزمكاني المتحرك والسريع مع النبض ---
+                    const dx = p.baseX - canvasCenterX;
+                    const dy = p.baseY - canvasCenterY;
+                    const distToCenter = Math.sqrt(dx * dx + dy * dy);
+                    const angle = Math.atan2(dy, dx);
+
+                    // حركة تموج سريعة ومتداخلة كالطبقات المنبضة بالفيديو
+                    const waveMotion = Math.sin(time * 3 - distToCenter * 0.015) * 6;
+                    const audioWarp = Math.sin(time * 5 - distToCenter * 0.03) * (bassBoost * 22);
+                    const totalDisp = waveMotion + audioWarp;
+
+                    renderX += Math.cos(angle) * totalDisp;
+                    renderY += Math.sin(angle) * totalDisp;
+
                     const freqIndex = (p.distFromCenter + p.colIndex) % dataArray.length;
                     const freqValue = dataArray[freqIndex] / 255;
-                    audioBoost = freqValue * 0.25; // تأثير نسيج زمكاني ناعم يتفاعل مع النبض
+                    audioBoost = Math.pow(freqValue, 2) * 0.5;
+
+                    p.baseAlpha = 0.04 + Math.max(0, Math.sin(time + p.baseX * 0.03) * 0.08);
+                    p.targetAlpha = p.baseAlpha + audioBoost;
+                } else {
+                    // --- حالة التوقف: الخلفية الأصلية الهادئة والثابتة تماماً بدون أي حركة إزاحة ---
+                    p.targetAlpha = 0.05;
                 }
 
-                p.targetAlpha = p.baseAlpha + audioBoost;
                 p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
 
-                const scale = 1 + (audioBoost * 0.15);
+                const scale = 1 + (audioBoost * 0.45);
                 const currentSize = pixelSize * scale;
                 const offset = (currentSize - pixelSize) / 2;
 
                 ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
-                ctx.fillRect(p.x - offset, p.y - offset, currentSize, currentSize);
+                ctx.fillRect(renderX - offset, renderY - offset, currentSize, currentSize);
 
                 ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.6})`);
-                ctx.lineWidth = 0.5;
-                ctx.strokeRect(p.x - offset, p.y - offset, currentSize, currentSize);
+                ctx.lineWidth = 0.5 + (audioBoost * 0.8);
+                ctx.strokeRect(renderX - offset, renderY - offset, currentSize, currentSize);
             });
 
             requestAnimationFrame(animateFullGrid);

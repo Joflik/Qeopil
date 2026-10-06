@@ -251,12 +251,11 @@
             font-weight: 700;
         }
 
-        /* هنا تم اقتصاص نصف الصورة لعرض جزء واحد فقط بالكامل */
         .image-box { 
             position: relative; 
             width: 100%; 
             max-width: 400px; 
-            aspect-ratio: 200 / 250; 
+            aspect-ratio: 400 / 250; 
             margin: 0 auto 40px auto; 
             border-radius: 0px; 
             overflow: hidden; 
@@ -264,12 +263,9 @@
         }
         
         .image-box img { 
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 200%; /* تمديد الصورة وعرض النصف الأيمن أو الأيسر فقط */
+            width: 100%; 
             height: 100%; 
-            object-fit: cover; 
+            object-fit: contain; 
             display: block;
         }
 
@@ -436,6 +432,7 @@
             }
         }
 
+        /* --- خلفية الشبكة المتصلة (كتلة واحدة متكاملة بدون انقسام) --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -494,8 +491,10 @@
                 let pAlpha = 0.05;
 
                 if (isPlaying) {
-                    const unifiedWave = Math.sin(time * 3 + p.colIndex * 0.12 + p.rowIndex * 0.12) * (8 + bassBoost * 18);
+                    // تم توحيد اتجاه الموجة لتتحرك الشاشة كقطعة واحدة متصلة من اليمين لليسار بدون أي انقسام في المنتصف
+                    const unifiedWave = Math.sin(time * 2.5 + (p.colIndex + p.rowIndex) * 0.08) * (6 + bassBoost * 15);
                     renderY += unifiedWave;
+                    renderX += Math.cos(time * 2 + p.rowIndex * 0.05) * (4 + bassBoost * 8);
 
                     const freqIndex = p.colIndex % dataArray.length;
                     const freqValue = dataArray[freqIndex] / 255;

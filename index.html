@@ -479,7 +479,7 @@
             }
         }
 
-        /* --- Canvas Grid: شبكة موحدة ومتصلة بالكامل بدون أي تقسيمات --- */
+        /* --- Canvas Grid: شبكة موحدة ومتصلة بالكامل بدون أي انعكاس أو تقسيم --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -506,16 +506,12 @@
                 for (let c = 0; c < cols; c++) {
                     const baseX = c * (pixelSize + gap);
                     const baseY = r * (pixelSize + gap);
-                    const centerX = cols / 2;
-                    const centerY = rows / 2;
-                    const distFromCenter = Math.sqrt(Math.pow(c - centerX, 2) + Math.pow(r - centerY, 2));
 
                     pixels.push({
                         baseX: baseX,
                         baseY: baseY,
                         colIndex: c,
                         rowIndex: r,
-                        distFromCenter: Math.floor(distFromCenter),
                         color: palette[Math.floor(Math.random() * palette.length)],
                         currentAlpha: 0.05,
                         targetAlpha: 0.05
@@ -545,8 +541,8 @@
                 let pAlpha = 0.05;
 
                 if (isPlaying) {
-                    // حركة موجية متصلة وموحدة لجميع بكسلات الشبكة كقطعة واحدة متناغمة مع الموسيقى
-                    const unifiedWave = Math.sin(time * 3 + p.colIndex * 0.15 + p.rowIndex * 0.15) * (8 + bassBoost * 18);
+                    // موجة متسقة باتجاه واحد عبر الشاشة بدون انعكاس أو خط منتصف مقسوم
+                    const unifiedWave = Math.sin(time * 3 + p.colIndex * 0.1 + p.rowIndex * 0.1) * (10 + bassBoost * 20);
                     renderY += unifiedWave;
 
                     const freqIndex = p.colIndex % dataArray.length;

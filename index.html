@@ -88,7 +88,7 @@
             transition: all 0.3s ease;
         }
 
-        /* --- شريط الموسيقى الشفاف كلياً مع الشفق الداخلي المحصور --- */
+        /* --- شريط الموسيقى السفلي --- */
         .bottom-player {
             position: fixed;
             bottom: 20px;
@@ -479,7 +479,7 @@
             }
         }
 
-        /* --- الخلفية الأصلية ثابتة تماماً؛ وعند التشغيل تتحرك بنبض نسيجي متصل (Fabric Weave Pulse) --- */
+        /* --- الخلفية البكسلية الأصلية تماماً --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -526,14 +526,12 @@
 
         function animateFullGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const time = Date.now() * 0.002;
+            const time = Date.now() * 0.0025;
 
             let isAudioActive = false;
-            let bassBoost = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
                 isAudioActive = true;
-                bassBoost = (dataArray[1] || 0) / 255; 
             }
 
             pixels.forEach(p => {
@@ -542,34 +540,25 @@
                 let audioBoost = 0;
 
                 if (isAudioActive) {
-                    // --- نبض نسيجي مترابط (Fabric Pulse) كأنها قطعة قماش تهتز مع الصوت ---
-                    const weaveEffectX = Math.sin(time * 3 + p.rowIndex * 0.4 + p.colIndex * 0.15) * (2 + bassBoost * 6);
-                    const weaveEffectY = Math.cos(time * 3 + p.colIndex * 0.4 + p.rowIndex * 0.15) * (2 + bassBoost * 6);
-                    
-                    renderX += weaveEffectX;
-                    renderY += weaveEffectY;
-
                     const freqIndex = (p.colIndex + p.rowIndex) % dataArray.length;
                     const freqValue = dataArray[freqIndex] / 255;
-                    audioBoost = freqValue * 0.5;
-
-                    p.targetAlpha = 0.05 + (audioBoost * 0.6);
+                    audioBoost = Math.pow(freqValue, 2) * 0.7;
+                    p.targetAlpha = 0.08 + (audioBoost * 0.75);
                 } else {
-                    // --- الخلفية الأصلية تماماً: ثابتة وساكنة تماماً عند عدم التشغيل ---
                     p.targetAlpha = 0.05;
                 }
 
-                p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.1;
+                p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
 
-                const scale = 1 + (audioBoost * 0.3);
+                const scale = 1 + (audioBoost * 0.4);
                 const currentSize = pixelSize * scale;
                 const offset = (currentSize - pixelSize) / 2;
 
                 ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
                 ctx.fillRect(renderX - offset, renderY - offset, currentSize, currentSize);
 
-                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.5})`);
-                ctx.lineWidth = 0.5;
+                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.6})`);
+                ctx.lineWidth = 0.5 + (audioBoost * 0.5);
                 ctx.strokeRect(renderX - offset, renderY - offset, currentSize, currentSize);
             });
 

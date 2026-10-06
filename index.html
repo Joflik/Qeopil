@@ -479,7 +479,7 @@
             }
         }
 
-        /* --- Canvas Grid: شبكة موحدة ومتصلة بالكامل بدون أي انعكاس أو تقسيم --- */
+        /* --- Canvas Grid: شبكة موحدة تماماً كقطعة واحدة بدون أي خط منتصف أو انعكاس --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -525,7 +525,7 @@
 
         function animateFullGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const time = Date.now() * 0.003;
+            const time = Date.now() * 0.0025;
             const nowSec = Date.now() * 0.0015;
 
             let bassBoost = 0;
@@ -541,8 +541,8 @@
                 let pAlpha = 0.05;
 
                 if (isPlaying) {
-                    // موجة متسقة باتجاه واحد عبر الشاشة بدون انعكاس أو خط منتصف مقسوم
-                    const unifiedWave = Math.sin(time * 3 + p.colIndex * 0.1 + p.rowIndex * 0.1) * (10 + bassBoost * 20);
+                    // موجة متسقة أحادية الاتجاه تغطي كامل الشاشة بشكل متصل تماماً بدون أي انقسام
+                    const unifiedWave = Math.sin(time * 2.5 + p.baseX * 0.008 + p.baseY * 0.008) * (10 + bassBoost * 22);
                     renderY += unifiedWave;
 
                     const freqIndex = p.colIndex % dataArray.length;

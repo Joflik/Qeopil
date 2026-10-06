@@ -480,29 +480,29 @@
             }
         }
 
-        /* --- محاكاة حركة نسيج الزمكان وموج البحر (Spacetime & Sea Wave) --- */
+        /* --- محاكاة نسيج الزمكان النقي والناعم (Minimal Spacetime Fabric) --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
 
-        const gridSpacing = 26; // المسافة بين عقد نسيج الشبكة
+        const spacing = 32; 
         let cols = 0, rows = 0;
         let gridNodes = [];
 
         function resizeFullGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            cols = Math.ceil(canvas.width / gridSpacing) + 2;
-            rows = Math.ceil(canvas.height / gridSpacing) + 2;
+            cols = Math.ceil(canvas.width / spacing) + 2;
+            rows = Math.ceil(canvas.height / spacing) + 2;
 
             gridNodes = [];
             for (let r = 0; r < rows; r++) {
                 gridNodes[r] = [];
                 for (let c = 0; c < cols; c++) {
                     gridNodes[r][c] = {
-                        baseX: c * gridSpacing,
-                        baseY: r * gridSpacing,
-                        x: c * gridSpacing,
-                        y: r * gridSpacing
+                        x: c * spacing,
+                        y: r * spacing,
+                        baseX: c * spacing,
+                        baseY: r * spacing
                     };
                 }
             }
@@ -513,71 +513,61 @@
 
         function animateSpacetimeGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const time = Date.now() * 0.0016;
+            const time = Date.now() * 0.0012;
 
-            // حساب شدة الجاذبية والترددات من الصوت عند التشغيل
             let bassPulse = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
-                bassPulse = (dataArray[1] || 0) / 255.0; // الترددات المنخفضة (الباس)
+                bassPulse = (dataArray[1] || 0) / 255.0;
             }
 
-            // 1. حساب الحركة الموجية للنسيج الزمكاني وموج البحر
+            // 1. حساب انحناءات مجالات الزمكان (Curvature Equations)
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
-
-                    // دالة موجية مترابطة تعتمد على الإحداثيات (c, r) لتشكل موجات البحر السلسة
-                    const wavePattern = Math.sin((c * 0.22 + r * 0.22) - time) * 14;
                     
-                    // تأثير التردد الصوتي الذي يضخم انحناء النسيج مع الموسيقى
-                    const audioDisplacement = bassPulse * 22 * Math.sin((c - r) * 0.28 + time * 2);
+                    const warpX = Math.sin(r * 0.15 + time) * 8 + Math.cos(c * 0.1 + time * 0.8) * 4;
+                    const warpY = Math.cos(c * 0.15 + time) * 8 + Math.sin(r * 0.1 + time * 0.8) * 4;
+                    
+                    const audioWarp = bassPulse * 15 * Math.sin((c + r) * 0.2 + time * 2);
 
-                    // إزاحة عمودية وأفقية لإعطاء مجسم 3D للموجة
-                    const totalOffsetY = wavePattern + audioDisplacement;
-                    const totalOffsetX = Math.cos((c * 0.18 - time)) * 5;
-
-                    node.x = node.baseX + totalOffsetX;
-                    node.y = node.baseY + totalOffsetY;
+                    node.x = node.baseX + warpX;
+                    node.y = node.baseY + warpY + audioWarp;
                 }
             }
 
-            // 2. رسم خيوط النسيج الزمكاني المترابطة
-            ctx.lineWidth = 0.85;
+            // 2. رسم خيوط النسيج بنعومة شفافة جداً (Ultralight Traces)
+            ctx.lineWidth = 0.5;
 
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
 
-                    // حساب الشفافية والتوهج بناءً على الارتفاع
-                    const waveHeight = (node.y - node.baseY);
-                    const alpha = Math.min(0.38, Math.max(0.04, 0.1 + (waveHeight / 22) * 0.15 + bassPulse * 0.22));
-
-                    // استخدام الدرجة اللونية المحددة في ألوان الهوية (#ff007f)
-                    ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
-
-                    // توصيل الخطوط الأفقية
                     if (c < cols - 1) {
                         const rightNode = gridNodes[r][c + 1];
+                        const alpha = 0.04 + (bassPulse * 0.08);
+                        ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
                         ctx.beginPath();
                         ctx.moveTo(node.x, node.y);
                         ctx.lineTo(rightNode.x, rightNode.y);
                         ctx.stroke();
                     }
 
-                    // توصيل الخطوط الرأسية
                     if (r < rows - 1) {
                         const bottomNode = gridNodes[r + 1][c];
+                        const alpha = 0.03 + (bassPulse * 0.06);
+                        ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
                         ctx.beginPath();
                         ctx.moveTo(node.x, node.y);
                         ctx.lineTo(bottomNode.x, bottomNode.y);
                         ctx.stroke();
                     }
 
-                    // إضاءة العقد على قمم الموجات
-                    if (waveHeight > 5) {
-                        ctx.fillStyle = `rgba(255, 128, 191, ${alpha * 1.6})`;
-                        ctx.fillRect(node.x - 1, node.y - 1, 2, 2);
+                    const distFromCenter = Math.sin(c * 0.2 + time) * Math.cos(r * 0.2 + time);
+                    if (distFromCenter > 0.3) {
+                        const dotAlpha = 0.15 + (distFromCenter * 0.2) + (bassPulse * 0.3);
+                        ctx.fillStyle = `rgba(255, 128, 191, ${dotAlpha})`;
+                        ctx.fillRect(Math.round(node.x), Math.round(node.y), 1.5, 1.5);
                     }
                 }
             }

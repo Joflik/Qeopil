@@ -88,7 +88,6 @@
             transition: all 0.3s ease;
         }
 
-        /* --- شريط الموسيقى الشفاف كلياً مع الشفق الداخلي المحصور --- */
         .bottom-player {
             position: fixed;
             bottom: 20px;
@@ -481,11 +480,11 @@
             }
         }
 
-        /* --- محاكاة نسيج الزمكان (Spacetime Grid Warp) --- */
+        /* --- محاكاة حركة نسيج الزمكان وموج البحر (Spacetime & Sea Wave) --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
 
-        const gridSpacing = 28; // مسافة عقد النسيج
+        const gridSpacing = 26; // المسافة بين عقد نسيج الشبكة
         let cols = 0, rows = 0;
         let gridNodes = [];
 
@@ -514,59 +513,48 @@
 
         function animateSpacetimeGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const time = Date.now() * 0.0012;
+            const time = Date.now() * 0.0016;
 
-            // حساب شدة الجاذبية الترددية للموسيقى
+            // حساب شدة الجاذبية والترددات من الصوت عند التشغيل
             let bassPulse = 0;
-            let midPulse = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
-                bassPulse = (dataArray[1] || 0) / 255.0; // ترددات الباس الانحنائية
-                midPulse = (dataArray[8] || 0) / 255.0;  // الترددات المتوسطة
+                bassPulse = (dataArray[1] || 0) / 255.0; // الترددات المنخفضة (الباس)
             }
 
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-
-            // 1. تحديث إحداثيات عقد النسيج الزمكاني
+            // 1. حساب الحركة الموجية للنسيج الزمكاني وموج البحر
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
 
-                    // تموج حركة الزمكان الطبيعية (Gravitational Ripples)
-                    const distToCenter = Math.hypot(node.baseX - centerX, node.baseY - centerY);
-                    const angle = Math.atan2(node.baseY - centerY, node.baseX - centerX);
+                    // دالة موجية مترابطة تعتمد على الإحداثيات (c, r) لتشكل موجات البحر السلسة
+                    const wavePattern = Math.sin((c * 0.22 + r * 0.22) - time) * 14;
+                    
+                    // تأثير التردد الصوتي الذي يضخم انحناء النسيج مع الموسيقى
+                    const audioDisplacement = bassPulse * 22 * Math.sin((c - r) * 0.28 + time * 2);
 
-                    // انحناء الجاذبية المستمر
-                    let waveOffset = Math.sin(time * 2 - distToCenter * 0.015) * 6;
+                    // إزاحة عمودية وأفقية لإعطاء مجسم 3D للموجة
+                    const totalOffsetY = wavePattern + audioDisplacement;
+                    const totalOffsetX = Math.cos((c * 0.18 - time)) * 5;
 
-                    // تشويه الزمكان بالموسيقى عند التشغيل (Gravitational Well Displacement)
-                    let audioDisplacement = 0;
-                    if (isPlaying) {
-                        const pulseFactor = Math.sin(time * 5 - distToCenter * 0.02);
-                        audioDisplacement = (bassPulse * 45) * Math.exp(-distToCenter * 0.0025) * pulseFactor;
-                    }
-
-                    const totalOffset = waveOffset + audioDisplacement;
-                    node.x = node.baseX + Math.cos(angle) * totalOffset;
-                    node.y = node.baseY + Math.sin(angle) * totalOffset;
+                    node.x = node.baseX + totalOffsetX;
+                    node.y = node.baseY + totalOffsetY;
                 }
             }
 
-            // 2. رسم خيوط النسيج الزمكاني (Grid Mesh)
-            ctx.lineWidth = 0.8;
+            // 2. رسم خيوط النسيج الزمكاني المترابطة
+            ctx.lineWidth = 0.85;
 
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
 
-                    // حساب درجة التوهج والشفافية حسب تشوه الزمكان من المركز
-                    const dist = Math.hypot(node.x - centerX, node.y - centerY);
-                    const alpha = Math.min(0.28, Math.max(0.03, 0.04 + (bassPulse * 0.25) * (1 - dist / (canvas.width * 0.8))));
+                    // حساب الشفافية والتوهج بناءً على الارتفاع
+                    const waveHeight = (node.y - node.baseY);
+                    const alpha = Math.min(0.38, Math.max(0.04, 0.1 + (waveHeight / 22) * 0.15 + bassPulse * 0.22));
 
-                    // إعطاء ألوان نيون شفقية متدرجة للخطوط
-                    const hue = (280 + (dist * 0.1) + (bassPulse * 60)) % 360;
-                    ctx.strokeStyle = `hsla(${hue}, 100%, 65%, ${alpha})`;
+                    // استخدام الدرجة اللونية المحددة في ألوان الهوية (#ff007f)
+                    ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
 
                     // توصيل الخطوط الأفقية
                     if (c < cols - 1) {
@@ -586,9 +574,9 @@
                         ctx.stroke();
                     }
 
-                    // رسم نقاط الربط الصغيرة (Nodes)
-                    if ((r + c) % 2 === 0) {
-                        ctx.fillStyle = `rgba(255, 0, 127, ${alpha * 1.5})`;
+                    // إضاءة العقد على قمم الموجات
+                    if (waveHeight > 5) {
+                        ctx.fillStyle = `rgba(255, 128, 191, ${alpha * 1.6})`;
                         ctx.fillRect(node.x - 1, node.y - 1, 2, 2);
                     }
                 }

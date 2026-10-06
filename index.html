@@ -480,19 +480,19 @@
             }
         }
 
-        /* --- محاكاة نسيج الزمكان النقي والناعم (Minimal Spacetime Fabric) --- */
+        /* --- محاكاة نسيج الزمكان الهيكلي (Spacetime Continuum Fabric) --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
 
-        const spacing = 32; 
+        const spacing = 28; 
         let cols = 0, rows = 0;
         let gridNodes = [];
 
         function resizeFullGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            cols = Math.ceil(canvas.width / spacing) + 2;
-            rows = Math.ceil(canvas.height / spacing) + 2;
+            cols = Math.ceil(canvas.width / spacing) + 3;
+            rows = Math.ceil(canvas.height / spacing) + 3;
 
             gridNodes = [];
             for (let r = 0; r < rows; r++) {
@@ -513,31 +513,29 @@
 
         function animateSpacetimeGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const time = Date.now() * 0.0012;
+            const time = Date.now() * 0.0015;
 
             let bassPulse = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
-                bassPulse = (dataArray[1] || 0) / 255.0;
+                bassPulse = (dataArray[2] || 0) / 255.0;
             }
 
-            // 1. حساب انحناءات مجالات الزمكان (Curvature Equations)
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
-                    
-                    const warpX = Math.sin(r * 0.15 + time) * 8 + Math.cos(c * 0.1 + time * 0.8) * 4;
-                    const warpY = Math.cos(c * 0.15 + time) * 8 + Math.sin(r * 0.1 + time * 0.8) * 4;
-                    
-                    const audioWarp = bassPulse * 15 * Math.sin((c + r) * 0.2 + time * 2);
 
-                    node.x = node.baseX + warpX;
-                    node.y = node.baseY + warpY + audioWarp;
+                    const warpX = Math.sin(r * 0.12 + time) * 10 + Math.cos(c * 0.08 + time * 0.7) * 6;
+                    const warpY = Math.cos(c * 0.12 + time) * 10 + Math.sin(r * 0.08 + time * 0.7) * 6;
+                    
+                    const audioDistort = bassPulse * 18 * Math.sin((c * 0.3) + (r * 0.3) + time * 3);
+
+                    node.x = node.baseX + warpX + audioDistort;
+                    node.y = node.baseY + warpY + audioDistort;
                 }
             }
 
-            // 2. رسم خيوط النسيج بنعومة شفافة جداً (Ultralight Traces)
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = 0.8;
 
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
@@ -545,7 +543,7 @@
 
                     if (c < cols - 1) {
                         const rightNode = gridNodes[r][c + 1];
-                        const alpha = 0.04 + (bassPulse * 0.08);
+                        const alpha = 0.08 + (bassPulse * 0.15);
                         ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
                         ctx.beginPath();
                         ctx.moveTo(node.x, node.y);
@@ -555,7 +553,7 @@
 
                     if (r < rows - 1) {
                         const bottomNode = gridNodes[r + 1][c];
-                        const alpha = 0.03 + (bassPulse * 0.06);
+                        const alpha = 0.08 + (bassPulse * 0.15);
                         ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
                         ctx.beginPath();
                         ctx.moveTo(node.x, node.y);
@@ -563,11 +561,9 @@
                         ctx.stroke();
                     }
 
-                    const distFromCenter = Math.sin(c * 0.2 + time) * Math.cos(r * 0.2 + time);
-                    if (distFromCenter > 0.3) {
-                        const dotAlpha = 0.15 + (distFromCenter * 0.2) + (bassPulse * 0.3);
-                        ctx.fillStyle = `rgba(255, 128, 191, ${dotAlpha})`;
-                        ctx.fillRect(Math.round(node.x), Math.round(node.y), 1.5, 1.5);
+                    if ((r + c) % 2 === 0) {
+                        ctx.fillStyle = `rgba(255, 128, 191, ${0.2 + bassPulse * 0.4})`;
+                        ctx.fillRect(Math.round(node.x) - 1, Math.round(node.y) - 1, 2, 2);
                     }
                 }
             }

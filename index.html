@@ -431,12 +431,12 @@
                 audioEl.pause();
                 isPlaying = false;
                 musicToggleBtn.classList.remove('is-playing');
+                drawGrid(); // تثبيت الخلفية فور إيقاف الأغنية
             } else {
                 audioEl.play().then(() => {
                     isPlaying = true;
                     musicToggleBtn.classList.add('is-playing');
-                    // استئناف الحركة فور تشغيل الأغنية
-                    requestAnimationFrame(animateGrid);
+                    requestAnimationFrame(animateGrid); // بدء التموج الحركي فقط عند تشغيل الأغنية
                 }).catch(err => {
                     console.error("Playback error:", err);
                 });
@@ -459,7 +459,7 @@
             }
         }
 
-        /* --- الخلفية البكسلية: ثابتة وتتفاعل/تتحرك فقط عند تشغيل الأغنية --- */
+        /* --- الخلفية البكسلية الأصلية تماماً وثابتة بالوضع العادي --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -509,7 +509,7 @@
 
         function animateGrid() {
             if (!isPlaying) {
-                drawGrid(); // إعادة رسم الشكل الثابت عند توقف الأغنية
+                drawGrid();
                 return;
             }
 
@@ -536,7 +536,7 @@
             if (isPlaying) animateGrid();
         });
         
-        initGrid(); // الرسم الأولي (ثابت وساكن عند التحميل)
+        initGrid();
 
         const asciiContent = document.getElementById('asciiContent');
         function generateImgAscii() {

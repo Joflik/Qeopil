@@ -425,6 +425,7 @@
         const progressContainer = document.getElementById('progressContainer');
 
         let isPlaying = false;
+
         let audioCtx, analyser, dataArray;
         let isAudioInit = false;
 
@@ -479,7 +480,7 @@
             }
         }
 
-        /* --- الشبكة البكسلية: ثابتة تماماً عند عدم التشغيل، وتتحرك كنسيج مترابط / نبض عضوي عند التشغيل --- */
+        /* --- الشبكة البكسلية: ثابتة تماماً عند التوقف، وتتحرك صعوداً ونزولاً كالموجات عند التشغيل --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -526,14 +527,14 @@
 
         function animateFullGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const time = Date.now() * 0.0025;
+            const time = Date.now() * 0.003;
 
             let isAudioActive = false;
             let bassBoost = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
                 isAudioActive = true;
-                bassBoost = (dataArray[1] || 0) / 255; // قياس النبض والجهير الصوتي
+                bassBoost = (dataArray[2] || 0) / 255; // التقاط النبض
             }
 
             pixels.forEach(p => {
@@ -542,27 +543,26 @@
                 let audioBoost = 0;
 
                 if (isAudioActive) {
-                    // --- حركة نسيجية / نبض عضوي متصل (Fabric Weaver & Organic Pulse) ---
-                    // إزاحة مترابطة تشبه القماش الذي يتهادى مع الصوت والنبض
-                    const fabricWaveX = Math.sin(time * 2 + p.rowIndex * 0.3 + p.colIndex * 0.1) * (3 + bassBoost * 10);
-                    const fabricWaveY = Math.cos(time * 2 + p.colIndex * 0.3 + p.rowIndex * 0.1) * (3 + bassBoost * 10);
+                    // --- حالة التشغيل: حركة الطفو والنزول (موجات عمودية وأفقية تتفاعل مع النبض) ---
+                    const floatWaveY = Math.sin(time * 3 + p.colIndex * 0.25) * (8 + bassBoost * 18);
+                    const floatWaveX = Math.cos(time * 2 + p.rowIndex * 0.2) * 5;
                     
-                    renderX += fabricWaveX;
-                    renderY += fabricWaveY;
+                    renderY += floatWaveY;
+                    renderX += floatWaveX;
 
-                    const freqIndex = (p.colIndex + p.rowIndex) % dataArray.length;
+                    const freqIndex = p.colIndex % dataArray.length;
                     const freqValue = dataArray[freqIndex] / 255;
-                    audioBoost = Math.pow(freqValue, 2) * 0.7;
+                    audioBoost = Math.pow(freqValue, 2) * 0.6;
 
-                    p.targetAlpha = 0.08 + (audioBoost * 0.75);
+                    p.targetAlpha = 0.08 + (audioBoost * 0.7);
                 } else {
-                    // --- الخلفية الأصلية تماماً: ثابتة وساكنة تماماً بدون أي إزاحة ---
+                    // --- حالة التوقف: ثابتة وساكنة تماماً بدون أي إزاحة ---
                     p.targetAlpha = 0.05;
                 }
 
                 p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
 
-                const scale = 1 + (audioBoost * 0.4);
+                const scale = 1 + (audioBoost * 0.35);
                 const currentSize = pixelSize * scale;
                 const offset = (currentSize - pixelSize) / 2;
 

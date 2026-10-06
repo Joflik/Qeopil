@@ -88,7 +88,6 @@
             transition: all 0.3s ease;
         }
 
-        /* --- شريط الموسيقى الشفاف كلياً مع الشفق الداخلي المحصور --- */
         .bottom-player {
             position: fixed;
             bottom: 20px;
@@ -425,8 +424,6 @@
         const progressContainer = document.getElementById('progressContainer');
 
         let isPlaying = false;
-
-        /* --- إعدادات Audio API للتحليل الطيفي لموجات الصوت --- */
         let audioCtx, analyser, dataArray;
         let isAudioInit = false;
 
@@ -435,7 +432,7 @@
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             audioCtx = new AudioContext();
             analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 64; // حجم العينات الصوتية
+            analyser.fftSize = 64; 
             
             const source = audioCtx.createMediaElementSource(audioEl);
             source.connect(analyser);
@@ -481,7 +478,7 @@
             }
         }
 
-        /* --- Canvas Grid & Audio Pulse Effect --- */
+        /* --- الشبكة البكسلية بحركة متصلة واحدة (تتفاعل مع التموج الصوتي والنبض بشكل مستمر أو موحد) --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -500,27 +497,23 @@
         function resizeFullGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            cols = Math.ceil(canvas.width / (pixelSize + gap));
-            rows = Math.ceil(canvas.height / (pixelSize + gap));
+            cols = Math.ceil(canvas.width / (pixelSize + gap)) + 2;
+            rows = Math.ceil(canvas.height / (pixelSize + gap)) + 2;
 
             pixels = [];
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
-                    // حساب المسافة القطرية من المركز لتوزيع ترددات الصوت بشكل دائرى ومتدرج
-                    const centerX = cols / 2;
-                    const centerY = rows / 2;
-                    const distFromCenter = Math.sqrt(Math.pow(c - centerX, 2) + Math.pow(r - centerY, 2));
+                    const baseX = c * (pixelSize + gap);
+                    const baseY = r * (pixelSize + gap);
 
                     pixels.push({
-                        x: c * (pixelSize + gap),
-                        y: r * (pixelSize + gap),
+                        baseX: baseX,
+                        baseY: baseY,
                         colIndex: c,
                         rowIndex: r,
-                        distFromCenter: Math.floor(distFromCenter),
                         color: palette[Math.floor(Math.random() * palette.length)],
-                        baseAlpha: Math.random() * 0.08 + 0.02,
-                        currentAlpha: 0.05,
-                        targetAlpha: 0.05
+                        currentAlpha: 0.08,
+                        targetAlpha: 0.08
                     });
                 }
             }
@@ -531,41 +524,46 @@
 
         function animateFullGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const now = Date.now() * 0.0015;
+            const time = Date.now() * 0.0025;
 
-            // الحصول على بيانات الترددات الصوتية عند التشغيل
-            let audioIntensity = 0;
+            let bassBoost = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
+                bassBoost = (dataArray[1] || 0) / 255; 
             }
 
             pixels.forEach(p => {
-                // الحركة الموجية الأساسية للخلفية
-                const wave = Math.sin(now + p.x * 0.02 + p.y * 0.02);
-                p.baseAlpha = 0.03 + Math.max(0, wave * 0.07);
+                // دمجنا الحركة لتكون بنسق واحد عضوي مستمر يتأثر بالصوت إذا اشتغل، أو يتحرك بتموج هادئ موحد إذا توقف
+                const waveIntensity = isPlaying ? (3 + bassBoost * 12) : 2.5;
+                const fabricWaveX = Math.sin(time * 2 + p.rowIndex * 0.3 + p.colIndex * 0.1) * waveIntensity;
+                const fabricWaveY = Math.cos(time * 2 + p.colIndex * 0.3 + p.rowIndex * 0.1) * waveIntensity;
+                
+                const renderX = p.baseX + fabricWaveX;
+                const renderY = p.baseY + fabricWaveY;
 
-                // ربط النبض بدرجات الصوت حسب المسافة من المركز ورقم العمود
                 let audioBoost = 0;
-                if (isPlaying && dataArray && dataArray.length > 0) {
-                    const freqIndex = (p.distFromCenter + p.colIndex) % dataArray.length;
-                    const freqValue = dataArray[freqIndex] / 255; // قيمة مابين 0.0 و 1.0
-                    audioBoost = Math.pow(freqValue, 2) * 0.45; // التفاعل مع إيقاع الموسيقى
+                if (isPlaying && dataArray) {
+                    const freqIndex = (p.colIndex + p.rowIndex) % dataArray.length;
+                    const freqValue = dataArray[freqIndex] / 255;
+                    audioBoost = Math.pow(freqValue, 2) * 0.7;
+                    p.targetAlpha = 0.08 + (audioBoost * 0.75);
+                } else {
+                    // جعلنا Alpha في وضع السكون يتحرك أيضاً بشكل خفيف ومتصل ليكون كـ "جزء واحد" متناسق
+                    p.targetAlpha = 0.06 + Math.sin(time + p.colIndex * 0.2) * 0.02;
                 }
 
-                p.targetAlpha = p.baseAlpha + audioBoost;
                 p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
 
-                // تكبير وتمدد بسيط للمربع مع ضربات الصوت
                 const scale = 1 + (audioBoost * 0.4);
                 const currentSize = pixelSize * scale;
                 const offset = (currentSize - pixelSize) / 2;
 
                 ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
-                ctx.fillRect(p.x - offset, p.y - offset, currentSize, currentSize);
+                ctx.fillRect(renderX - offset, renderY - offset, currentSize, currentSize);
 
                 ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.6})`);
-                ctx.lineWidth = 0.5 + (audioBoost * 0.8);
-                ctx.strokeRect(p.x - offset, p.y - offset, currentSize, currentSize);
+                ctx.lineWidth = 0.5 + (audioBoost * 0.5);
+                ctx.strokeRect(renderX - offset, renderY - offset, currentSize, currentSize);
             });
 
             requestAnimationFrame(animateFullGrid);

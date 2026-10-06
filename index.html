@@ -514,7 +514,7 @@
 
         function animateSpacetimeGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const time = Date.now() * 0.0012;
+            const time = Date.now() * 0.0015;
 
             // حساب شدة الجاذبية الترددية للموسيقى
             let bassPulse = 0;
@@ -528,23 +528,23 @@
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
 
-            // 1. تحديث إحداثيات عقد النسيج الزمكاني
+            // 1. تحديث إحداثيات عقد النسيج الزمكاني بموجات جيبية متداخلة
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
 
-                    // تموج حركة الزمكان الطبيعية (Gravitational Ripples)
                     const distToCenter = Math.hypot(node.baseX - centerX, node.baseY - centerY);
                     const angle = Math.atan2(node.baseY - centerY, node.baseX - centerX);
 
-                    // انحناء الجاذبية المستمر
-                    let waveOffset = Math.sin(time * 2 - distToCenter * 0.015) * 6;
+                    // موجة هادئة في الحالة العادية
+                    let waveOffset = Math.sin(time * 2.5 - distToCenter * 0.012) * 7;
 
-                    // تشويه الزمكان بالموسيقى عند التشغيل (Gravitational Well Displacement)
+                    // تشويه ونبض الزمكان عند تشغيل الموسيقى بحجم حقيقي للـ Bass
                     let audioDisplacement = 0;
                     if (isPlaying) {
-                        const pulseFactor = Math.sin(time * 5 - distToCenter * 0.02);
-                        audioDisplacement = (bassPulse * 45) * Math.exp(-distToCenter * 0.0025) * pulseFactor;
+                        const pulseSpeed = time * (4.0 + bassPulse * 3.0);
+                        const wavePattern = Math.sin(pulseSpeed - distToCenter * 0.018) + Math.cos(time * 3.0 + (node.baseX + node.baseY) * 0.01);
+                        audioDisplacement = (bassPulse * 55 + midPulse * 20) * Math.exp(-distToCenter * 0.0018) * wavePattern;
                     }
 
                     const totalOffset = waveOffset + audioDisplacement;
@@ -553,22 +553,19 @@
                 }
             }
 
-            // 2. رسم خيوط النسيج الزمكاني (Grid Mesh)
+            // 2. رسم خيوط النسيج بنفس ألوانك وشكلك الأصلي تماماً
             ctx.lineWidth = 0.8;
 
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
 
-                    // حساب درجة التوهج والشفافية حسب تشوه الزمكان من المركز
                     const dist = Math.hypot(node.x - centerX, node.y - centerY);
                     const alpha = Math.min(0.28, Math.max(0.03, 0.04 + (bassPulse * 0.25) * (1 - dist / (canvas.width * 0.8))));
 
-                    // إعطاء ألوان نيون شفقية متدرجة للخطوط
                     const hue = (280 + (dist * 0.1) + (bassPulse * 60)) % 360;
                     ctx.strokeStyle = `hsla(${hue}, 100%, 65%, ${alpha})`;
 
-                    // توصيل الخطوط الأفقية
                     if (c < cols - 1) {
                         const rightNode = gridNodes[r][c + 1];
                         ctx.beginPath();
@@ -577,7 +574,6 @@
                         ctx.stroke();
                     }
 
-                    // توصيل الخطوط الرأسية
                     if (r < rows - 1) {
                         const bottomNode = gridNodes[r + 1][c];
                         ctx.beginPath();
@@ -586,7 +582,6 @@
                         ctx.stroke();
                     }
 
-                    // رسم نقاط الربط الصغيرة (Nodes)
                     if ((r + c) % 2 === 0) {
                         ctx.fillStyle = `rgba(255, 0, 127, ${alpha * 1.5})`;
                         ctx.fillRect(node.x - 1, node.y - 1, 2, 2);
@@ -640,36 +635,11 @@
         scannerArea.addEventListener('mousemove', handleUserInteraction);
         scannerArea.addEventListener('touchmove', handleUserInteraction);
         
-        /* --- حركة الموجة الحية المتفاعلة مع الموسيقى --- */
-        let pos = 50;
-        let wavePhase = 0;
-
+        let pos = 0, dir = 0.5;
         function autoAnimate() {
             if (isMoving) {
-                const now = Date.now() * 0.0015;
-                
-                // حساب طاقة الموسيقى اللحظية من الترددات
-                let audioEnergy = 0;
-                let bassEnergy = 0;
-                
-                if (isPlaying && analyser && dataArray) {
-                    analyser.getByteFrequencyData(dataArray);
-                    bassEnergy = (dataArray[1] || 0) / 255.0; // طاقة الباس
-                    audioEnergy = (dataArray[4] || 0) / 255.0; // طاقة الترددات المتوسطة
-                }
-
-                // السرعة والاتساع يتغيران ديناميكياً مع الموسيقى
-                const baseSpeed = isPlaying ? 1.8 + (audioEnergy * 2.5) : 1.0;
-                wavePhase += 0.02 * baseSpeed;
-
-                // معادلة موجية ناعمة (Sinusoidal Wave) تندمج مع نبضات الباس
-                const baseWave = Math.sin(wavePhase);
-                const secondaryHarmonic = Math.sin(wavePhase * 2.3) * 0.3;
-                
-                // تحويل الموجة إلى نسبة مئوية بمدى سلس (بين 5% و 95%)
-                const waveAmp = isPlaying ? 40 + (bassEnergy * 8) : 42; 
-                pos = 50 + (baseWave + secondaryHarmonic) * waveAmp;
-
+                pos += dir;
+                if (pos >= 100 || pos <= 0) dir *= -1;
                 scannerArea.style.setProperty('--clip-pos', pos + '%');
                 requestAnimationFrame(autoAnimate);
             }

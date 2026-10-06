@@ -251,6 +251,7 @@
             font-weight: 700;
         }
 
+        /* تم تعديل الحاوية لتكون صورة واحدة متكاملة بدون أي تقسيمات */
         .image-box { 
             position: relative; 
             width: 100%; 
@@ -259,56 +260,14 @@
             margin: 0 auto 40px auto; 
             border-radius: 0px; 
             overflow: hidden; 
-            cursor: ew-resize; 
-            direction: ltr; 
+            background: #000;
         }
         
-        .image-layer { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            pointer-events: none; 
-        }
-
-        .img-normal { 
-            z-index: 2; 
-            clip-path: inset(0 0 0 var(--clip-pos, 50%)); 
-        }
-        .img-normal img { 
+        .image-box img { 
             width: 100%; 
             height: 100%; 
             object-fit: contain; 
-            background: #000; 
-        }
-
-        .img-ascii { 
-            z-index: 1; 
-            clip-path: inset(0 calc(100% - var(--clip-pos, 50%)) 0 0); 
-            background: #000; 
-            color: var(--accent-color); 
-            font-family: 'Departure Mono', monospace; 
-            font-size: 10px; 
-            line-height: 12px; 
-            white-space: pre; 
-            padding: 10px; 
-            overflow: hidden; 
-            direction: ltr;
-            text-align: left;
-        }
-
-        .scanner-line { 
-            position: absolute; 
-            top: 0; 
-            left: var(--clip-pos, 50%); 
-            width: 2px; 
-            height: 100%; 
-            background: var(--accent-color); 
-            box-shadow: 0 0 15px var(--accent-color); 
-            z-index: 10; 
-            transform: translateX(-50%); 
-            pointer-events: none; 
+            display: block;
         }
 
         .back-btn {
@@ -344,12 +303,9 @@
 
     <div id="content-wrapper">
         <div id="home" class="section active">
-            <div class="image-box" id="scannerArea">
-                <div class="scanner-line"></div>
-                <div class="image-layer img-normal">
-                    <img src="https://i.ibb.co/j9wpyDDT/Picsart-26-10-06-00-49-12-576.png" alt="Qeopil">
-                </div>
-                <div class="image-layer img-ascii" id="asciiContent"></div>
+            <!-- صندوق الصورة الواحدة المتكاملة -->
+            <div class="image-box">
+                <img src="https://i.ibb.co/j9wpyDDT/Picsart-26-10-06-00-49-12-576.png" alt="Qeopil">
             </div>
             
             <h1 class="intro-title">
@@ -424,7 +380,6 @@
         const progressContainer = document.getElementById('progressContainer');
 
         let isPlaying = false;
-
         let audioCtx, analyser, dataArray;
         let isAudioInit = false;
 
@@ -479,7 +434,7 @@
             }
         }
 
-        /* --- Canvas Grid: شبكة واحدة متصلة بالكامل بدون أي انعكاسات أو فواصل --- */
+        /* --- خلفية الشبكة المتصلة --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -504,12 +459,9 @@
             pixels = [];
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
-                    const baseX = c * (pixelSize + gap);
-                    const baseY = r * (pixelSize + gap);
-
                     pixels.push({
-                        baseX: baseX,
-                        baseY: baseY,
+                        baseX: c * (pixelSize + gap),
+                        baseY: r * (pixelSize + gap),
                         colIndex: c,
                         rowIndex: r,
                         color: palette[Math.floor(Math.random() * palette.length)],
@@ -541,7 +493,6 @@
                 let pAlpha = 0.05;
 
                 if (isPlaying) {
-                    // موجة حركة متسقة تتحرك باتجاه واحد طبيعي بالكامل بدون انعكاس مرآوي
                     const unifiedWave = Math.sin(time * 3 + p.colIndex * 0.12 + p.rowIndex * 0.12) * (8 + bassBoost * 18);
                     renderY += unifiedWave;
 
@@ -574,58 +525,6 @@
         }
 
         animateFullGrid();
-
-        const asciiContent = document.getElementById('asciiContent');
-        function generateImgAscii() {
-            const chars = "01#/*-+$%&";
-            let text = "";
-            for(let i=0; i<25; i++) {
-                for(let j=0; j<60; j++) text += chars.charAt(Math.floor(Math.random() * chars.length));
-                text += "\n";
-            }
-            asciiContent.textContent = text;
-        }
-        setInterval(generateImgAscii, 150);
-
-        const scannerArea = document.getElementById('scannerArea');
-        let isMoving = true; 
-        let resumeTimeout = null;
-
-        function updatePosition(clientX) {
-            const rect = scannerArea.getBoundingClientRect();
-            const x = clientX - rect.left;
-            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
-            pos = percent;
-            scannerArea.style.setProperty('--clip-pos', percent + '%');
-        }
-
-        function handleUserInteraction(e) {
-            isMoving = false;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            updatePosition(clientX);
-
-            clearTimeout(resumeTimeout);
-            resumeTimeout = setTimeout(() => {
-                if (!isMoving) {
-                    isMoving = true;
-                    autoAnimate();
-                }
-            }, 3000);
-        }
-
-        scannerArea.addEventListener('mousemove', handleUserInteraction);
-        scannerArea.addEventListener('touchmove', handleUserInteraction);
-        
-        let pos = 0, dir = 0.5;
-        function autoAnimate() {
-            if (isMoving) {
-                pos += dir;
-                if (pos >= 100 || pos <= 0) dir *= -1;
-                scannerArea.style.setProperty('--clip-pos', pos + '%');
-                requestAnimationFrame(autoAnimate);
-            }
-        }
-        autoAnimate();
 
         const initRipple = (el) => {
             const originalText = el.innerText;

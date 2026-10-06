@@ -426,7 +426,7 @@
 
         let isPlaying = false;
 
-        /* --- Audio API --- */
+        /* --- إعدادات Audio API للتحليل الطيفي لموجات الصوت --- */
         let audioCtx, analyser, dataArray;
         let isAudioInit = false;
 
@@ -435,7 +435,7 @@
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             audioCtx = new AudioContext();
             analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 64;
+            analyser.fftSize = 64; 
             
             const source = audioCtx.createMediaElementSource(audioEl);
             source.connect(analyser);
@@ -481,30 +481,49 @@
             }
         }
 
-        /* --- محاكاة نسيج الزمكان (Spacetime Grid Warp) --- */
+        /* --- Canvas Pixel Grid with Spacetime Warp & Audio Wave Effect --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
-
-        const gridSpacing = 28; // مسافة عقد النسيج
+        const pixelSize = 12;
+        const gap = 4;
         let cols = 0, rows = 0;
-        let gridNodes = [];
+        let pixels = [];
+
+        const palette = [
+            'rgb(255, 0, 127)',   
+            'rgb(255, 128, 191)', 
+            'rgb(186, 85, 211)',  
+            'rgb(0, 240, 255)',   
+            'rgb(255, 0, 212)'    
+        ];
 
         function resizeFullGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            cols = Math.ceil(canvas.width / gridSpacing) + 2;
-            rows = Math.ceil(canvas.height / gridSpacing) + 2;
+            cols = Math.ceil(canvas.width / (pixelSize + gap)) + 2;
+            rows = Math.ceil(canvas.height / (pixelSize + gap)) + 2;
 
-            gridNodes = [];
+            pixels = [];
+            const centerX = cols / 2;
+            const centerY = rows / 2;
+
             for (let r = 0; r < rows; r++) {
-                gridNodes[r] = [];
                 for (let c = 0; c < cols; c++) {
-                    gridNodes[r][c] = {
-                        baseX: c * gridSpacing,
-                        baseY: r * gridSpacing,
-                        x: c * gridSpacing,
-                        y: r * gridSpacing
-                    };
+                    const baseX = c * (pixelSize + gap);
+                    const baseY = r * (pixelSize + gap);
+                    const distFromCenter = Math.sqrt(Math.pow(c - centerX, 2) + Math.pow(r - centerY, 2));
+
+                    pixels.push({
+                        baseX: baseX,
+                        baseY: baseY,
+                        colIndex: c,
+                        rowIndex: r,
+                        distFromCenter: Math.floor(distFromCenter),
+                        color: palette[Math.floor(Math.random() * palette.length)],
+                        baseAlpha: Math.random() * 0.08 + 0.02,
+                        currentAlpha: 0.05,
+                        targetAlpha: 0.05
+                    });
                 }
             }
         }
@@ -512,87 +531,69 @@
         window.addEventListener('resize', resizeFullGrid);
         resizeFullGrid();
 
-        function animateSpacetimeGrid() {
+        function animateFullGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const time = Date.now() * 0.0015;
 
-            // حساب شدة الجاذبية الترددية للموسيقى
-            let bassPulse = 0;
-            let midPulse = 0;
+            // استخراج الترددات الصوتية
+            let audioBoostGlobal = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
-                bassPulse = (dataArray[1] || 0) / 255.0; // ترددات الباس الانحنائية
-                midPulse = (dataArray[8] || 0) / 255.0;  // الترددات المتوسطة
+                // حساسية إضافية للجهير (Bass)
+                audioBoostGlobal = (dataArray[1] || 0) / 255;
             }
 
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
+            const canvasCenterX = canvas.width / 2;
+            const canvasCenterY = canvas.height / 2;
 
-            // 1. تحديث إحداثيات عقد النسيج الزمكاني بموجات جيبية متداخلة
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    const node = gridNodes[r][c];
+            pixels.forEach(p => {
+                // 1. حساب الإضاءة والشفافية التفاعلية للألوان من كودك الأصلي
+                const waveAlpha = Math.sin(time + p.baseX * 0.02 + p.baseY * 0.02);
+                p.baseAlpha = 0.03 + Math.max(0, waveAlpha * 0.07);
 
-                    const distToCenter = Math.hypot(node.baseX - centerX, node.baseY - centerY);
-                    const angle = Math.atan2(node.baseY - centerY, node.baseX - centerX);
-
-                    // موجة هادئة في الحالة العادية
-                    let waveOffset = Math.sin(time * 2.5 - distToCenter * 0.012) * 7;
-
-                    // تشويه ونبض الزمكان عند تشغيل الموسيقى بحجم حقيقي للـ Bass
-                    let audioDisplacement = 0;
-                    if (isPlaying) {
-                        const pulseSpeed = time * (4.0 + bassPulse * 3.0);
-                        const wavePattern = Math.sin(pulseSpeed - distToCenter * 0.018) + Math.cos(time * 3.0 + (node.baseX + node.baseY) * 0.01);
-                        audioDisplacement = (bassPulse * 55 + midPulse * 20) * Math.exp(-distToCenter * 0.0018) * wavePattern;
-                    }
-
-                    const totalOffset = waveOffset + audioDisplacement;
-                    node.x = node.baseX + Math.cos(angle) * totalOffset;
-                    node.y = node.baseY + Math.sin(angle) * totalOffset;
+                let audioBoost = 0;
+                if (isPlaying && dataArray && dataArray.length > 0) {
+                    const freqIndex = (p.distFromCenter + p.colIndex) % dataArray.length;
+                    const freqValue = dataArray[freqIndex] / 255;
+                    audioBoost = Math.pow(freqValue, 2) * 0.45;
                 }
-            }
 
-            // 2. رسم خيوط النسيج بنفس ألوانك وشكلك الأصلي تماماً
-            ctx.lineWidth = 0.8;
+                p.targetAlpha = p.baseAlpha + audioBoost;
+                p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
 
-            for (let r = 0; r < rows; r++) {
-                for (let c = 0; c < cols; c++) {
-                    const node = gridNodes[r][c];
+                // 2. محاكاة حركة تموج الزمكان (Spacetime Grid Distortion)
+                // نوجد زاوية المربع بالنسبة لمركز الشاشة
+                const dx = p.baseX - canvasCenterX;
+                const dy = p.baseY - canvasCenterY;
+                const distToCenter = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx);
 
-                    const dist = Math.hypot(node.x - centerX, node.y - centerY);
-                    const alpha = Math.min(0.28, Math.max(0.03, 0.04 + (bassPulse * 0.25) * (1 - dist / (canvas.width * 0.8))));
+                // حركة موجية مستمرة للشبكة + تضخم موجي حلزوني مع إيقاع الموسيقى
+                const waveMotion = Math.sin(time * 2 - distToCenter * 0.01) * 4;
+                const audioWarp = isPlaying ? Math.sin(time * 4 - distToCenter * 0.02) * (audioBoostGlobal * 24) : 0;
+                const totalDisplacement = waveMotion + audioWarp;
 
-                    const hue = (280 + (dist * 0.1) + (bassPulse * 60)) % 360;
-                    ctx.strokeStyle = `hsla(${hue}, 100%, 65%, ${alpha})`;
+                // إحداثيات المربع المعدلة مكانياً (إزاحة في أبعاد الزمكان)
+                const renderX = p.baseX + Math.cos(angle) * totalDisplacement;
+                const renderY = p.baseY + Math.sin(angle) * totalDisplacement;
 
-                    if (c < cols - 1) {
-                        const rightNode = gridNodes[r][c + 1];
-                        ctx.beginPath();
-                        ctx.moveTo(node.x, node.y);
-                        ctx.lineTo(rightNode.x, rightNode.y);
-                        ctx.stroke();
-                    }
+                // 3. المقياس ورسم المربع الملون بالتفاصيل الأصلية
+                const scale = 1 + (audioBoost * 0.4);
+                const currentSize = pixelSize * scale;
+                const offset = (currentSize - pixelSize) / 2;
 
-                    if (r < rows - 1) {
-                        const bottomNode = gridNodes[r + 1][c];
-                        ctx.beginPath();
-                        ctx.moveTo(node.x, node.y);
-                        ctx.lineTo(bottomNode.x, bottomNode.y);
-                        ctx.stroke();
-                    }
+                ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
+                ctx.fillRect(renderX - offset, renderY - offset, currentSize, currentSize);
 
-                    if ((r + c) % 2 === 0) {
-                        ctx.fillStyle = `rgba(255, 0, 127, ${alpha * 1.5})`;
-                        ctx.fillRect(node.x - 1, node.y - 1, 2, 2);
-                    }
-                }
-            }
+                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.6})`);
+                ctx.lineWidth = 0.5 + (audioBoost * 0.8);
+                ctx.strokeRect(renderX - offset, renderY - offset, currentSize, currentSize);
+            });
 
-            requestAnimationFrame(animateSpacetimeGrid);
+            requestAnimationFrame(animateFullGrid);
         }
 
-        animateSpacetimeGrid();
+        animateFullGrid();
 
         const asciiContent = document.getElementById('asciiContent');
         function generateImgAscii() {

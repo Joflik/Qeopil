@@ -431,12 +431,11 @@
                 audioEl.pause();
                 isPlaying = false;
                 musicToggleBtn.classList.remove('is-playing');
-                drawGrid(); // تثبيت الخلفية فور إيقاف الأغنية
             } else {
                 audioEl.play().then(() => {
                     isPlaying = true;
                     musicToggleBtn.classList.add('is-playing');
-                    requestAnimationFrame(animateGrid); // بدء التموج الحركي فقط عند تشغيل الأغنية
+                    requestAnimationFrame(animateGrid); // تفعيل التدفق الحركي المزدوج عند التشغيل
                 }).catch(err => {
                     console.error("Playback error:", err);
                 });
@@ -459,7 +458,7 @@
             }
         }
 
-        /* --- الخلفية البكسلية الأصلية تماماً وثابتة بالوضع العادي --- */
+        /* --- الخلفية البكسلية الأصلية تماماً (جزئين / طبقتين للتدفق) --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -488,7 +487,10 @@
                         x: c * (pixelSize + gap),
                         y: r * (pixelSize + gap),
                         color: palette[Math.floor(Math.random() * palette.length)],
-                        alpha: Math.random() * 0.08 + 0.02
+                        alpha: Math.random() * 0.08 + 0.02,
+                        // إضافة الخصائص الخاصة بالتدفق المزدوج للجزئين
+                        speed: Math.random() * 0.02 + 0.01,
+                        offset: Math.random() * Math.PI * 2
                     });
                 }
             }
@@ -509,16 +511,21 @@
 
         function animateGrid() {
             if (!isPlaying) {
-                drawGrid();
+                drawGrid(); // إبقاء الخلفية ثابتة عندما تكون الموسيقى متوقفة
                 return;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const now = Date.now() * 0.002;
+            const now = Date.now() * 0.0015;
 
+            // التدفق المكون من جزئين/طبقتين كما طلبته
             pixels.forEach(p => {
-                const wave = Math.sin(now + p.x * 0.02 + p.y * 0.02);
-                const currentAlpha = 0.03 + Math.max(0, wave * 0.07);
+                // الجزء الأول: تدفق موجي أفقي/رأسي
+                const wave1 = Math.sin(now * p.speed * 5 + p.x * 0.02 + p.offset);
+                // الجزء الثاني: تأثير نبض متداخل للون والشفافية
+                const wave2 = Math.cos(now * p.speed * 3 + p.y * 0.02);
+                
+                const currentAlpha = 0.03 + Math.max(0, (wave1 + wave2) * 0.05);
 
                 ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${currentAlpha})`);
                 ctx.fillRect(p.x, p.y, pixelSize, pixelSize);

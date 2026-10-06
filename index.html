@@ -42,13 +42,40 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        #bg-grid-canvas {
+        /* --- خلفية الأورورا المتدفقة (نفس خلفية الشريط الموسيقي التي طلبتها) --- */
+        .page-aurora-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             z-index: 0;
+            pointer-events: none;
+            background: 
+                linear-gradient(125deg, rgba(255, 0, 127, 0.08), rgba(138, 43, 226, 0.08), rgba(0, 240, 255, 0.08), rgba(255, 0, 85, 0.08)),
+                rgba(0, 0, 0, 0.95);
+            background-size: 300% 300%, 100% 100%;
+            /* تكون الحركة متوقفة أو هادئة جداً، وتنشط بوضوح عند تشغيل الأغنية */
+            animation: none;
+        }
+
+        body.playing-music .page-aurora-bg {
+            animation: auroraGlow 10s ease infinite;
+        }
+
+        @keyframes auroraGlow {
+            0% { background-position: 0% 50%, 0% 0%; }
+            50% { background-position: 100% 50%, 0% 0%; }
+            100% { background-position: 0% 50%, 0% 0%; }
+        }
+
+        #bg-grid-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
             pointer-events: none;
         }
 
@@ -88,7 +115,7 @@
             transition: all 0.3s ease;
         }
 
-        /* --- شريط الموسيقى السفلي الشفاف --- */
+        /* --- شريط الموسيقى السفلي --- */
         .bottom-player {
             position: fixed;
             bottom: 20px;
@@ -121,12 +148,6 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             transition: all 0.3s ease;
-        }
-
-        @keyframes auroraGlow {
-            0% { background-position: 0% 50%, 0% 0%; }
-            50% { background-position: 100% 50%, 0% 0%; }
-            100% { background-position: 0% 50%, 0% 0%; }
         }
 
         .player-info-col {
@@ -331,6 +352,8 @@
 
     <audio id="bg-audio" loop preload="auto" src="song.m4a" crossorigin="anonymous"></audio>
 
+    <!-- خلفية الأورورا المتدفقة المأخوذة من تصميم الشريط -->
+    <div class="page-aurora-bg"></div>
     <canvas id="bg-grid-canvas"></canvas>
 
     <header>
@@ -423,6 +446,7 @@
         const musicToggleBtn = document.getElementById('musicToggleBtn');
         const progressBar = document.getElementById('progressBar');
         const progressContainer = document.getElementById('progressContainer');
+        const bodyTag = document.getElementById('body-tag');
 
         let isPlaying = false;
 
@@ -431,11 +455,14 @@
                 audioEl.pause();
                 isPlaying = false;
                 musicToggleBtn.classList.remove('is-playing');
+                bodyTag.classList.remove('playing-music'); // إيقاف تدفق الخلفية
+                drawGrid(); // تثبيت شبكة البكسلات
             } else {
                 audioEl.play().then(() => {
                     isPlaying = true;
                     musicToggleBtn.classList.add('is-playing');
-                    requestAnimationFrame(animateGrid); // تفعيل التدفق الحركي المزدوج عند التشغيل
+                    bodyTag.classList.add('playing-music'); // تفعيل تدفق خلفية الأورورا
+                    requestAnimationFrame(animateGrid); // تفعيل تموج شبكة البكسلات بشكل موحد
                 }).catch(err => {
                     console.error("Playback error:", err);
                 });
@@ -458,7 +485,7 @@
             }
         }
 
-        /* --- الخلفية البكسلية الأصلية تماماً (جزئين / طبقتين للتدفق) --- */
+        /* --- شبكة البكسلات الأصلية تماماً --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -487,10 +514,7 @@
                         x: c * (pixelSize + gap),
                         y: r * (pixelSize + gap),
                         color: palette[Math.floor(Math.random() * palette.length)],
-                        alpha: Math.random() * 0.08 + 0.02,
-                        // إضافة الخصائص الخاصة بالتدفق المزدوج للجزئين
-                        speed: Math.random() * 0.02 + 0.01,
-                        offset: Math.random() * Math.PI * 2
+                        alpha: Math.random() * 0.08 + 0.02
                     });
                 }
             }
@@ -511,21 +535,17 @@
 
         function animateGrid() {
             if (!isPlaying) {
-                drawGrid(); // إبقاء الخلفية ثابتة عندما تكون الموسيقى متوقفة
+                drawGrid();
                 return;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const now = Date.now() * 0.0015;
+            const now = Date.now() * 0.002;
 
-            // التدفق المكون من جزئين/طبقتين كما طلبته
             pixels.forEach(p => {
-                // الجزء الأول: تدفق موجي أفقي/رأسي
-                const wave1 = Math.sin(now * p.speed * 5 + p.x * 0.02 + p.offset);
-                // الجزء الثاني: تأثير نبض متداخل للون والشفافية
-                const wave2 = Math.cos(now * p.speed * 3 + p.y * 0.02);
-                
-                const currentAlpha = 0.03 + Math.max(0, (wave1 + wave2) * 0.05);
+                // تأثير تموج متناسق وموحد (شكل واحد غير مقسوم)
+                const wave = Math.sin(now + p.x * 0.02 + p.y * 0.02);
+                const currentAlpha = 0.03 + Math.max(0, wave * 0.07);
 
                 ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${currentAlpha})`);
                 ctx.fillRect(p.x, p.y, pixelSize, pixelSize);

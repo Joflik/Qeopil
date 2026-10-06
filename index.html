@@ -457,7 +457,7 @@
             }
         }
 
-        /* --- الخلفية البكسلية الأصلية تماماً (ثابتة وصامتة بدون أي تأثيرات صوتية عشوائية) --- */
+        /* --- الخلفية البكسلية الأصلية تماماً وثابتة تماماً --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -473,7 +473,7 @@
             'rgb(255, 0, 212)'    
         ];
 
-        function resizeFullGrid() {
+        function initGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             cols = Math.ceil(canvas.width / (pixelSize + gap));
@@ -490,31 +490,23 @@
                     });
                 }
             }
+            drawGrid();
         }
 
-        window.addEventListener('resize', resizeFullGrid);
-        resizeFullGrid();
-
-        function animateFullGrid() {
+        function drawGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const now = Date.now() * 0.0015;
-
             pixels.forEach(p => {
-                const wave = Math.sin(now + p.x * 0.02 + p.y * 0.02);
-                const currentAlpha = 0.03 + Math.max(0, wave * 0.07);
-
-                ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${currentAlpha})`);
+                ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.alpha})`);
                 ctx.fillRect(p.x, p.y, pixelSize, pixelSize);
 
-                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${currentAlpha * 0.6})`);
+                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.alpha * 0.6})`);
                 ctx.lineWidth = 0.5;
                 ctx.strokeRect(p.x, p.y, pixelSize, pixelSize);
             });
-
-            requestAnimationFrame(animateFullGrid);
         }
 
-        animateFullGrid();
+        window.addEventListener('resize', initGrid);
+        initGrid();
 
         const asciiContent = document.getElementById('asciiContent');
         function generateImgAscii() {

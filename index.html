@@ -251,12 +251,12 @@
             font-weight: 700;
         }
 
-        /* تم تعديل الحاوية لتكون صورة واحدة متكاملة بدون أي تقسيمات */
+        /* هنا تم اقتصاص نصف الصورة لعرض جزء واحد فقط بالكامل */
         .image-box { 
             position: relative; 
             width: 100%; 
             max-width: 400px; 
-            aspect-ratio: 400 / 250; 
+            aspect-ratio: 200 / 250; 
             margin: 0 auto 40px auto; 
             border-radius: 0px; 
             overflow: hidden; 
@@ -264,9 +264,12 @@
         }
         
         .image-box img { 
-            width: 100%; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%; /* تمديد الصورة وعرض النصف الأيمن أو الأيسر فقط */
             height: 100%; 
-            object-fit: contain; 
+            object-fit: cover; 
             display: block;
         }
 
@@ -303,7 +306,6 @@
 
     <div id="content-wrapper">
         <div id="home" class="section active">
-            <!-- صندوق الصورة الواحدة المتكاملة -->
             <div class="image-box">
                 <img src="https://i.ibb.co/j9wpyDDT/Picsart-26-10-06-00-49-12-576.png" alt="Qeopil">
             </div>
@@ -434,7 +436,6 @@
             }
         }
 
-        /* --- خلفية الشبكة المتصلة --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;

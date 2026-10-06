@@ -88,6 +88,7 @@
             transition: all 0.3s ease;
         }
 
+        /* --- شريط الموسيقى الشفاف كلياً مع الشفق الداخلي المحصور --- */
         .bottom-player {
             position: fixed;
             bottom: 20px;
@@ -480,29 +481,29 @@
             }
         }
 
-        /* --- محاكاة نسيج الزمكان الهيكلي (Spacetime Continuum Fabric) --- */
+        /* --- محاكاة نسيج الزمكان (Spacetime Grid Warp) --- */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
 
-        const spacing = 28; 
+        const gridSpacing = 28; // مسافة عقد النسيج
         let cols = 0, rows = 0;
         let gridNodes = [];
 
         function resizeFullGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            cols = Math.ceil(canvas.width / spacing) + 3;
-            rows = Math.ceil(canvas.height / spacing) + 3;
+            cols = Math.ceil(canvas.width / gridSpacing) + 2;
+            rows = Math.ceil(canvas.height / gridSpacing) + 2;
 
             gridNodes = [];
             for (let r = 0; r < rows; r++) {
                 gridNodes[r] = [];
                 for (let c = 0; c < cols; c++) {
                     gridNodes[r][c] = {
-                        x: c * spacing,
-                        y: r * spacing,
-                        baseX: c * spacing,
-                        baseY: r * spacing
+                        baseX: c * gridSpacing,
+                        baseY: r * gridSpacing,
+                        x: c * gridSpacing,
+                        y: r * gridSpacing
                     };
                 }
             }
@@ -513,57 +514,82 @@
 
         function animateSpacetimeGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const time = Date.now() * 0.0015;
+            const time = Date.now() * 0.0012;
 
+            // حساب شدة الجاذبية الترددية للموسيقى
             let bassPulse = 0;
+            let midPulse = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
-                bassPulse = (dataArray[2] || 0) / 255.0;
+                bassPulse = (dataArray[1] || 0) / 255.0; // ترددات الباس الانحنائية
+                midPulse = (dataArray[8] || 0) / 255.0;  // الترددات المتوسطة
             }
 
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            // 1. تحديث إحداثيات عقد النسيج الزمكاني
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
 
-                    const warpX = Math.sin(r * 0.12 + time) * 10 + Math.cos(c * 0.08 + time * 0.7) * 6;
-                    const warpY = Math.cos(c * 0.12 + time) * 10 + Math.sin(r * 0.08 + time * 0.7) * 6;
-                    
-                    const audioDistort = bassPulse * 18 * Math.sin((c * 0.3) + (r * 0.3) + time * 3);
+                    // تموج حركة الزمكان الطبيعية (Gravitational Ripples)
+                    const distToCenter = Math.hypot(node.baseX - centerX, node.baseY - centerY);
+                    const angle = Math.atan2(node.baseY - centerY, node.baseX - centerX);
 
-                    node.x = node.baseX + warpX + audioDistort;
-                    node.y = node.baseY + warpY + audioDistort;
+                    // انحناء الجاذبية المستمر
+                    let waveOffset = Math.sin(time * 2 - distToCenter * 0.015) * 6;
+
+                    // تشويه الزمكان بالموسيقى عند التشغيل (Gravitational Well Displacement)
+                    let audioDisplacement = 0;
+                    if (isPlaying) {
+                        const pulseFactor = Math.sin(time * 5 - distToCenter * 0.02);
+                        audioDisplacement = (bassPulse * 45) * Math.exp(-distToCenter * 0.0025) * pulseFactor;
+                    }
+
+                    const totalOffset = waveOffset + audioDisplacement;
+                    node.x = node.baseX + Math.cos(angle) * totalOffset;
+                    node.y = node.baseY + Math.sin(angle) * totalOffset;
                 }
             }
 
+            // 2. رسم خيوط النسيج الزمكاني (Grid Mesh)
             ctx.lineWidth = 0.8;
 
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const node = gridNodes[r][c];
 
+                    // حساب درجة التوهج والشفافية حسب تشوه الزمكان من المركز
+                    const dist = Math.hypot(node.x - centerX, node.y - centerY);
+                    const alpha = Math.min(0.28, Math.max(0.03, 0.04 + (bassPulse * 0.25) * (1 - dist / (canvas.width * 0.8))));
+
+                    // إعطاء ألوان نيون شفقية متدرجة للخطوط
+                    const hue = (280 + (dist * 0.1) + (bassPulse * 60)) % 360;
+                    ctx.strokeStyle = `hsla(${hue}, 100%, 65%, ${alpha})`;
+
+                    // توصيل الخطوط الأفقية
                     if (c < cols - 1) {
                         const rightNode = gridNodes[r][c + 1];
-                        const alpha = 0.08 + (bassPulse * 0.15);
-                        ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
                         ctx.beginPath();
                         ctx.moveTo(node.x, node.y);
                         ctx.lineTo(rightNode.x, rightNode.y);
                         ctx.stroke();
                     }
 
+                    // توصيل الخطوط الرأسية
                     if (r < rows - 1) {
                         const bottomNode = gridNodes[r + 1][c];
-                        const alpha = 0.08 + (bassPulse * 0.15);
-                        ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
                         ctx.beginPath();
                         ctx.moveTo(node.x, node.y);
                         ctx.lineTo(bottomNode.x, bottomNode.y);
                         ctx.stroke();
                     }
 
+                    // رسم نقاط الربط الصغيرة (Nodes)
                     if ((r + c) % 2 === 0) {
-                        ctx.fillStyle = `rgba(255, 128, 191, ${0.2 + bassPulse * 0.4})`;
-                        ctx.fillRect(Math.round(node.x) - 1, Math.round(node.y) - 1, 2, 2);
+                        ctx.fillStyle = `rgba(255, 0, 127, ${alpha * 1.5})`;
+                        ctx.fillRect(node.x - 1, node.y - 1, 2, 2);
                     }
                 }
             }
@@ -614,11 +640,36 @@
         scannerArea.addEventListener('mousemove', handleUserInteraction);
         scannerArea.addEventListener('touchmove', handleUserInteraction);
         
-        let pos = 0, dir = 0.5;
+        /* --- حركة الموجة الحية المتفاعلة مع الموسيقى --- */
+        let pos = 50;
+        let wavePhase = 0;
+
         function autoAnimate() {
             if (isMoving) {
-                pos += dir;
-                if (pos >= 100 || pos <= 0) dir *= -1;
+                const now = Date.now() * 0.0015;
+                
+                // حساب طاقة الموسيقى اللحظية من الترددات
+                let audioEnergy = 0;
+                let bassEnergy = 0;
+                
+                if (isPlaying && analyser && dataArray) {
+                    analyser.getByteFrequencyData(dataArray);
+                    bassEnergy = (dataArray[1] || 0) / 255.0; // طاقة الباس
+                    audioEnergy = (dataArray[4] || 0) / 255.0; // طاقة الترددات المتوسطة
+                }
+
+                // السرعة والاتساع يتغيران ديناميكياً مع الموسيقى
+                const baseSpeed = isPlaying ? 1.8 + (audioEnergy * 2.5) : 1.0;
+                wavePhase += 0.02 * baseSpeed;
+
+                // معادلة موجية ناعمة (Sinusoidal Wave) تندمج مع نبضات الباس
+                const baseWave = Math.sin(wavePhase);
+                const secondaryHarmonic = Math.sin(wavePhase * 2.3) * 0.3;
+                
+                // تحويل الموجة إلى نسبة مئوية بمدى سلس (بين 5% و 95%)
+                const waveAmp = isPlaying ? 40 + (bassEnergy * 8) : 42; 
+                pos = 50 + (baseWave + secondaryHarmonic) * waveAmp;
+
                 scannerArea.style.setProperty('--clip-pos', pos + '%');
                 requestAnimationFrame(autoAnimate);
             }

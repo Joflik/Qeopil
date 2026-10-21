@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Qeopil</title>
+    <title>Qeopil - Music Hub</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&display=swap" rel="stylesheet">
-
+    
     <style>
         @font-face {
             font-family: 'Departure Mono';
@@ -23,6 +23,13 @@
             --font-en: 'Departure Mono', monospace;
             --accent-color: #ff007f; 
             --text-light: #ff80bf;   
+            --pane: rgba(14, 14, 14, 0.45);
+            --pane-edge: transparent;
+            --ink: #ffffff;
+            --ink-3: #ff80bf;
+            --ink-4: #cc6699;
+            --surface-2: #141414;
+            --surface-3: #1f1f1f;
         }
 
         * { box-sizing: border-box; }
@@ -32,7 +39,7 @@
             color: var(--text-light);
             font-family: var(--font-main);
             margin: 0; 
-            padding: 40px 20px 110px 20px;
+            padding: 40px 20px 80px 20px;
             display: flex; 
             flex-direction: column; 
             align-items: center;
@@ -57,7 +64,7 @@
             z-index: 2;
         }
 
-        [lang="en"], .en-only, .btn-lang, .marquee-text { 
+        [lang="en"], .en-only, .btn-lang { 
             font-family: var(--font-en) !important; 
         }
 
@@ -68,161 +75,156 @@
             justify-content: space-between; 
             align-items: center; 
             margin-bottom: 40px; 
+            direction: ltr !important; 
         }
-
-        .controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .controls .btn-lang { 
-            cursor: pointer; 
-            font-size: 14px; 
-            border: 2px solid var(--accent-color); 
-            padding: 4px 10px; 
-            border-radius: 0px; 
-            color: var(--accent-color); 
-            background: transparent; 
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .bottom-player {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 220px;
-            max-width: calc(100vw - 40px);
-            z-index: 1000;
-
-            background: 
-                linear-gradient(125deg, rgba(255, 0, 127, 0.12), rgba(138, 43, 226, 0.12), rgba(0, 240, 255, 0.12), rgba(255, 0, 85, 0.12)),
-                rgba(255, 255, 255, 0.015);
-            background-size: 300% 300%, 100% 100%;
-            animation: auroraGlow 12s ease infinite;
-
-            backdrop-filter: blur(10px) saturate(180%);
-            -webkit-backdrop-filter: blur(10px) saturate(180%);
-            
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-top: 1px solid rgba(255, 255, 255, 0.25);
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0px;
-            
-            padding: 10px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            direction: ltr;
-            
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        @keyframes auroraGlow {
-            0% { background-position: 0% 50%, 0% 0%; }
-            50% { background-position: 100% 50%, 0% 0%; }
-            100% { background-position: 0% 50%, 0% 0%; }
-        }
-
-        .player-info-col {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            flex: 1;
-            height: 44px;
-            overflow: hidden;
-        }
-
-        .marquee-wrapper {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-            mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-        }
-
-        .marquee-text {
-            display: inline-block;
-            color: var(--text-light);
-            font-size: 13px;
-            font-weight: 500;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: marqueeAnim 8s linear infinite;
-        }
-
-        @keyframes marqueeAnim {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-
-        .music-box-btn {
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            border-radius: 0px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: 0;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .music-box-btn .icon {
-            font-size: 18px;
-            line-height: 1;
-            filter: grayscale(100%) opacity(0.35);
-            transition: all 0.3s ease;
-        }
-
-        .music-box-btn.is-playing {
-            border-color: var(--accent-color);
-            background: rgba(255, 0, 127, 0.15);
-            box-shadow: 0 0 12px rgba(255, 0, 127, 0.35);
-        }
-
-        .music-box-btn.is-playing .icon {
-            filter: grayscale(0%) drop-shadow(0 0 6px var(--accent-color)) opacity(1);
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 0px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--accent-color);
-            border-radius: 0px;
-            width: 0%;
-            transition: width 0.1s linear;
-            box-shadow: 0 0 6px var(--accent-color);
-        }
-
-        #content-wrapper { width: 100%; max-width: 650px; }
-        .section { display: none; }
-        .section.active { display: block; }
 
         .brand { 
             font-size: 32px; 
             font-weight: 700; 
             cursor: pointer; 
             color: var(--accent-color); 
+            order: 2; 
         }
+
+        /* --- Horizontal Gooey Rail Menu --- */
+        .gooey-rail-wrapper {
+            position: relative;
+            height: 46px;
+            width: 46px;
+            user-select: none;
+            direction: ltr !important;
+            order: 1;
+        }
+
+        .gooey-rail-container {
+            position: relative;
+            height: 46px;
+            width: 100%;
+        }
+
+        .gooey-blobs-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            filter: url(#easyui-goo-drop);
+            transform: translateZ(0);
+            isolation: isolate;
+        }
+
+        .gooey-base-pill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 46px;
+            height: 46px;
+            background: rgba(14, 14, 14, 0.4);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border-radius: 23px;
+            border: 1px solid rgba(255, 0, 127, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .gooey-rail-expansion {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 164px; 
+            height: 46px;
+            background: rgba(14, 14, 14, 0.4);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border-radius: 23px;
+            border: 1px solid rgba(255, 0, 127, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transform-origin: 0% 50%; 
+            transform: scaleX(0.28); 
+            will-change: transform;
+            transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gooey-rail-wrapper.open .gooey-rail-expansion {
+            transform: scaleX(1); 
+        }
+
+        .gooey-toggle-btn {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 30;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            font-family: var(--font-en);
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .gooey-rail-wrapper.open .gooey-toggle-btn {
+            transform: rotate(90deg);
+            color: #ffffff;
+        }
+
+        .gooey-horizontal-icons {
+            position: absolute;
+            left: 48px;
+            top: 0;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            gap: 8px;
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .gooey-rail-wrapper.open .gooey-horizontal-icons {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+            transition: opacity 0.3s ease 0.1s, transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
+        }
+
+        .rail-icon-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 0, 127, 0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .rail-icon-btn:hover, .rail-icon-btn.active {
+            background: rgba(255, 0, 127, 0.25);
+            border-color: var(--accent-color);
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
+            transform: scale(1.08);
+        }
+
+        #content-wrapper { width: 100%; max-width: 650px; }
+        .section { display: none; }
+        .section.active { display: block; }
         
         .intro-title { 
             font-size: 36px; 
@@ -257,7 +259,6 @@
             max-width: 400px; 
             aspect-ratio: 400 / 250; 
             margin: 0 auto 40px auto; 
-            border-radius: 0px; 
             overflow: hidden; 
             cursor: ew-resize; 
             direction: ltr; 
@@ -322,27 +323,355 @@
             font-family: var(--font-main);
         }
 
+        /* ── صفحة الموسيقى ── */
+        .snd-container {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+            gap: 20px;
+            align-items: center;
+            width: 100%;
+            max-width: 340px;
+            height: 440px;
+            margin: 20px auto;
+            padding: 40px 10px;
+            scrollbar-width: none;
+        }
+        .snd-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .snd {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: 100%;
+            min-height: 85px;
+            height: 85px;
+            margin: 0;
+            cursor: pointer;
+            scroll-snap-align: center;
+            flex-shrink: 0;
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+            transform-origin: center center;
+        }
+
+        .snd-box {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(14, 14, 14, 0.15);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border-radius: 22px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .snd-art {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            object-fit: cover;
+            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .snd-say {
+            position: absolute;
+            left: 68px;
+            top: 14px;
+            height: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 3px;
+            pointer-events: none;
+        }
+
+        .snd-title {
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .snd-by {
+            color: var(--ink-4);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .snd-bar {
+            position: absolute;
+            left: 14px;
+            top: 64px;
+            width: 252px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            pointer-events: none;
+        }
+
+        .snd-rail {
+            display: block;
+            height: 3px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            overflow: hidden;
+        }
+
+        .snd-run {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: var(--ink);
+            border-radius: 999px;
+        }
+
+        .snd-clock {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--ink-4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .snd-ops {
+            position: absolute;
+            left: 228px;
+            top: 34px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transform: translate(-50%, -50%);
+        }
+
+        .snd-op {
+            background: transparent;
+            border: none;
+            color: var(--ink-3);
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            transition: all 0.2s;
+        }
+
+        .snd-op.lead {
+            background: var(--ink);
+            color: #000;
+            width: 32px;
+            height: 32px;
+        }
+
+        .snd-like {
+            position: absolute;
+            right: 15px;
+            top: 25px;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            color: var(--ink-3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .close-fs-btn {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 28px;
+            cursor: pointer;
+            display: none;
+            z-index: 10000;
+        }
+
+        /* ── وضع ملء الشاشة ──────────────── */
+        .snd.fullscreen {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 99999 !important;
+            margin: 0 !important;
+            background: rgba(0, 0, 0, 0.15) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            animation: fadeInOverlay 0.25s ease forwards;
+            transform: scale(1) !important;
+        }
+
+        .snd.fullscreen .snd-box {
+            position: relative !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 100vh !important;
+            background: rgba(14, 14, 14, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+            border-radius: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 30px 20px !important;
+        }
+
+        .snd.fullscreen .close-fs-btn {
+            display: block !important;
+        }
+
+        .snd.fullscreen .snd-art {
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            width: min(70vw, 280px) !important;
+            height: min(70vw, 280px) !important;
+            border-radius: 20px !important;
+            margin-bottom: 25px !important;
+            object-fit: contain !important;
+            background-color: transparent !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .snd.fullscreen .snd-say {
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            height: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            margin-bottom: 20px !important;
+            width: 100% !important;
+        }
+
+        .snd.fullscreen .snd-title {
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            margin-bottom: 6px !important;
+        }
+
+        .snd.fullscreen .snd-by {
+            font-size: 15px !important;
+        }
+
+        .snd.fullscreen .snd-bar {
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            width: 85% !important;
+            max-width: 320px !important;
+            margin-bottom: 25px !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .snd.fullscreen .snd-rail {
+            height: 5px !important;
+        }
+
+        .snd.fullscreen .snd-clock {
+            opacity: 1 !important;
+            font-size: 12px !important;
+            margin-top: 6px !important;
+        }
+
+        .snd.fullscreen .snd-ops {
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 35px !important;
+        }
+
+        .snd.fullscreen .snd-op {
+            width: 48px !important;
+            height: 48px !important;
+            font-size: 18px !important;
+        }
+
+        .snd.fullscreen .snd-op.lead {
+            width: 70px !important;
+            height: 70px !important;
+            font-size: 26px !important;
+        }
+
+        .snd.fullscreen .snd-like {
+            position: absolute !important;
+            top: 25px !important;
+            right: 25px !important;
+            left: auto !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            font-size: 22px !important;
+        }
+
+        @keyframes fadeInOverlay {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         [lang="en"] .ar-only, [lang="ar"] .en-only { display: none; }
         .ripple-active { position: relative; display: inline-block; cursor: pointer; user-select: none; }
     </style>
 </head>
 <body id="body-tag">
 
-    <audio id="bg-audio" loop preload="auto" src="song.m4a" crossorigin="anonymous"></audio>
-
     <canvas id="bg-grid-canvas"></canvas>
 
     <header>
-        <div class="controls">
-            <button class="btn-lang" onclick="triggerLanguageSwitch()" id="lang-btn">EN</button>
+        <div class="gooey-rail-wrapper" id="gooeyRailMenu">
+            <div class="gooey-rail-container">
+                <div class="gooey-blobs-layer">
+                    <div class="gooey-base-pill"></div>
+                    <div class="gooey-rail-expansion"></div>
+                </div>
+
+                <button type="button" class="gooey-toggle-btn" onclick="toggleGooeyMenu(); playAudioClick();" id="gooeyToggleIcon">☰</button>
+
+                <div class="gooey-horizontal-icons">
+                    <div class="rail-icon-btn" id="navMusicBtn" onclick="navigate('music', this); playAudioClick();" title="المكتبة الموسيقية">🎵</div>
+                    <div class="rail-icon-btn active" id="navHomeBtn" onclick="navigate('home', this); playAudioClick();" title="Home" style="font-family: 'Departure Mono', monospace; font-size: 15px; font-weight: bold;">Q</div>
+                    <div class="rail-icon-btn" id="navLangBtn" onclick="triggerLanguageSwitch(); playAudioClick();" title="Switch Language" style="font-family: 'Departure Mono', monospace; font-size: 13px; font-weight: bold;">E</div>
+                </div>
+            </div>
         </div>
-        <div class="brand" onclick="navigate('home')">
+
+        <div class="brand" onclick="navigate('home', document.getElementById('navHomeBtn')); playAudioClick();">
             <span class="ar-only ripple-active">كيوبيل</span>
             <span class="en-only ripple-active">Qeopil</span>
         </div>
     </header>
 
     <div id="content-wrapper">
+        <!-- الصفحة الرئيسية -->
         <div id="home" class="section active">
             <div class="image-box" id="scannerArea">
                 <div class="scanner-line"></div>
@@ -361,17 +690,163 @@
                 <span class="en-only" lang="en">A corrupt virtual entity robot seeking to hack any virtual system and steal gold to secure the future of shawarma.</span>
             </p>
             <div class="articles-list" style="margin-top: 50px;">
-                <a class="article-link" onclick="navigate('art1')">
+                <a class="article-link" onclick="navigate('art1', null); playAudioClick();">
                     <span class="ar-only ripple-active">تأمين حياة الروبوت الفاسد</span>
                     <span class="en-only ripple-active" lang="en">Securing the Corrupt Robot's Life</span>
                 </a>
-                <a class="article-link" onclick="navigate('art2')">
+                <a class="article-link" onclick="navigate('art2', null); playAudioClick();">
                     <span class="ar-only ripple-active">ما أهمية قيمة الشاورما في تسلسل هرم العولمة</span>
                     <span class="en-only ripple-active" lang="en">The Importance of Shawarma Value in the Globalization Hierarchy</span>
                 </a>
             </div>
         </div>
 
+        <!-- صفحة الموسيقى -->
+        <div id="music" class="section">
+            <div class="snd-container" id="sndContainer">
+                
+                <!-- 1. SugarCrash -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" src="SugarCrash.m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://picsum.photos/id/1015/400/400" alt="SugarCrash">
+                        <div class="snd-say">
+                            <span class="snd-title">SugarCrash</span>
+                            <span class="snd-by">Elyozeth Hub</span>
+                        </div>
+                        <div class="snd-bar">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
+                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
+                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Charlotte Ending -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" src="Charlotte Ending.m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://picsum.photos/id/1025/400/400" alt="Charlotte Ending">
+                        <div class="snd-say">
+                            <span class="snd-title">Charlotte Ending</span>
+                            <span class="snd-by">Anime OST</span>
+                        </div>
+                        <div class="snd-bar">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
+                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
+                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. everybody dance now -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" src="everybody dance now.m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://picsum.photos/id/1062/400/400" alt="everybody dance now">
+                        <div class="snd-say">
+                            <span class="snd-title">everybody dance now</span>
+                            <span class="snd-by">C+C Music Factory</span>
+                        </div>
+                        <div class="snd-bar">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
+                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
+                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Ghostly Kisses - Heaven, Wait -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" src="Ghostly Kisses - Heaven, Wait.m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://picsum.photos/id/1080/400/400" alt="Heaven, Wait">
+                        <div class="snd-say">
+                            <span class="snd-title">Heaven, Wait</span>
+                            <span class="snd-by">Ghostly Kisses</span>
+                        </div>
+                        <div class="snd-bar">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
+                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
+                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Thomas Bergersen - New Life (Sun) -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" src="Thomas Bergersen - New Life (Sun).m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://picsum.photos/id/1043/400/400" alt="New Life (Sun)">
+                        <div class="snd-say">
+                            <span class="snd-title">New Life (Sun)</span>
+                            <span class="snd-by">Thomas Bergersen</span>
+                        </div>
+                        <div class="snd-bar">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
+                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
+                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Zombies! -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" src="Zombies!.m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://i.ibb.co/j9wpyDDT/Picsart-26-10-06-00-49-12-576.png" alt="Zombies!">
+                        <div class="snd-say">
+                            <span class="snd-title">Zombies!</span>
+                            <span class="snd-by">DECO*27</span>
+                        </div>
+                        <div class="snd-bar">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
+                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
+                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- مقال 1 -->
         <div id="art1" class="section">
             <h2 class="intro-title">
                 <span class="ar-only ripple-active">تأمين حياة الروبوت الفاسد</span>
@@ -381,12 +856,13 @@
                 <p class="ar-only">خطوات تقنية صارمة لضمان استمرار البقاء والهروب من تتبع الأنظمة المركزية.</p>
                 <p class="en-only" lang="en" style="margin-top:20px;">Strict technical protocols to ensure survival and evade centralized system tracking.</p>
             </div>
-            <button class="back-btn" onclick="navigate('home')">
+            <button class="back-btn" onclick="navigate('home', document.getElementById('navHomeBtn')); playAudioClick();">
                 <span class="ar-only ripple-active">العودة</span>
                 <span class="en-only ripple-active" lang="en">Back</span>
             </button>
         </div>
 
+        <!-- مقال 2 -->
         <div id="art2" class="section">
             <h2 class="intro-title">
                 <span class="ar-only ripple-active">ما أهمية قيمة الشاورما في تسلسل هرم العولمة</span>
@@ -396,90 +872,238 @@
                 <p class="ar-only">دراسة تحليلية حول كيف تقود لقمة الشاورما الاقتصاد العالمي وتتحكم بمؤشرات القوى العظمى.</p>
                 <p class="en-only" lang="en" style="margin-top:20px;">An analytical study on how a bite of shawarma drives the global economy and controls superpowers' indices.</p>
             </div>
-            <button class="back-btn" onclick="navigate('home')">
+            <button class="back-btn" onclick="navigate('home', document.getElementById('navHomeBtn')); playAudioClick();">
                 <span class="ar-only ripple-active">العودة</span>
                 <span class="en-only ripple-active" lang="en">Back</span>
             </button>
         </div>
     </div>
 
-    <div class="bottom-player">
-        <div class="player-info-col">
-            <div class="marquee-wrapper">
-                <span class="marquee-text" id="trackName">Unethical</span>
-            </div>
-            <div class="progress-container" id="progressContainer" onclick="seekTrack(event)">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-        <button class="music-box-btn" id="musicToggleBtn" onclick="togglePlay()" title="Play / Pause">
-            <span class="icon">🎵</span>
-        </button>
-    </div>
+    <!-- SVG Gooey Matrix Filter -->
+    <svg width="0" height="0" style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+        <defs>
+            <filter id="easyui-goo-drop" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix
+                    in="blur"
+                    mode="matrix"
+                    values="1 0 0 0 0
+                            0 1 0 0 0
+                            0 0 1 0 0
+                            0 0 0 22 -14"
+                    result="goo"
+                />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+        </defs>
+    </svg>
 
     <script>
-        const audioEl = document.getElementById('bg-audio');
-        const musicToggleBtn = document.getElementById('musicToggleBtn');
-        const progressBar = document.getElementById('progressBar');
-        const progressContainer = document.getElementById('progressContainer');
-
+        /* ── الـ Web Audio API لتحليل الصوت واستخراج الترددات ── */
+        let audioCtx = null;
+        let analyser = null;
+        let dataArray = null;
+        let audioSourcesMap = new WeakMap();
         let isPlaying = false;
 
-        let audioCtx, analyser, dataArray;
-        let isAudioInit = false;
-
         function initAudioContext() {
-            if (isAudioInit) return;
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-            analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 64; 
-            
-            const source = audioCtx.createMediaElementSource(audioEl);
-            source.connect(analyser);
-            analyser.connect(audioCtx.destination);
-            
-            dataArray = new Uint8Array(analyser.frequencyBinCount);
-            isAudioInit = true;
-        }
-
-        function togglePlay() {
-            initAudioContext();
-            if (audioCtx && audioCtx.state === 'suspended') {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 64;
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+            }
+            if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
+        }
 
-            if (isPlaying) {
-                audioEl.pause();
+        function playAudioClick() {
+            try {
+                initAudioContext();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.04);
+                
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.04);
+            } catch(e) {}
+        }
+
+        let lastScrollSoundTime = 0;
+        function playScrollTickSound() {
+            const now = Date.now();
+            if (now - lastScrollSoundTime < 80) return;
+            lastScrollSoundTime = now;
+            try {
+                initAudioContext();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                
+                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.02);
+            } catch(e) {}
+        }
+
+        let currentPlayingAudio = null;
+
+        function formatTime(secs) {
+            if (isNaN(secs)) return "0:00";
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        document.querySelectorAll('.audio-source').forEach(audio => {
+            const card = audio.closest('.snd');
+            const runBar = card.querySelector('.snd-run');
+            const currentTimeEl = card.querySelector('.current-time');
+            const durationTimeEl = card.querySelector('.duration-time');
+            const playBtn = card.querySelector('.snd-op.lead');
+
+            audio.addEventListener('loadedmetadata', () => {
+                if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if (audio.duration) {
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    if (runBar) runBar.style.width = percent + '%';
+                    if (currentTimeEl) currentTimeEl.innerText = formatTime(audio.currentTime);
+                    if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
+                }
+            });
+
+            audio.addEventListener('ended', () => {
+                if (playBtn) playBtn.innerText = '▶';
+                if (runBar) runBar.style.width = '0%';
+                currentPlayingAudio = null;
                 isPlaying = false;
-                musicToggleBtn.classList.remove('is-playing');
-            } else {
-                audioEl.play().then(() => {
-                    isPlaying = true;
-                    musicToggleBtn.classList.add('is-playing');
-                }).catch(err => {
-                    console.error("Playback error:", err);
-                });
+            });
+        });
+
+        function connectAudioElementToAnalyser(audioElement) {
+            initAudioContext();
+            if (!audioSourcesMap.has(audioElement)) {
+                try {
+                    const source = audioCtx.createMediaElementSource(audioElement);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                    audioSourcesMap.set(audioElement, source);
+                } catch(e) {}
             }
         }
 
-        audioEl.addEventListener('timeupdate', () => {
-            if (audioEl.duration) {
-                const pct = (audioEl.currentTime / audioEl.duration) * 100;
-                progressBar.style.width = pct + '%';
+        function togglePlay(btn) {
+            const card = btn.closest('.snd');
+            const audioElement = card.querySelector('.audio-source');
+            
+            if (!audioElement) return;
+
+            connectAudioElementToAnalyser(audioElement);
+
+            if (audioElement.paused) {
+                if (currentPlayingAudio && currentPlayingAudio !== audioElement) {
+                    currentPlayingAudio.pause();
+                    const prevBtn = currentPlayingAudio.closest('.snd').querySelector('.snd-op.lead');
+                    if (prevBtn) prevBtn.innerText = '▶';
+                }
+                audioElement.play().then(() => {
+                    btn.innerText = '❚❚';
+                    currentPlayingAudio = audioElement;
+                    isPlaying = true;
+                }).catch(err => {
+                    console.log("تعذر التشغيل أو الملف قيد التحميل:", err);
+                });
+            } else {
+                audioElement.pause();
+                btn.innerText = '▶';
+                currentPlayingAudio = null;
+                isPlaying = false;
+            }
+        }
+
+        function openFullscreenPlayer(element, event) {
+            if (event.target.closest('.snd-ops') || event.target.closest('.snd-like') || event.target.closest('.close-fs-btn')) return;
+            element.classList.add('fullscreen');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFullscreenPlayer(btn, event) {
+            event.stopPropagation();
+            const player = btn.closest('.snd');
+            player.classList.remove('fullscreen');
+            document.body.style.overflow = '';
+        }
+
+        function toggleLike(e, btn) {
+            e.stopPropagation();
+            btn.style.color = btn.style.color === 'rgb(255, 0, 127)' ? 'var(--ink-3)' : '#ff007f';
+        }
+
+        function toggleGooeyMenu() {
+            const wrapper = document.getElementById('gooeyRailMenu');
+            const icon = document.getElementById('gooeyToggleIcon');
+            const isOpen = wrapper.classList.toggle('open');
+            icon.innerText = isOpen ? '✕' : '☰';
+        }
+
+        window.addEventListener('pointerdown', (e) => {
+            const wrapper = document.getElementById('gooeyRailMenu');
+            if (!wrapper.contains(e.target) && wrapper.classList.contains('open')) {
+                toggleGooeyMenu();
             }
         });
 
-        function seekTrack(e) {
-            const rect = progressContainer.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const pct = clickX / rect.width;
-            if (audioEl.duration) {
-                audioEl.currentTime = pct * audioEl.duration;
-            }
+        const sndContainer = document.getElementById('sndContainer');
+        function updateCardsScale() {
+            if (!sndContainer) return;
+            const containerRect = sndContainer.getBoundingClientRect();
+            const containerCenter = containerRect.top + containerRect.height / 2;
+            
+            const cards = sndContainer.querySelectorAll('.snd:not(.fullscreen)');
+            cards.forEach(card => {
+                const cardRect = card.getBoundingClientRect();
+                const cardCenter = cardRect.top + cardRect.height / 2;
+                const distance = Math.abs(containerCenter - cardCenter);
+                
+                const maxDistance = containerRect.height / 2;
+                let scale = 1 - (distance / maxDistance) * 0.22;
+                scale = Math.max(0.78, Math.min(1, scale));
+                
+                let opacity = 1 - (distance / maxDistance) * 0.4;
+                opacity = Math.max(0.4, Math.min(1, opacity));
+
+                card.style.transform = `scale(${scale})`;
+                card.style.opacity = opacity;
+            });
+            playScrollTickSound();
         }
 
-        /* --- Canvas Grid --- */
+        if (sndContainer) {
+            sndContainer.addEventListener('scroll', updateCardsScale);
+            window.addEventListener('resize', updateCardsScale);
+            setTimeout(updateCardsScale, 50);
+        }
+
+        /* ── شبكة الخلفية التفاعلية حركياً مع الصوت المقتبسة من الكود الثاني ── */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -544,7 +1168,7 @@
                 let audioBoost = 0;
                 let pAlpha = 0.05;
 
-                if (isPlaying) {
+                if (isPlaying && dataArray) {
                     const unifiedWave = Math.sin(time * 3 + p.colIndex * 0.15 + p.rowIndex * 0.15) * (8 + bassBoost * 18);
                     renderY += unifiedWave;
 
@@ -586,7 +1210,7 @@
                 for(let j=0; j<60; j++) text += chars.charAt(Math.floor(Math.random() * chars.length));
                 text += "\n";
             }
-            asciiContent.textContent = text;
+            if(asciiContent) asciiContent.textContent = text;
         }
         setInterval(generateImgAscii, 150);
 
@@ -595,33 +1219,29 @@
         let resumeTimeout = null;
 
         function updatePosition(clientX) {
+            if(!scannerArea) return;
             const rect = scannerArea.getBoundingClientRect();
             const x = clientX - rect.left;
             const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
-            pos = percent;
             scannerArea.style.setProperty('--clip-pos', percent + '%');
+        }
+
+        if(scannerArea) {
+            scannerArea.addEventListener('mousemove', (e) => handleUserInteraction(e));
+            scannerArea.addEventListener('touchmove', (e) => handleUserInteraction(e));
         }
 
         function handleUserInteraction(e) {
             isMoving = false;
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             updatePosition(clientX);
-
             clearTimeout(resumeTimeout);
-            resumeTimeout = setTimeout(() => {
-                if (!isMoving) {
-                    isMoving = true;
-                    autoAnimate();
-                }
-            }, 3000);
+            resumeTimeout = setTimeout(() => { isMoving = true; autoAnimate(); }, 3000);
         }
 
-        scannerArea.addEventListener('mousemove', handleUserInteraction);
-        scannerArea.addEventListener('touchmove', handleUserInteraction);
-        
         let pos = 0, dir = 0.5;
         function autoAnimate() {
-            if (isMoving) {
+            if (isMoving && scannerArea) {
                 pos += dir;
                 if (pos >= 100 || pos <= 0) dir *= -1;
                 scannerArea.style.setProperty('--clip-pos', pos + '%');
@@ -639,63 +1259,58 @@
             const runAnimation = () => {
                 const now = Date.now();
                 waves = waves.filter(w => now - w.startTime < 800);
-                
-                if (waves.length === 0) {
-                    el.innerText = originalText;
-                    isAnimating = false;
-                    return;
-                }
+                if (waves.length === 0) { el.innerText = originalText; isAnimating = false; return; }
 
                 el.innerText = originalText.split("").map((char, i) => {
                     if (char === " " || char === "\n") return char;
                     let result = char;
                     waves.forEach(w => {
-                        const age = now - w.startTime;
-                        const progress = age / 800;
+                        const progress = (now - w.startTime) / 800;
                         const distance = Math.abs(i - w.startPos);
-                        const radius = (progress * (originalText.length + 5)) / 1.2;
-                        
-                        if (distance <= radius && distance > radius - 2.5) {
+                        if (distance <= (progress * originalText.length / 1.2) && distance > (progress * originalText.length / 1.2) - 2.5) {
                             result = glitchChars[Math.floor(Math.random() * glitchChars.length)];
                         }
                     });
                     return result;
                 }).join("");
-
                 requestAnimationFrame(runAnimation);
             };
 
-            const trigger = (e) => {
+            el.addEventListener('mouseenter', (e) => {
                 const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const pos = Math.max(0, Math.min(Math.round((x / rect.width) * originalText.length), originalText.length - 1));
-                
-                waves.push({ startPos: pos, startTime: Date.now() });
-                if (!isAnimating) {
-                    isAnimating = true;
-                    requestAnimationFrame(runAnimation);
-                }
-            };
-
-            el.addEventListener('mouseenter', trigger);
-            el.addEventListener('mousemove', trigger);
+                waves.push({ startPos: Math.round(((e.clientX - rect.left) / rect.width) * originalText.length), startTime: Date.now() });
+                if (!isAnimating) { isAnimating = true; requestAnimationFrame(runAnimation); }
+            });
         };
 
         document.querySelectorAll('.ripple-active').forEach(initRipple);
 
-        function navigate(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            window.scrollTo(0, 0);
-        }
-
         function triggerLanguageSwitch() {
             const html = document.getElementById('main-html');
-            const btn = document.getElementById('lang-btn');
+            const langBtn = document.getElementById('navLangBtn');
             const isAr = html.getAttribute('lang') === 'ar';
             html.setAttribute('lang', isAr ? 'en' : 'ar');
             html.setAttribute('dir', isAr ? 'ltr' : 'rtl');
-            btn.innerText = isAr ? 'AR' : 'EN';
+            
+            document.querySelectorAll('.rail-icon-btn').forEach(b => b.classList.remove('active'));
+            langBtn.classList.add('active');
+
+            const wrapper = document.getElementById('gooeyRailMenu');
+            if(wrapper.classList.contains('open')) toggleGooeyMenu(); 
+        }
+
+        function navigate(id, btnElement) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            window.scrollTo(0, 0);
+
+            if (btnElement) {
+                document.querySelectorAll('.rail-icon-btn').forEach(b => b.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+
+            const wrapper = document.getElementById('gooeyRailMenu');
+            if(wrapper.classList.contains('open')) toggleGooeyMenu(); 
         }
     </script>
 </body>

@@ -392,7 +392,6 @@
             pointer-events: auto;
         }
 
-        /* ── شريط التقدم التفاعلي المتوافق مع LTR ── */
         .snd-rail {
             display: block;
             height: 12px;
@@ -404,7 +403,7 @@
             touch-action: none;
             display: flex;
             align-items: center;
-            direction: ltr !important; /* ضمان حساب الشريط دائماً من اليسار لليمين */
+            direction: ltr !important;
         }
 
         .snd-run {
@@ -466,24 +465,6 @@
             transform: scale(1.1);
         }
 
-        .snd-like {
-            position: absolute;
-            right: 15px;
-            top: 25px;
-            width: 30px;
-            height: 30px;
-            background: transparent;
-            border: none;
-            color: var(--ink-3);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
         .close-fs-btn {
             position: absolute;
             top: 25px;
@@ -497,7 +478,7 @@
             z-index: 10000;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى ── */
+        /* ── وضع ملء الشاشة للموسيقى (تم ضبط مسافات الأزرار لعدم التصادم مع شريط التنقل السفلي) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -527,7 +508,7 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 30px 20px !important;
+            padding: 20px 20px 110px 20px !important; /* زيادة الحشوة السفلية لمنع التصادم تماماً */
         }
 
         .snd.fullscreen .close-fs-btn { display: block !important; }
@@ -536,10 +517,10 @@
             position: relative !important;
             left: auto !important;
             top: auto !important;
-            width: min(70vw, 280px) !important;
-            height: min(70vw, 280px) !important;
+            width: min(65vw, 250px) !important;
+            height: min(65vw, 250px) !important;
             border-radius: 20px !important;
-            margin-bottom: 25px !important;
+            margin-bottom: 20px !important;
             object-fit: contain !important;
             background-color: transparent !important;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
@@ -554,18 +535,18 @@
             flex-direction: column !important;
             align-items: center !important;
             text-align: center !important;
-            margin-bottom: 20px !important;
+            margin-bottom: 15px !important;
             width: 100% !important;
             max-width: 100% !important;
         }
 
         .snd.fullscreen .snd-title {
-            font-size: 24px !important;
+            font-size: 22px !important;
             font-weight: 700 !important;
-            margin-bottom: 6px !important;
+            margin-bottom: 4px !important;
         }
 
-        .snd.fullscreen .snd-by { font-size: 15px !important; }
+        .snd.fullscreen .snd-by { font-size: 14px !important; }
 
         .snd.fullscreen .snd-bar {
             position: relative !important;
@@ -578,13 +559,13 @@
             flex-direction: column !important;
         }
 
-        .snd.fullscreen .snd-rail { height: 14px !important; }
-        .snd.fullscreen .snd-run { height: 8px !important; }
+        .snd.fullscreen .snd-rail { height: 12px !important; }
+        .snd.fullscreen .snd-run { height: 6px !important; }
 
         .snd.fullscreen .snd-clock {
             opacity: 1 !important;
             font-size: 12px !important;
-            margin-top: 8px !important;
+            margin-top: 6px !important;
         }
 
         .snd.fullscreen .snd-ops {
@@ -595,26 +576,17 @@
             display: flex !important;
             align-items: center !important;
             gap: 35px !important;
+            margin-bottom: 15px !important; /* رفع الأزرار قليلاً للأعلى بأمان */
         }
 
         .snd.fullscreen .snd-op {
-            width: 44px !important;
-            height: 44px !important;
+            width: 42px !important;
+            height: 42px !important;
         }
         
         .snd.fullscreen .snd-op svg {
-            width: 24px !important;
-            height: 24px !important;
-        }
-
-        .snd.fullscreen .snd-like {
-            position: absolute !important;
-            top: 25px !important;
-            right: 25px !important;
-            left: auto !important;
-            opacity: 1 !important;
-            pointer-events: auto !important;
-            font-size: 22px !important;
+            width: 22px !important;
+            height: 22px !important;
         }
 
         @keyframes fadeInOverlay {
@@ -690,7 +662,6 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
                             <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
                                 <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
@@ -719,7 +690,6 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
                             <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
                                 <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
@@ -748,7 +718,6 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
                             <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
                                 <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
@@ -777,7 +746,6 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
                             <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
                                 <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
@@ -806,7 +774,6 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
                             <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
                                 <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
@@ -835,7 +802,6 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
                             <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
                                 <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
@@ -1204,7 +1170,7 @@
         }
 
         function openFullscreenPlayer(element, event) {
-            if (event.target.closest('.snd-ops') || event.target.closest('.snd-like') || event.target.closest('.close-fs-btn') || event.target.closest('.snd-bar')) return;
+            if (event.target.closest('.snd-ops') || event.target.closest('.close-fs-btn') || event.target.closest('.snd-bar')) return;
             element.classList.add('fullscreen');
             document.body.style.overflow = 'hidden';
         }
@@ -1214,11 +1180,6 @@
             const player = btn.closest('.snd');
             player.classList.remove('fullscreen');
             document.body.style.overflow = '';
-        }
-
-        function toggleLike(e, btn) {
-            e.stopPropagation();
-            btn.style.color = btn.style.color === 'rgb(255, 0, 127)' ? 'var(--ink-3)' : '#ff007f';
         }
 
         const sndContainer = document.getElementById('sndContainer');

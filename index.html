@@ -478,7 +478,7 @@
             z-index: 10000;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (تم ضبط مسافات الأزرار لعدم التصادم مع شريط التنقل السفلي) ── */
+        /* ── وضع ملء الشاشة للموسيقى ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -508,7 +508,7 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 20px 20px 110px 20px !important; /* زيادة الحشوة السفلية لمنع التصادم تماماً */
+            padding: 20px 20px 110px 20px !important;
         }
 
         .snd.fullscreen .close-fs-btn { display: block !important; }
@@ -576,7 +576,7 @@
             display: flex !important;
             align-items: center !important;
             gap: 35px !important;
-            margin-bottom: 15px !important; /* رفع الأزرار قليلاً للأعلى بأمان */
+            margin-bottom: 15px !important;
         }
 
         .snd.fullscreen .snd-op {
@@ -648,7 +648,7 @@
         <div id="music" class="section">
             <div class="snd-container" id="sndContainer">
                 
-                <!-- Track 1 -->
+                <!-- Track 1: SugarCrash -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -676,7 +676,7 @@
                     </div>
                 </div>
 
-                <!-- Track 2 -->
+                <!-- Track 2: Charlotte Ending -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -704,7 +704,7 @@
                     </div>
                 </div>
 
-                <!-- Track 3 -->
+                <!-- Track 3: everybody dance now -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -732,7 +732,7 @@
                     </div>
                 </div>
 
-                <!-- Track 4 -->
+                <!-- Track 4: Heaven, Wait -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -760,7 +760,7 @@
                     </div>
                 </div>
 
-                <!-- Track 5 -->
+                <!-- Track 5: New Life (Sun) -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -788,15 +788,71 @@
                     </div>
                 </div>
 
-                <!-- Track 6 -->
+                <!-- Track 6: Ahmed Batshan – Feek El Ebar -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
-                        <audio class="audio-source" src="Zombies!.m4a" preload="none" crossorigin="anonymous"></audio>
-                        <img class="snd-art" src="https://i.ibb.co/j9wpyDDT/Picsart-26-10-06-00-49-12-576.png" alt="Zombies!">
+                        <audio class="audio-source" src="Ahmed Batshan - Feek El Ebar.m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://picsum.photos/id/1050/400/400" alt="Feek El Ebar">
                         <div class="snd-say">
-                            <span class="snd-title">Zombies!</span>
-                            <span class="snd-by">DECO*27</span>
+                            <span class="snd-title">Feek El Ebar</span>
+                            <span class="snd-by">Ahmed Batshan</span>
+                        </div>
+                        <div class="snd-bar" onclick="event.stopPropagation()">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track 7: Fadel Chaker - Maaol -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" src="Fadel Chaker - Maaol.m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://picsum.photos/id/1060/400/400" alt="Maaol">
+                        <div class="snd-say">
+                            <span class="snd-title">Maaol</span>
+                            <span class="snd-by">Fadel Chaker</span>
+                        </div>
+                        <div class="snd-bar" onclick="event.stopPropagation()">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track 8: Khaled - Hoa El Fraa -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" src="Khaled - Hoa El Fraa.m4a" preload="none" crossorigin="anonymous"></audio>
+                        <img class="snd-art" src="https://picsum.photos/id/1070/400/400" alt="Hoa El Fraa">
+                        <div class="snd-say">
+                            <span class="snd-title">Hoa El Fraa</span>
+                            <span class="snd-by">Khaled</span>
                         </div>
                         <div class="snd-bar" onclick="event.stopPropagation()">
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
@@ -905,7 +961,7 @@
         <div class="glass-nav-item" data-target="settings" onclick="navigate('settings', this); playAudioClick();" title="الإعدادات">
             <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
         </div>
     </nav>

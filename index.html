@@ -389,24 +389,26 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            pointer-events: auto; /* السماح بالتفاعل للتمرير والتقديم */
+            pointer-events: auto;
         }
 
-        /* ── شريط التقدم التفاعلي للتقديم باليد ── */
+        /* ── شريط التقدم التفاعلي الدقيق ── */
         .snd-rail {
             display: block;
-            height: 6px;
+            height: 10px; /* زيادة مساحة اللمس لراحة الأصبع */
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.15);
             overflow: hidden;
             cursor: pointer;
             position: relative;
             touch-action: none;
+            display: flex;
+            align-items: center;
         }
 
         .snd-run {
             display: block;
-            height: 100%;
+            height: 6px;
             width: 0%;
             background: var(--accent-color);
             border-radius: 999px;
@@ -574,7 +576,8 @@
             flex-direction: column !important;
         }
 
-        .snd.fullscreen .snd-rail { height: 8px !important; }
+        .snd.fullscreen .snd-rail { height: 12px !important; }
+        .snd.fullscreen .snd-run { height: 8px !important; }
 
         .snd.fullscreen .snd-clock {
             opacity: 1 !important;
@@ -934,7 +937,7 @@
         <div class="glass-nav-item" data-target="settings" onclick="navigate('settings', this); playAudioClick();" title="الإعدادات">
             <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
         </div>
     </nav>
@@ -1041,7 +1044,7 @@
                 autoPlayNext(card);
             });
 
-            /* ── تفعيل ميزة التقديم والتأخير باليد بالشريط ── */
+            /* ── تصحيح حساب شريط التقدم للتعامل السليم مع النقرات ── */
             let isSeeking = false;
 
             function handleSeek(e) {
@@ -1104,7 +1107,7 @@
         function togglePlay(btn) {
             const card = btn.closest('.snd');
             const audioElement = card.querySelector('.audio-source');
-            const playIcon = btn.querySelector('.play-icon');
+            const playIcon = card.querySelector('.play-icon');
             
             if (!audioElement) return;
 

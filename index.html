@@ -803,12 +803,14 @@
                     </div>
                 </div>
 
-                <!-- Track 6: Ahmed Batshan – Feek El Ebar -->
+                <!-- Track 6: Ahmed Batshan – Feek El Ebar (يدعم الشرطة العريضة والـ m4a وmp3) -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="Ahmed Batshan – Feek El Ebar.m4a" type="audio/mp4">
                             <source src="Ahmed Batshan - Feek El Ebar.m4a" type="audio/mp4">
+                            <source src="Ahmed Batshan – Feek El Ebar.mp3" type="audio/mpeg">
                             <source src="Ahmed Batshan - Feek El Ebar.mp3" type="audio/mpeg">
                         </audio>
                         <img class="snd-art" src="https://picsum.photos/id/1050/400/400" alt="Feek El Ebar">
@@ -1092,7 +1094,6 @@
                 autoPlayNext(card);
             });
 
-            /* ── إلغاء التشتت تماماً بحساب الإحداثيات المستقرة للمنظومة ── */
             let isSeeking = false;
 
             function handleSeek(e) {

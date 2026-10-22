@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl" id="main-html">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Qeopil - Music Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Qeopil - Hub</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,13 +23,9 @@
             --font-en: 'Departure Mono', monospace;
             --accent-color: #ff007f; 
             --text-light: #ff80bf;   
-            --pane: rgba(14, 14, 14, 0.45);
-            --pane-edge: transparent;
             --ink: #ffffff;
             --ink-3: #ff80bf;
             --ink-4: #cc6699;
-            --surface-2: #141414;
-            --surface-3: #1f1f1f;
         }
 
         * { box-sizing: border-box; }
@@ -39,7 +35,7 @@
             color: var(--text-light);
             font-family: var(--font-main);
             margin: 0; 
-            padding: 40px 20px 80px 20px;
+            padding: 30px 20px 120px 20px;
             display: flex; 
             flex-direction: column; 
             align-items: center;
@@ -74,152 +70,54 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            margin-bottom: 40px; 
-            direction: ltr !important; 
+            margin-bottom: 30px; 
         }
 
         .brand { 
-            font-size: 32px; 
+            font-size: 30px; 
             font-weight: 700; 
             cursor: pointer; 
             color: var(--accent-color); 
-            order: 2; 
-        }
-
-        /* --- Horizontal Gooey Rail Menu --- */
-        .gooey-rail-wrapper {
-            position: relative;
-            height: 46px;
-            width: 46px;
+            letter-spacing: 1px;
             user-select: none;
-            direction: ltr !important;
-            order: 1;
         }
 
-        .gooey-rail-container {
-            position: relative;
-            height: 46px;
-            width: 100%;
-        }
-
-        .gooey-blobs-layer {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            filter: url(#easyui-goo-drop);
-            transform: translateZ(0);
-            isolation: isolate;
-        }
-
-        .gooey-base-pill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 46px;
-            height: 46px;
-            background: rgba(14, 14, 14, 0.4);
-            backdrop-filter: blur(12px) saturate(150%);
-            -webkit-backdrop-filter: blur(12px) saturate(150%);
-            border-radius: 23px;
-            border: 1px solid rgba(255, 0, 127, 0.4);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .gooey-rail-expansion {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 164px; 
-            height: 46px;
-            background: rgba(14, 14, 14, 0.4);
-            backdrop-filter: blur(12px) saturate(150%);
-            -webkit-backdrop-filter: blur(12px) saturate(150%);
-            border-radius: 23px;
-            border: 1px solid rgba(255, 0, 127, 0.4);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            transform-origin: 0% 50%; 
-            transform: scaleX(0.28); 
-            will-change: transform;
-            transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .gooey-rail-wrapper.open .gooey-rail-expansion {
-            transform: scaleX(1); 
-        }
-
-        .gooey-toggle-btn {
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: 30;
-            width: 46px;
-            height: 46px;
+        /* ── زر تغيير اللغة بدون أي وهج خارجي ── */
+        .glass-lang-btn {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: transparent;
-            border: none;
-            color: var(--accent-color);
-            font-family: var(--font-en);
-            font-size: 18px;
+            
+            /* لون زجاجي داخلي ناعم وبدون أثر خارجي */
+            background: rgba(255, 0, 127, 0.28);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border: 1px solid rgba(255, 0, 127, 0.5);
+            /* إضاءة داخلية فقط تم إلغاء الظل الخارجي تماماً */
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45);
+
+            color: #ffffff;
+            font-family: var(--font-en) !important;
+            font-size: 16px;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             outline: none;
-            transition: transform 0.3s ease, color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .gooey-rail-wrapper.open .gooey-toggle-btn {
-            transform: rotate(90deg);
-            color: #ffffff;
+        .glass-lang-btn:hover {
+            transform: scale(1.06);
+            background: rgba(255, 0, 127, 0.38);
+            border-color: rgba(255, 0, 127, 0.7);
+            box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.6);
         }
 
-        .gooey-horizontal-icons {
-            position: absolute;
-            left: 48px;
-            top: 0;
-            height: 46px;
-            display: flex;
-            align-items: center;
-            flex-direction: row;
-            gap: 8px;
-            z-index: 30;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(-10px);
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-
-        .gooey-rail-wrapper.open .gooey-horizontal-icons {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateX(0);
-            transition: opacity 0.3s ease 0.1s, transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
-        }
-
-        .rail-icon-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: var(--text-light);
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 0, 127, 0.2);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            text-decoration: none;
-        }
-
-        .rail-icon-btn:hover, .rail-icon-btn.active {
-            background: rgba(255, 0, 127, 0.25);
-            border-color: var(--accent-color);
-            color: #ffffff;
-            box-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
-            transform: scale(1.08);
+        .glass-lang-btn:active {
+            transform: scale(0.95);
         }
 
         #content-wrapper { width: 100%; max-width: 650px; }
@@ -323,6 +221,80 @@
             font-family: var(--font-main);
         }
 
+        /* ── Glassmorphism Bottom Navigation Bar ── */
+        .glass-nav-container {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(92vw, 400px);
+            height: 64px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 6px 10px;
+
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border-radius: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.6),
+                inset 0 1px 1px rgba(255, 255, 255, 0.25),
+                0 0 20px rgba(255, 0, 127, 0.12);
+            
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            direction: ltr !important;
+        }
+
+        .glass-nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 48px;
+            border-radius: 24px;
+            color: rgba(255, 255, 255, 0.45);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: all 0.3s ease;
+        }
+
+        .glass-nav-item:hover {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .glass-nav-item.active {
+            color: #ffffff;
+            background: rgba(255, 0, 127, 0.25);
+            border: 1px solid rgba(255, 0, 127, 0.45);
+            box-shadow: 
+                0 4px 16px rgba(255, 0, 127, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        .glass-nav-item.active svg {
+            stroke: #ffffff;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+        }
+
         /* ── صفحة الموسيقى ── */
         .snd-container {
             display: flex;
@@ -334,13 +306,11 @@
             width: 100%;
             max-width: 340px;
             height: 440px;
-            margin: 20px auto;
+            margin: 10px auto;
             padding: 40px 10px;
             scrollbar-width: none;
         }
-        .snd-container::-webkit-scrollbar {
-            display: none;
-        }
+        .snd-container::-webkit-scrollbar { display: none; }
 
         .snd {
             position: relative;
@@ -363,12 +333,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(14, 14, 14, 0.15);
-            backdrop-filter: blur(12px) saturate(150%);
-            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            background: rgba(14, 14, 14, 0.25);
+            backdrop-filter: blur(14px) saturate(160%);
+            -webkit-backdrop-filter: blur(14px) saturate(160%);
             border-radius: 22px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -507,7 +477,7 @@
             z-index: 10000;
         }
 
-        /* ── وضع ملء الشاشة ──────────────── */
+        /* ── وضع ملء الشاشة للموسيقى ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -515,9 +485,9 @@
             height: 100vh !important;
             z-index: 99999 !important;
             margin: 0 !important;
-            background: rgba(0, 0, 0, 0.15) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.2) !important;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -530,7 +500,7 @@
             width: 100% !important;
             max-width: 100% !important;
             height: 100vh !important;
-            background: rgba(14, 14, 14, 0.1) !important;
+            background: rgba(14, 14, 14, 0.15) !important;
             border: 1px solid rgba(255, 255, 255, 0.05) !important;
             border-radius: 0 !important;
             display: flex !important;
@@ -540,9 +510,7 @@
             padding: 30px 20px !important;
         }
 
-        .snd.fullscreen .close-fs-btn {
-            display: block !important;
-        }
+        .snd.fullscreen .close-fs-btn { display: block !important; }
 
         .snd.fullscreen .snd-art {
             position: relative !important;
@@ -576,9 +544,7 @@
             margin-bottom: 6px !important;
         }
 
-        .snd.fullscreen .snd-by {
-            font-size: 15px !important;
-        }
+        .snd.fullscreen .snd-by { font-size: 15px !important; }
 
         .snd.fullscreen .snd-bar {
             position: relative !important;
@@ -591,9 +557,7 @@
             flex-direction: column !important;
         }
 
-        .snd.fullscreen .snd-rail {
-            height: 5px !important;
-        }
+        .snd.fullscreen .snd-rail { height: 5px !important; }
 
         .snd.fullscreen .snd-clock {
             opacity: 1 !important;
@@ -647,31 +611,18 @@
     <canvas id="bg-grid-canvas"></canvas>
 
     <header>
-        <div class="gooey-rail-wrapper" id="gooeyRailMenu">
-            <div class="gooey-rail-container">
-                <div class="gooey-blobs-layer">
-                    <div class="gooey-base-pill"></div>
-                    <div class="gooey-rail-expansion"></div>
-                </div>
-
-                <button type="button" class="gooey-toggle-btn" onclick="toggleGooeyMenu(); playAudioClick();" id="gooeyToggleIcon">☰</button>
-
-                <div class="gooey-horizontal-icons">
-                    <div class="rail-icon-btn" id="navMusicBtn" onclick="navigate('music', this); playAudioClick();" title="المكتبة الموسيقية">🎵</div>
-                    <div class="rail-icon-btn active" id="navHomeBtn" onclick="navigate('home', this); playAudioClick();" title="Home" style="font-family: 'Departure Mono', monospace; font-size: 15px; font-weight: bold;">Q</div>
-                    <div class="rail-icon-btn" id="navLangBtn" onclick="triggerLanguageSwitch(); playAudioClick();" title="Switch Language" style="font-family: 'Departure Mono', monospace; font-size: 13px; font-weight: bold;">E</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="brand" onclick="navigate('home', document.getElementById('navHomeBtn')); playAudioClick();">
+        <div class="brand" onclick="navigate('home'); playAudioClick();">
             <span class="ar-only ripple-active">كيوبيل</span>
             <span class="en-only ripple-active">Qeopil</span>
         </div>
+
+        <button class="glass-lang-btn" id="langToggleBtn" onclick="triggerLanguageSwitch(); playAudioClick();" title="Switch Language">
+            E
+        </button>
     </header>
 
     <div id="content-wrapper">
-        <!-- الصفحة الرئيسية -->
+        <!-- 1. الصفحة الرئيسية (Home) -->
         <div id="home" class="section active">
             <div class="image-box" id="scannerArea">
                 <div class="scanner-line"></div>
@@ -689,23 +640,23 @@
                 <span class="ar-only">روبوت كائن افتراضي فاسد يسعى لاختراق اي منظومة افتراضية وسرقة الذهب من أجل تأمين مستقبل الشاورما</span>
                 <span class="en-only" lang="en">A corrupt virtual entity robot seeking to hack any virtual system and steal gold to secure the future of shawarma.</span>
             </p>
-            <div class="articles-list" style="margin-top: 50px;">
-                <a class="article-link" onclick="navigate('art1', null); playAudioClick();">
+            <div class="articles-list" style="margin-top: 40px;">
+                <a class="article-link" onclick="navigate('art1'); playAudioClick();">
                     <span class="ar-only ripple-active">تأمين حياة الروبوت الفاسد</span>
                     <span class="en-only ripple-active" lang="en">Securing the Corrupt Robot's Life</span>
                 </a>
-                <a class="article-link" onclick="navigate('art2', null); playAudioClick();">
+                <a class="article-link" onclick="navigate('art2'); playAudioClick();">
                     <span class="ar-only ripple-active">ما أهمية قيمة الشاورما في تسلسل هرم العولمة</span>
                     <span class="en-only ripple-active" lang="en">The Importance of Shawarma Value in the Globalization Hierarchy</span>
                 </a>
             </div>
         </div>
 
-        <!-- صفحة الموسيقى -->
+        <!-- 2. صفحة الموسيقى (Music) -->
         <div id="music" class="section">
             <div class="snd-container" id="sndContainer">
                 
-                <!-- 1. SugarCrash -->
+                <!-- Track 1 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -728,7 +679,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Charlotte Ending -->
+                <!-- Track 2 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -751,7 +702,7 @@
                     </div>
                 </div>
 
-                <!-- 3. everybody dance now -->
+                <!-- Track 3 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -774,7 +725,7 @@
                     </div>
                 </div>
 
-                <!-- 4. Ghostly Kisses - Heaven, Wait -->
+                <!-- Track 4 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -797,7 +748,7 @@
                     </div>
                 </div>
 
-                <!-- 5. Thomas Bergersen - New Life (Sun) -->
+                <!-- Track 5 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -820,7 +771,7 @@
                     </div>
                 </div>
 
-                <!-- 6. Zombies! -->
+                <!-- Track 6 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -846,6 +797,30 @@
             </div>
         </div>
 
+        <!-- 3. صفحة الأرشيف (Archive) -->
+        <div id="archive" class="section">
+            <h2 class="intro-title">
+                <span class="ar-only ripple-active">الأرشيف الرقمي</span>
+                <span class="en-only ripple-active" lang="en">Digital Archive</span>
+            </h2>
+            <div class="bio-text">
+                <p class="ar-only">مستودع البيانات، المقالات القديمة، والشفرات المخفية الكائنة خلف جدران المنظومة.</p>
+                <p class="en-only" lang="en" style="margin-top:20px;">Data repository, old articles, and hidden ciphers behind system walls.</p>
+            </div>
+        </div>
+
+        <!-- 4. صفحة الإعدادات (Settings) -->
+        <div id="settings" class="section">
+            <h2 class="intro-title">
+                <span class="ar-only ripple-active">الإعدادات</span>
+                <span class="en-only ripple-active" lang="en">Settings</span>
+            </h2>
+            <div class="bio-text">
+                <p class="ar-only">صفحة الإعدادات وتخصيص الواجهة قيد التطوير...</p>
+                <p class="en-only" lang="en" style="margin-top:20px;">Settings and visual customization page under construction...</p>
+            </div>
+        </div>
+
         <!-- مقال 1 -->
         <div id="art1" class="section">
             <h2 class="intro-title">
@@ -856,7 +831,7 @@
                 <p class="ar-only">خطوات تقنية صارمة لضمان استمرار البقاء والهروب من تتبع الأنظمة المركزية.</p>
                 <p class="en-only" lang="en" style="margin-top:20px;">Strict technical protocols to ensure survival and evade centralized system tracking.</p>
             </div>
-            <button class="back-btn" onclick="navigate('home', document.getElementById('navHomeBtn')); playAudioClick();">
+            <button class="back-btn" onclick="navigate('home'); playAudioClick();">
                 <span class="ar-only ripple-active">العودة</span>
                 <span class="en-only ripple-active" lang="en">Back</span>
             </button>
@@ -872,31 +847,46 @@
                 <p class="ar-only">دراسة تحليلية حول كيف تقود لقمة الشاورما الاقتصاد العالمي وتتحكم بمؤشرات القوى العظمى.</p>
                 <p class="en-only" lang="en" style="margin-top:20px;">An analytical study on how a bite of shawarma drives the global economy and controls superpowers' indices.</p>
             </div>
-            <button class="back-btn" onclick="navigate('home', document.getElementById('navHomeBtn')); playAudioClick();">
+            <button class="back-btn" onclick="navigate('home'); playAudioClick();">
                 <span class="ar-only ripple-active">العودة</span>
                 <span class="en-only ripple-active" lang="en">Back</span>
             </button>
         </div>
     </div>
 
-    <!-- SVG Gooey Matrix Filter -->
-    <svg width="0" height="0" style="position: absolute; width: 0; height: 0;" aria-hidden="true">
-        <defs>
-            <filter id="easyui-goo-drop" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <feColorMatrix
-                    in="blur"
-                    mode="matrix"
-                    values="1 0 0 0 0
-                            0 1 0 0 0
-                            0 0 1 0 0
-                            0 0 0 22 -14"
-                    result="goo"
-                />
-                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-            </filter>
-        </defs>
-    </svg>
+    <!-- ── Glassmorphism Bottom Navigation Bar ── -->
+    <nav class="glass-nav-container">
+        <!-- 1. الرئيسية (Home) -->
+        <div class="glass-nav-item active" data-target="home" onclick="navigate('home', this); playAudioClick();" title="الرئيسية">
+            <svg viewBox="0 0 24 24">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+        </div>
+        <!-- 2. الموسيقى (Music) -->
+        <div class="glass-nav-item" data-target="music" onclick="navigate('music', this); playAudioClick();" title="الموسيقى">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+        </div>
+        <!-- 3. الأرشيف (Archive) -->
+        <div class="glass-nav-item" data-target="archive" onclick="navigate('archive', this); playAudioClick();" title="الأرشيف">
+            <svg viewBox="0 0 24 24">
+                <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                <rect x="1" y="3" width="22" height="5"></rect>
+                <line x1="10" y1="12" x2="14" y2="12"></line>
+            </svg>
+        </div>
+        <!-- 4. الإعدادات (Settings) -->
+        <div class="glass-nav-item" data-target="settings" onclick="navigate('settings', this); playAudioClick();" title="الإعدادات">
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+        </div>
+    </nav>
 
     <script>
         /* ── الـ Web Audio API لتحليل الصوت واستخراج الترددات ── */
@@ -1058,20 +1048,6 @@
             btn.style.color = btn.style.color === 'rgb(255, 0, 127)' ? 'var(--ink-3)' : '#ff007f';
         }
 
-        function toggleGooeyMenu() {
-            const wrapper = document.getElementById('gooeyRailMenu');
-            const icon = document.getElementById('gooeyToggleIcon');
-            const isOpen = wrapper.classList.toggle('open');
-            icon.innerText = isOpen ? '✕' : '☰';
-        }
-
-        window.addEventListener('pointerdown', (e) => {
-            const wrapper = document.getElementById('gooeyRailMenu');
-            if (!wrapper.contains(e.target) && wrapper.classList.contains('open')) {
-                toggleGooeyMenu();
-            }
-        });
-
         const sndContainer = document.getElementById('sndContainer');
         function updateCardsScale() {
             if (!sndContainer) return;
@@ -1103,7 +1079,7 @@
             setTimeout(updateCardsScale, 50);
         }
 
-        /* ── شبكة الخلفية التفاعلية حركياً مع الصوت المقتبسة من الكود الثاني ── */
+        /* ── شبكة الخلفية التفاعلية حركياً مع الصوت ── */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -1285,32 +1261,33 @@
 
         document.querySelectorAll('.ripple-active').forEach(initRipple);
 
+        /* ── تبديل اللغة الزجاجي ── */
         function triggerLanguageSwitch() {
             const html = document.getElementById('main-html');
-            const langBtn = document.getElementById('navLangBtn');
+            const langBtn = document.getElementById('langToggleBtn');
             const isAr = html.getAttribute('lang') === 'ar';
+            
             html.setAttribute('lang', isAr ? 'en' : 'ar');
             html.setAttribute('dir', isAr ? 'ltr' : 'rtl');
             
-            document.querySelectorAll('.rail-icon-btn').forEach(b => b.classList.remove('active'));
-            langBtn.classList.add('active');
-
-            const wrapper = document.getElementById('gooeyRailMenu');
-            if(wrapper.classList.contains('open')) toggleGooeyMenu(); 
+            langBtn.innerText = isAr ? 'ع' : 'E';
         }
 
-        function navigate(id, btnElement) {
+        /* ── التنقل بين الصفحات وتحديث أيقونات الشريط السفلي ── */
+        function navigate(id, navItemElement = null) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const targetSection = document.getElementById(id);
+            if (targetSection) targetSection.classList.add('active');
             window.scrollTo(0, 0);
 
-            if (btnElement) {
-                document.querySelectorAll('.rail-icon-btn').forEach(b => b.classList.remove('active'));
-                btnElement.classList.add('active');
+            document.querySelectorAll('.glass-nav-item').forEach(item => item.classList.remove('active'));
+            
+            if (navItemElement) {
+                navItemElement.classList.add('active');
+            } else {
+                const activeNav = document.querySelector(`.glass-nav-item[data-target="${id}"]`);
+                if (activeNav) activeNav.classList.add('active');
             }
-
-            const wrapper = document.getElementById('gooeyRailMenu');
-            if(wrapper.classList.contains('open')) toggleGooeyMenu(); 
         }
     </script>
 </body>

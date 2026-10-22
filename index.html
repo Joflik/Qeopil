@@ -82,20 +82,16 @@
             user-select: none;
         }
 
-        /* ── زر تغيير اللغة بدون أي وهج خارجي ── */
+        /* ── زر تغيير اللغة العلوي ── */
         .glass-lang-btn {
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            
-            /* لون زجاجي داخلي ناعم وبدون أثر خارجي */
             background: rgba(255, 0, 127, 0.28);
             backdrop-filter: blur(24px) saturate(200%);
             -webkit-backdrop-filter: blur(24px) saturate(200%);
             border: 1px solid rgba(255, 0, 127, 0.5);
-            /* إضاءة داخلية فقط تم إلغاء الظل الخارجي تماماً */
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45);
-
             color: #ffffff;
             font-family: var(--font-en) !important;
             font-size: 16px;
@@ -295,7 +291,7 @@
             filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
         }
 
-        /* ── صفحة الموسيقى ── */
+        /* ── صفحة الموسيقى وتقليص زوائد الإطار الجانبي ── */
         .snd-container {
             display: flex;
             flex-direction: column;
@@ -304,7 +300,7 @@
             gap: 20px;
             align-items: center;
             width: 100%;
-            max-width: 340px;
+            max-width: 310px; /* تم تعديل العرض الكلي لمنع الزوائد */
             height: 440px;
             margin: 10px auto;
             padding: 40px 10px;
@@ -356,34 +352,40 @@
 
         .snd-say {
             position: absolute;
-            left: 68px;
+            left: 65px;
             top: 14px;
             height: 45px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 3px;
+            gap: 2px;
             pointer-events: none;
+            max-width: 120px;
+            overflow: hidden;
         }
 
         .snd-title {
             color: var(--ink);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         .snd-by {
             color: var(--ink-4);
-            font-size: 12px;
+            font-size: 11px;
             white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         .snd-bar {
             position: absolute;
-            left: 14px;
+            left: 12px;
             top: 64px;
-            width: 252px;
+            width: calc(100% - 24px);
             display: flex;
             flex-direction: column;
             gap: 6px;
@@ -415,14 +417,14 @@
             transition: opacity 0.3s ease;
         }
 
+        /* ── إعادة ضبط موقع الأزرار لليمين وبدون زوائد فارغة ── */
         .snd-ops {
             position: absolute;
-            left: 228px;
-            top: 34px;
+            right: 12px;
+            top: 22px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transform: translate(-50%, -50%);
+            gap: 2px;
         }
 
         .snd-op {
@@ -439,11 +441,19 @@
             transition: all 0.2s;
         }
 
-        .snd-op.lead {
-            background: var(--ink);
-            color: #000;
-            width: 32px;
-            height: 32px;
+        .snd-op svg {
+            width: 15px;
+            height: 15px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .snd-op:hover {
+            color: #ffffff;
+            transform: scale(1.1);
         }
 
         .snd-like {
@@ -536,6 +546,7 @@
             text-align: center !important;
             margin-bottom: 20px !important;
             width: 100% !important;
+            max-width: 100% !important;
         }
 
         .snd.fullscreen .snd-title {
@@ -567,7 +578,7 @@
 
         .snd.fullscreen .snd-ops {
             position: relative !important;
-            left: auto !important;
+            right: auto !important;
             top: auto !important;
             transform: none !important;
             display: flex !important;
@@ -576,15 +587,13 @@
         }
 
         .snd.fullscreen .snd-op {
-            width: 48px !important;
-            height: 48px !important;
-            font-size: 18px !important;
+            width: 44px !important;
+            height: 44px !important;
         }
-
-        .snd.fullscreen .snd-op.lead {
-            width: 70px !important;
-            height: 70px !important;
-            font-size: 26px !important;
+        
+        .snd.fullscreen .snd-op svg {
+            width: 24px !important;
+            height: 24px !important;
         }
 
         .snd.fullscreen .snd-like {
@@ -672,9 +681,15 @@
                         </div>
                         <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
-                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
-                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -695,9 +710,15 @@
                         </div>
                         <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
-                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
-                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -718,9 +739,15 @@
                         </div>
                         <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
-                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
-                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -741,9 +768,15 @@
                         </div>
                         <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
-                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
-                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -764,9 +797,15 @@
                         </div>
                         <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
-                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
-                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -787,9 +826,15 @@
                         </div>
                         <button class="snd-like" onclick="toggleLike(event, this); playAudioClick();">♥</button>
                         <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="playAudioClick()">⏮</button>
-                            <button class="snd-op lead" onclick="togglePlay(this); playAudioClick();">▶</button>
-                            <button class="snd-op" onclick="playAudioClick()">⏭</button>
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -966,7 +1011,7 @@
             const runBar = card.querySelector('.snd-run');
             const currentTimeEl = card.querySelector('.current-time');
             const durationTimeEl = card.querySelector('.duration-time');
-            const playBtn = card.querySelector('.snd-op.lead');
+            const playIcon = card.querySelector('.play-icon');
 
             audio.addEventListener('loadedmetadata', () => {
                 if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
@@ -982,12 +1027,22 @@
             });
 
             audio.addEventListener('ended', () => {
-                if (playBtn) playBtn.innerText = '▶';
+                setPlayIconState(playIcon, false);
                 if (runBar) runBar.style.width = '0%';
                 currentPlayingAudio = null;
                 isPlaying = false;
+                autoPlayNext(card);
             });
         });
+
+        function setPlayIconState(iconElement, playing) {
+            if (!iconElement) return;
+            if (playing) {
+                iconElement.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+            } else {
+                iconElement.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+            }
+        }
 
         function connectAudioElementToAnalyser(audioElement) {
             initAudioContext();
@@ -1004,6 +1059,7 @@
         function togglePlay(btn) {
             const card = btn.closest('.snd');
             const audioElement = card.querySelector('.audio-source');
+            const playIcon = btn.querySelector('.play-icon');
             
             if (!audioElement) return;
 
@@ -1012,21 +1068,72 @@
             if (audioElement.paused) {
                 if (currentPlayingAudio && currentPlayingAudio !== audioElement) {
                     currentPlayingAudio.pause();
-                    const prevBtn = currentPlayingAudio.closest('.snd').querySelector('.snd-op.lead');
-                    if (prevBtn) prevBtn.innerText = '▶';
+                    const prevCard = currentPlayingAudio.closest('.snd');
+                    const prevIcon = prevCard.querySelector('.play-icon');
+                    setPlayIconState(prevIcon, false);
                 }
                 audioElement.play().then(() => {
-                    btn.innerText = '❚❚';
+                    setPlayIconState(playIcon, true);
                     currentPlayingAudio = audioElement;
                     isPlaying = true;
                 }).catch(err => {
-                    console.log("تعذر التشغيل أو الملف قيد التحميل:", err);
+                    console.log("تعذر التشغيل:", err);
                 });
             } else {
                 audioElement.pause();
-                btn.innerText = '▶';
+                setPlayIconState(playIcon, false);
                 currentPlayingAudio = null;
                 isPlaying = false;
+            }
+        }
+
+        /* ── تفعيل زر التالي والسابق ── */
+        function nextTrack(btn) {
+            const currentCard = btn.closest('.snd');
+            const allCards = Array.from(document.querySelectorAll('.snd'));
+            const currentIndex = allCards.indexOf(currentCard);
+            const nextIndex = (currentIndex + 1) % allCards.length;
+            playSpecificCard(allCards[nextIndex]);
+        }
+
+        function prevTrack(btn) {
+            const currentCard = btn.closest('.snd');
+            const allCards = Array.from(document.querySelectorAll('.snd'));
+            const currentIndex = allCards.indexOf(currentCard);
+            const prevIndex = (currentIndex - 1 + allCards.length) % allCards.length;
+            playSpecificCard(allCards[prevIndex]);
+        }
+
+        function autoPlayNext(currentCard) {
+            const allCards = Array.from(document.querySelectorAll('.snd'));
+            const currentIndex = allCards.indexOf(currentCard);
+            const nextIndex = (currentIndex + 1) % allCards.length;
+            playSpecificCard(allCards[nextIndex]);
+        }
+
+        function playSpecificCard(targetCard) {
+            if (!targetCard) return;
+            const audioElement = targetCard.querySelector('.audio-source');
+            const playIcon = targetCard.querySelector('.play-icon');
+
+            if (currentPlayingAudio && currentPlayingAudio !== audioElement) {
+                currentPlayingAudio.pause();
+                const prevCard = currentPlayingAudio.closest('.snd');
+                const prevIcon = prevCard.querySelector('.play-icon');
+                setPlayIconState(prevIcon, false);
+            }
+
+            if (audioElement) {
+                connectAudioElementToAnalyser(audioElement);
+                audioElement.currentTime = 0;
+                audioElement.play().then(() => {
+                    setPlayIconState(playIcon, true);
+                    currentPlayingAudio = audioElement;
+                    isPlaying = true;
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }).catch(err => {
+                    console.log("تعذر الانتقال للمقطع التالي تلقائياً:", err);
+                });
             }
         }
 

@@ -392,10 +392,10 @@
             pointer-events: auto;
         }
 
-        /* ── شريط التقدم التفاعلي الدقيق ── */
+        /* ── شريط التقدم التفاعلي المتوافق مع LTR ── */
         .snd-rail {
             display: block;
-            height: 10px; /* زيادة مساحة اللمس لراحة الأصبع */
+            height: 12px;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.15);
             overflow: hidden;
@@ -404,6 +404,7 @@
             touch-action: none;
             display: flex;
             align-items: center;
+            direction: ltr !important; /* ضمان حساب الشريط دائماً من اليسار لليمين */
         }
 
         .snd-run {
@@ -424,6 +425,7 @@
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
+            direction: ltr !important;
         }
 
         .snd-ops {
@@ -576,7 +578,7 @@
             flex-direction: column !important;
         }
 
-        .snd.fullscreen .snd-rail { height: 12px !important; }
+        .snd.fullscreen .snd-rail { height: 14px !important; }
         .snd.fullscreen .snd-run { height: 8px !important; }
 
         .snd.fullscreen .snd-clock {
@@ -1044,7 +1046,7 @@
                 autoPlayNext(card);
             });
 
-            /* ── تصحيح حساب شريط التقدم للتعامل السليم مع النقرات ── */
+            /* ── ضبط دقيق جداً لحساب إحداثيات السحب والنقر بدون تشتت ── */
             let isSeeking = false;
 
             function handleSeek(e) {

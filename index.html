@@ -7,7 +7,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
         @font-face {
@@ -28,6 +28,68 @@
             --ink-4: #cc6699;
         }
 
+        /* ── وضع الثيم الكريمي الفاخر (Editorial Cream Mode) ── */
+        body.cream-mode {
+            --bg-color: #f4f1ea !important;
+            --text-light: #3b3530 !important;
+            --accent-color: #5c4f41 !important;
+            --ink: #1f1b18 !important;
+            --ink-3: #4a4036 !important;
+            --ink-4: #736456 !important;
+            color: var(--text-light) !important;
+            font-family: 'Amiri', 'Cormorant Garamond', serif !important;
+        }
+
+        body.cream-mode *, 
+        body.cream-mode header, 
+        body.cream-mode .brand, 
+        body.cream-mode .intro-title, 
+        body.cream-mode .bio-text, 
+        body.cream-mode .article-link, 
+        body.cream-mode .back-btn, 
+        body.cream-mode .snd-title, 
+        body.cream-mode .snd-by, 
+        body.cream-mode [lang="en"], 
+        body.cream-mode .en-only {
+            font-family: 'Amiri', 'Cormorant Garamond', serif !important;
+        }
+
+        body.cream-mode .snd-box {
+            background: rgba(255, 255, 255, 0.65) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06) !important;
+        }
+
+        body.cream-mode .glass-nav-container {
+            background: rgba(255, 255, 255, 0.75) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.9) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+        }
+
+        body.cream-mode .glass-nav-item {
+            color: rgba(0, 0, 0, 0.45) !important;
+        }
+
+        body.cream-mode .glass-nav-item:hover {
+            color: rgba(0, 0, 0, 0.85) !important;
+        }
+
+        body.cream-mode .glass-nav-item.active {
+            color: #1f1b18 !important;
+            background: rgba(92, 79, 65, 0.15) !important;
+            border: 1px solid rgba(92, 79, 65, 0.3) !important;
+            box-shadow: 0 4px 16px rgba(92, 79, 65, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+        }
+
+        body.cream-mode .glass-lang-btn,
+        body.cream-mode .glass-theme-btn {
+            background: rgba(92, 79, 65, 0.15) !important;
+            border: 1px solid rgba(92, 79, 65, 0.3) !important;
+            color: #3b3530 !important;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+        }
+
         * { box-sizing: border-box; }
 
         body {
@@ -43,6 +105,59 @@
             position: relative;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        /* ── افتتاحية رسم الكلمة بالخط الفخم والمائل الراقي ── */
+        #intro-splash {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.8s;
+        }
+
+        #intro-splash.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .true-handwriting-svg {
+            width: min(92vw, 540px);
+            height: auto;
+            overflow: visible;
+        }
+
+        .q-path {
+            fill: none;
+            stroke: #ff007f;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 800;
+            stroke-dashoffset: 800;
+            animation: drawStrokeLetter 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            filter: drop-shadow(0 0 14px rgba(255, 0, 127, 0.9));
+        }
+
+        @keyframes drawStrokeLetter {
+            0% {
+                stroke-dashoffset: 800;
+                fill: rgba(255, 0, 127, 0);
+            }
+            75% {
+                stroke-dashoffset: 0;
+                fill: rgba(255, 0, 127, 0.08);
+            }
+            100% {
+                stroke-dashoffset: 0;
+                fill: #ff007f;
+                filter: drop-shadow(0 0 25px rgba(255, 0, 127, 1));
+            }
         }
 
         #bg-grid-canvas {
@@ -61,7 +176,7 @@
         }
 
         [lang="en"], .en-only, .btn-lang { 
-            font-family: var(--font-en) !important; 
+            font-family: var(--font-en); 
         }
 
         header { 
@@ -82,8 +197,13 @@
             user-select: none;
         }
 
-        /* ── زر تغيير اللغة العلوي ── */
-        .glass-lang-btn {
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .glass-lang-btn, .glass-theme-btn {
             width: 44px;
             height: 44px;
             border-radius: 50%;
@@ -93,9 +213,7 @@
             border: 1px solid rgba(255, 0, 127, 0.5);
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45);
             color: #ffffff;
-            font-family: var(--font-en) !important;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -105,14 +223,20 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .glass-lang-btn:hover {
+        .glass-lang-btn {
+            font-family: var(--font-en);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .glass-lang-btn:hover, .glass-theme-btn:hover {
             transform: scale(1.06);
             background: rgba(255, 0, 127, 0.38);
             border-color: rgba(255, 0, 127, 0.7);
             box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.6);
         }
 
-        .glass-lang-btn:active {
+        .glass-lang-btn:active, .glass-theme-btn:active {
             transform: scale(0.95);
         }
 
@@ -175,13 +299,13 @@
             width: 100%; 
             height: 100%; 
             object-fit: contain; 
-            background: #000; 
+            background: var(--bg-color); 
         }
 
         .img-ascii { 
             z-index: 1; 
             clip-path: inset(0 calc(100% - var(--clip-pos, 50%)) 0 0); 
-            background: #000; 
+            background: var(--bg-color); 
             color: var(--accent-color); 
             font-family: 'Departure Mono', monospace; 
             font-size: 10px; 
@@ -600,6 +724,18 @@
 </head>
 <body id="body-tag">
 
+    <!-- شاشة الافتتاحية: رسم حروف Qeopil بالخط الفخم والمائل الراقي -->
+    <div id="intro-splash">
+        <svg class="true-handwriting-svg" viewBox="0 0 580 180">
+            <path class="q-path" d="M 85 45 C 55 45, 38 68, 38 95 C 38 122, 55 145, 85 145 C 108 145, 122 132, 132 118 L 132 138 C 132 152, 142 162, 158 162 L 165 162" />
+            <path class="q-path" style="animation-delay: 0.3s;" d="M 188 112 C 188 90, 222 90, 222 112 C 222 125, 208 135, 188 135 C 174 135, 168 124, 168 105 C 168 78, 195 72, 222 88" />
+            <path class="q-path" style="animation-delay: 0.6s;" d="M 272 82 C 242 82, 242 138, 272 138 C 302 138, 302 82, 272 82 Z" />
+            <path class="q-path" style="animation-delay: 0.9s;" d="M 328 78 L 328 158 M 328 92 C 340 78, 372 78, 372 108 C 372 138, 340 138, 328 122" />
+            <path class="q-path" style="animation-delay: 1.2s;" d="M 398 72 L 398 76 M 398 92 L 398 138" />
+            <path class="q-path" style="animation-delay: 1.5s;" d="M 432 52 L 432 130 C 432 138, 438 142, 452 142 L 460 142" />
+        </svg>
+    </div>
+
     <canvas id="bg-grid-canvas"></canvas>
 
     <header>
@@ -608,9 +744,14 @@
             <span class="en-only ripple-active">Qeopil</span>
         </div>
 
-        <button class="glass-lang-btn" id="langToggleBtn" onclick="triggerLanguageSwitch(); playAudioClick();" title="Switch Language">
-            E
-        </button>
+        <div class="header-controls">
+            <button class="glass-lang-btn" id="langToggleBtn" onclick="triggerLanguageSwitch(); playAudioClick();" title="Switch Language">
+                E
+            </button>
+            <button class="glass-theme-btn" id="themeToggleBtn" onclick="triggerThemeSwitch(); playAudioClick();" title="Toggle Editorial Theme">
+                ✦
+            </button>
+        </div>
     </header>
 
     <div id="content-wrapper">
@@ -656,7 +797,7 @@
                             <source src="SugarCrash.m4a" type="audio/mp4">
                             <source src="SugarCrash.mp3" type="audio/mpeg">
                         </audio>
-                        <img class="snd-art" src="https://picsum.photos/id/1015/400/400" alt="SugarCrash">
+                        <img class="snd-art" src="https://i.ibb.co/HT7MLQFQ/file-00000000ac9c8211b46b2359589eff0b.png" alt="SugarCrash">
                         <div class="snd-say">
                             <span class="snd-title">SugarCrash</span>
                             <span class="snd-by">Elyozeth Hub</span>
@@ -687,7 +828,7 @@
                             <source src="Charlotte Ending.m4a" type="audio/mp4">
                             <source src="Charlotte Ending.mp3" type="audio/mpeg">
                         </audio>
-                        <img class="snd-art" src="https://picsum.photos/id/1025/400/400" alt="Charlotte Ending">
+                        <img class="snd-art" src="https://i.ibb.co/q37x9YRM/file-00000000a8fc821195faf366dd6fa93a.png" alt="Charlotte Ending">
                         <div class="snd-say">
                             <span class="snd-title">Charlotte Ending</span>
                             <span class="snd-by">Anime OST</span>
@@ -718,7 +859,7 @@
                             <source src="everybody dance now.m4a" type="audio/mp4">
                             <source src="everybody dance now.mp3" type="audio/mpeg">
                         </audio>
-                        <img class="snd-art" src="https://picsum.photos/id/1062/400/400" alt="everybody dance now">
+                        <img class="snd-art" src="https://i.ibb.co/FkPSvr5G/1792772075572.jpg" alt="everybody dance now">
                         <div class="snd-say">
                             <span class="snd-title">everybody dance now</span>
                             <span class="snd-by">C+C Music Factory</span>
@@ -749,7 +890,7 @@
                             <source src="Ghostly Kisses - Heaven, Wait.m4a" type="audio/mp4">
                             <source src="Ghostly Kisses - Heaven, Wait.mp3" type="audio/mpeg">
                         </audio>
-                        <img class="snd-art" src="https://picsum.photos/id/1080/400/400" alt="Heaven, Wait">
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=60" alt="Heaven, Wait">
                         <div class="snd-say">
                             <span class="snd-title">Heaven, Wait</span>
                             <span class="snd-by">Ghostly Kisses</span>
@@ -780,7 +921,7 @@
                             <source src="Thomas Bergersen - New Life (Sun).m4a" type="audio/mp4">
                             <source src="Thomas Bergersen - New Life (Sun).mp3" type="audio/mpeg">
                         </audio>
-                        <img class="snd-art" src="https://picsum.photos/id/1043/400/400" alt="New Life (Sun)">
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1549887534-1541e9326642?w=500&auto=format&fit=crop&q=60" alt="New Life (Sun)">
                         <div class="snd-say">
                             <span class="snd-title">New Life (Sun)</span>
                             <span class="snd-by">Thomas Bergersen</span>
@@ -812,7 +953,7 @@
                             <source src="Ahmed Batshan - Feek El Ebar.mp3" type="audio/mpeg">
                             <source src="Ahmed Batshan – Feek El Ebar.m4a" type="audio/mp4">
                         </audio>
-                        <img class="snd-art" src="https://picsum.photos/id/1050/400/400" alt="Feek El Ebar">
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1582561226105-02195f2d6b38?w=500&auto=format&fit=crop&q=60" alt="Feek El Ebar">
                         <div class="snd-say">
                             <span class="snd-title">Feek El Ebar</span>
                             <span class="snd-by">Ahmed Batshan</span>
@@ -835,38 +976,7 @@
                     </div>
                 </div>
 
-                <!-- Track 7: Patient Zero (جديدة) -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
-                    <div class="snd-box">
-                        <audio class="audio-source" preload="metadata" crossorigin="anonymous">
-                            <source src="Patient Zero.mp3" type="audio/mpeg">
-                            <source src="Patient Zero.m4a" type="audio/mp4">
-                        </audio>
-                        <img class="snd-art" src="https://i.ibb.co/6Cz7smM/HT41-J6as-AALlif.jpg" alt="Patient Zero">
-                        <div class="snd-say">
-                            <span class="snd-title">Patient Zero</span>
-                            <span class="snd-by">Elyozeth Hub</span>
-                        </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
-                        </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Track 8: Fadel Chaker - Maaol -->
+                <!-- Track 7: Fadel Chaker - Maaol -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -874,7 +984,7 @@
                             <source src="Fadel Chaker - Maaol.m4a" type="audio/mp4">
                             <source src="Fadel Chaker - Maaol.mp3" type="audio/mpeg">
                         </audio>
-                        <img class="snd-art" src="https://picsum.photos/id/1060/400/400" alt="Maaol">
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=60" alt="Maaol">
                         <div class="snd-say">
                             <span class="snd-title">Maaol</span>
                             <span class="snd-by">Fadel Chaker</span>
@@ -897,7 +1007,7 @@
                     </div>
                 </div>
 
-                <!-- Track 9: Khaled - Hoa El Fraa -->
+                <!-- Track 8: Khaled - Hoa El Fraa -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
                     <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
@@ -905,10 +1015,41 @@
                             <source src="Khaled - Hoa El Fraa.m4a" type="audio/mp4">
                             <source src="Khaled - Hoa El Fraa.mp3" type="audio/mpeg">
                         </audio>
-                        <img class="snd-art" src="https://picsum.photos/id/1070/400/400" alt="Hoa El Fraa">
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=500&auto=format&fit=crop&q=60" alt="Hoa El Fraa">
                         <div class="snd-say">
                             <span class="snd-title">Hoa El Fraa</span>
                             <span class="snd-by">Khaled</span>
+                        </div>
+                        <div class="snd-bar">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Track 9: Patient Zero -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" preload="metadata" crossorigin="anonymous">
+                            <source src="Patient Zero.mp3" type="audio/mpeg">
+                            <source src="Patient Zero.m4a" type="audio/mp4">
+                        </audio>
+                        <img class="snd-art" src="https://i.ibb.co/6Cz7smM/HT41-J6as-AALlif.jpg" alt="Patient Zero">
+                        <div class="snd-say">
+                            <span class="snd-title">Patient Zero</span>
+                            <span class="snd-by">Elyozeth Hub</span>
                         </div>
                         <div class="snd-bar">
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
@@ -1023,7 +1164,13 @@
     </nav>
 
     <script>
-        /* ── الـ Web Audio API لتحليل الصوت واستخراج الترددات ── */
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('intro-splash');
+                if (splash) splash.classList.add('fade-out');
+            }, 2900);
+        });
+
         let audioCtx = null;
         let analyser = null;
         let dataArray = null;
@@ -1323,7 +1470,6 @@
             setTimeout(updateCardsScale, 50);
         }
 
-        /* ── شبكة الخلفية التفاعلية حركياً مع الصوت ── */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -1514,6 +1660,11 @@
             html.setAttribute('dir', isAr ? 'ltr' : 'rtl');
             
             langBtn.innerText = isAr ? 'ع' : 'E';
+        }
+
+        function triggerThemeSwitch() {
+            const body = document.getElementById('body-tag');
+            body.classList.toggle('cream-mode');
         }
 
         function navigate(id, navItemElement = null) {

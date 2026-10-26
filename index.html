@@ -1069,6 +1069,37 @@
                     </div>
                 </div>
 
+                <!-- Track 10: Alec Benjamin - Let Me Down Slowly -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="snd-box">
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="Alec Benjamin - Let Me Down Slowly.m4a" type="audio/mp4">
+                            <source src="Alec Benjamin - Let Me Down Slowly.mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60" alt="Let Me Down Slowly">
+                        <div class="snd-say">
+                            <span class="snd-title">Let Me Down Slowly</span>
+                            <span class="snd-by">Alec Benjamin</span>
+                        </div>
+                        <div class="snd-bar">
+                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
+                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                        <div class="snd-ops" onclick="event.stopPropagation()">
+                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                            </button>
+                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </button>
+                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 

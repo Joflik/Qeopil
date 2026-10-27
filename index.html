@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     
+    <!-- مكتبة Three.js رسمية -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
         @font-face {
             font-family: 'Departure Mono';
@@ -90,6 +93,41 @@
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
         }
 
+        /* ── وضع الثيم الثالث: الموجات الحريرية (Silk Waves Mode) ── */
+        body.silk-mode {
+            --bg-color: #00040f !important;
+            --text-light: #9fd3ff !important;
+            --accent-color: #19e3ff !important;
+            --ink: #ffffff !important;
+            --ink-3: #9fd3ff !important;
+            --ink-4: #6bb3ff !important;
+        }
+
+        body.silk-mode .snd-box {
+            background: rgba(0, 17, 124, 0.25) !important;
+            border: 1px solid rgba(25, 227, 255, 0.2) !important;
+            box-shadow: 0 8px 32px rgba(0, 25, 60, 0.5) !important;
+        }
+
+        body.silk-mode .glass-nav-container {
+            background: rgba(0, 17, 124, 0.35) !important;
+            border: 1px solid rgba(25, 227, 255, 0.25) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(25, 227, 255, 0.3) !important;
+        }
+
+        body.silk-mode .glass-nav-item.active {
+            background: rgba(25, 227, 255, 0.25) !important;
+            border: 1px solid rgba(25, 227, 255, 0.5) !important;
+            box-shadow: 0 4px 16px rgba(25, 227, 255, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+        }
+
+        body.silk-mode .glass-lang-btn,
+        body.silk-mode .glass-theme-btn {
+            background: rgba(25, 227, 255, 0.2) !important;
+            border: 1px solid rgba(25, 227, 255, 0.4) !important;
+            color: #ffffff !important;
+        }
+
         * { box-sizing: border-box; }
 
         body {
@@ -168,6 +206,29 @@
             height: 100vh;
             z-index: 0;
             pointer-events: none;
+        }
+
+        /* حاوية خلفية موجات الحرير ثلاثية الأبعاد */
+        #silk-waves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        body.silk-mode #silk-waves-container {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        body.silk-mode #bg-grid-canvas {
+            display: none;
         }
 
         header, #content-wrapper {
@@ -713,6 +774,118 @@
             height: 22px !important;
         }
 
+        /* ── تأثير كشف الصور عند التحويم للمخزن الرقمي (Hover Image Reveal) ── */
+        .hir-container {
+            position: relative;
+            width: 100%;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            user-select: none;
+            overflow: visible;
+        }
+
+        .hir-float-box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 290px;
+            border-radius: 16px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+
+        .hir-float-box.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .hir-img-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hir-img-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hir-img-layer.active {
+            transform: translateY(0%);
+        }
+
+        .hir-img-layer.above {
+            transform: translateY(-100%);
+        }
+
+        .hir-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .hir-item {
+            overflow: hidden;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .hir-text-wrapper {
+            position: relative;
+            display: block;
+            transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hir-item:hover .hir-text-wrapper {
+            transform: translateY(-100%);
+        }
+
+        .hir-text {
+            display: block;
+            font-size: min(5.5vw, 24px);
+            font-weight: 700;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            text-align: center;
+            font-family: 'Departure Mono', var(--font-main);
+            letter-spacing: -0.03em;
+        }
+
+        .hir-text-clone {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            color: var(--accent-color) !important;
+        }
+
+        .hir-list.any-hovered .hir-text {
+            color: rgba(255, 128, 191, 0.3);
+        }
+
+        .hir-list.any-hovered .hir-item:hover .hir-text {
+            color: var(--accent-color);
+        }
+
         @keyframes fadeInOverlay {
             from { opacity: 0; transform: scale(0.97); }
             to { opacity: 1; transform: scale(1); }
@@ -737,6 +910,7 @@
     </div>
 
     <canvas id="bg-grid-canvas"></canvas>
+    <div id="silk-waves-container"></div>
 
     <header>
         <div class="brand" onclick="navigate('home'); playAudioClick();">
@@ -748,7 +922,7 @@
             <button class="glass-lang-btn" id="langToggleBtn" onclick="triggerLanguageSwitch(); playAudioClick();" title="Switch Language">
                 E
             </button>
-            <button class="glass-theme-btn" id="themeToggleBtn" onclick="triggerThemeSwitch(); playAudioClick();" title="Toggle Editorial Theme">
+            <button class="glass-theme-btn" id="themeToggleBtn" onclick="triggerThemeSwitch(); playAudioClick();" title="Toggle Theme">
                 ✦
             </button>
         </div>
@@ -1103,15 +1277,54 @@
             </div>
         </div>
 
-        <!-- 3. صفحة الأرشيف (Archive) -->
+        <!-- 3. صفحة الأرشيف / المخزن الرقمي (Archive) -->
         <div id="archive" class="section">
-            <h2 class="intro-title">
-                <span class="ar-only ripple-active">الأرشيف الرقمي</span>
-                <span class="en-only ripple-active" lang="en">Digital Archive</span>
+            <h2 class="intro-title" style="margin-bottom: 25px;">
+                <span class="ar-only ripple-active">المخزن الرقمي</span>
+                <span class="en-only ripple-active" lang="en">Digital Vault</span>
             </h2>
-            <div class="bio-text">
-                <p class="ar-only">مستودع البيانات، المقالات القديمة، والشفرات المخفية الكائنة خلف جدران المنظومة.</p>
-                <p class="en-only" lang="en" style="margin-top:20px;">Data repository, old articles, and hidden ciphers behind system walls.</p>
+
+            <div class="hir-container" id="hirContainer">
+                <div class="hir-float-box" id="hirFloatBox">
+                    <div class="hir-img-layer" data-index="0"><img src="https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/8e0d22a8-ac82-4893-90d8-3403f80ec600/w=800" alt="Drop"></div>
+                    <div class="hir-img-layer" data-index="1"><img src="https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/d6af07a0-4dc5-4de4-07b1-9d2ad6100000/w=800" alt="Essential"></div>
+                    <div class="hir-img-layer" data-index="2"><img src="https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/c083d83a-f5a4-4434-989f-4eaa9bbe7500/w=800" alt="Summer"></div>
+                    <div class="hir-img-layer" data-index="3"><img src="https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/93bad0e0-e2ab-4e21-de9c-4cb54b028f00/w=800" alt="Icons"></div>
+                    <div class="hir-img-layer" data-index="4"><img src="https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/09a59a65-3c07-4500-f72c-68c824168c00/w=800" alt="Denim"></div>
+                </div>
+
+                <div class="hir-list" id="hirList">
+                    <div class="hir-item" data-index="0">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">NEW SEASON DROP</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">NEW SEASON DROP</span>
+                        </span>
+                    </div>
+                    <div class="hir-item" data-index="1">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">ESSENTIAL COLLECTION</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">ESSENTIAL COLLECTION</span>
+                        </span>
+                    </div>
+                    <div class="hir-item" data-index="2">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">SUMMER EDITION</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">SUMMER EDITION</span>
+                        </span>
+                    </div>
+                    <div class="hir-item" data-index="3">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">STREET ICONS</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">STREET ICONS</span>
+                        </span>
+                    </div>
+                    <div class="hir-item" data-index="4">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">PREMIUM DENIM</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">PREMIUM DENIM</span>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1177,8 +1390,8 @@
                 <circle cx="18" cy="16" r="3"></circle>
             </svg>
         </div>
-        <!-- 3. الأرشيف (Archive) -->
-        <div class="glass-nav-item" data-target="archive" onclick="navigate('archive', this); playAudioClick();" title="الأرشيف">
+        <!-- 3. المخزن الرقمي / الأرشيف (Archive) -->
+        <div class="glass-nav-item" data-target="archive" onclick="navigate('archive', this); playAudioClick();" title="المخزن الرقمي">
             <svg viewBox="0 0 24 24">
                 <polyline points="21 8 21 21 3 21 3 8"></polyline>
                 <rect x="1" y="3" width="22" height="5"></rect>
@@ -1501,6 +1714,62 @@
             setTimeout(updateCardsScale, 50);
         }
 
+        /* ── تفعيل برمجية Hover Image Reveal للمخزن الرقمي ── */
+        const hirContainer = document.getElementById('hirContainer');
+        const hirFloatBox = document.getElementById('hirFloatBox');
+        const hirList = document.getElementById('hirList');
+        const hirItems = document.querySelectorAll('.hir-item');
+        const hirImgLayers = document.querySelectorAll('.hir-img-layer');
+
+        let mouseX = 0, mouseY = 0;
+        let boxX = 0, boxY = 0;
+        let isInsideHIR = false;
+
+        function animateFloatBox() {
+            if (isInsideHIR) {
+                boxX += (mouseX - boxX) * 0.12;
+                boxY += (mouseY - boxY) * 0.12;
+                hirFloatBox.style.left = boxX + 'px';
+                hirFloatBox.style.top = boxY + 'px';
+            }
+            requestAnimationFrame(animateFloatBox);
+        }
+        animateFloatBox();
+
+        if (hirContainer) {
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            hirItems.forEach((item) => {
+                const idx = parseInt(item.getAttribute('data-index'));
+
+                item.addEventListener('mouseenter', () => {
+                    isInsideHIR = true;
+                    hirFloatBox.classList.add('active');
+                    hirList.classList.add('any-hovered');
+
+                    hirImgLayers.forEach((layer) => {
+                        const layerIdx = parseInt(layer.getAttribute('data-index'));
+                        layer.classList.remove('active', 'above');
+                        if (layerIdx === idx) {
+                            layer.classList.add('active');
+                        } else if (layerIdx < idx) {
+                            layer.classList.add('above');
+                        }
+                    });
+                });
+            });
+
+            hirContainer.addEventListener('mouseleave', () => {
+                isInsideHIR = false;
+                hirFloatBox.classList.remove('active');
+                hirList.classList.remove('any-hovered');
+            });
+        }
+
+        /* ── خلفية المربعات المضيئة (Background Grid Canvas) ── */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -1599,6 +1868,256 @@
 
         animateFullGrid();
 
+        /* ── تفعيل برمجية موجات الحرير (Silk Waves Engine ثلاثي الأبعاد) ── */
+        function parseHexToOklabVec(hex) {
+            const c = new THREE.Color(hex);
+            const l = Math.cbrt(0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b);
+            const m = Math.cbrt(0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b);
+            const s = Math.cbrt(0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b);
+            return new THREE.Vector3(
+                0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+                1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+                0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
+            );
+        }
+
+        class SilkScene {
+            constructor(container) {
+                this.container = container;
+                this.width = container.clientWidth || window.innerWidth;
+                this.height = container.clientHeight || window.innerHeight;
+
+                this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+                const el = this.renderer.domElement;
+                el.style.position = "absolute";
+                el.style.inset = "0";
+                el.style.width = "100%";
+                el.style.height = "100%";
+                el.style.touchAction = "none";
+                container.appendChild(el);
+
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.Camera();
+                this.geometry = new THREE.PlaneGeometry(2, 2);
+
+                const KEY = [-0.42, 0.58, 0.7];
+                const keyVec = new THREE.Vector3(KEY[0], KEY[1], KEY[2]).normalize();
+
+                this.material = new THREE.ShaderMaterial({
+                    vertexShader: `
+                        varying vec2 vUv;
+                        void main() {
+                            vUv = uv;
+                            gl_Position = vec4(position.xy, 0.0, 1.0);
+                        }
+                    `,
+                    fragmentShader: `
+                        precision highp float;
+                        #define MAX_LAYERS 7
+                        #define GOLDEN 2.39996323
+
+                        uniform vec2 uResolution;
+                        uniform vec2 uPointer;
+                        uniform float uHold;
+                        uniform float uTime;
+                        uniform vec3 uTrough;
+                        uniform vec3 uBody;
+                        uniform vec3 uCrest;
+                        uniform vec3 uKey;
+                        uniform float uScale;
+                        uniform float uCount;
+                        uniform float uSteep;
+                        uniform float uShine;
+                        uniform float uSheen;
+                        uniform float uRipple;
+                        uniform float uReach;
+
+                        varying vec2 vUv;
+
+                        vec3 rgbFromOklab(vec3 lab) {
+                            float l = lab.x + 0.3963377774 * lab.y + 0.2158037573 * lab.z;
+                            float m = lab.x - 0.1055613458 * lab.y - 0.0638541728 * lab.z;
+                            float s = lab.x - 0.0894841775 * lab.y - 1.291485548 * lab.z;
+                            l = l * l * l;
+                            m = m * m * m;
+                            s = s * s * s;
+                            return vec3(
+                                4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+                                -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+                                -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
+                            );
+                        }
+
+                        void main() {
+                            float unit = min(uResolution.x, uResolution.y);
+                            vec2 p = (vUv * uResolution - uResolution * 0.5) / unit;
+
+                            float height = 0.0;
+                            vec2 slope = vec2(0.0);
+                            float amp = 1.0;
+                            float freq = uScale;
+                            float norm = 0.0;
+
+                            for (int i = 0; i < MAX_LAYERS; i++) {
+                                if (float(i) < uCount) {
+                                    float fi = float(i);
+                                    float a = fi * GOLDEN;
+                                    vec2 dir = vec2(cos(a), sin(a));
+                                    float phase = dot(p, dir) * freq + uTime * (0.7 + fi * 0.31);
+                                    height += sin(phase) * amp;
+                                    slope += dir * cos(phase) * amp * freq;
+                                    norm += amp;
+                                    amp *= 0.55;
+                                    freq *= 1.93;
+                                }
+                            }
+
+                            height /= max(norm, 0.0001);
+                            slope /= max(norm, 0.0001);
+
+                            vec2 rel = p - (uPointer - uResolution * 0.5) / unit;
+                            float dist = length(rel);
+                            float env = exp(-(dist * dist) / (uReach * uReach)) * uHold;
+                            float ring = dist * uScale * 1.6 - uTime * 2.2;
+                            height += sin(ring) * env * uRipple;
+                            slope += (rel / max(dist, 0.0001)) * cos(ring) * uScale * 1.6 * env * uRipple;
+
+                            vec3 n = normalize(vec3(-slope * uSteep, 1.0));
+                            vec3 view = vec3(0.0, 0.0, 1.0);
+                            vec3 halfway = normalize(uKey + view);
+
+                            float body = dot(n, uKey) * 0.5 + 0.5;
+                            float sp = max(dot(n, halfway), 0.0);
+
+                            float glint = pow(sp, uShine) + pow(sp, uShine * 0.16) * 0.14;
+                            float rim = pow(1.0 - max(dot(n, view), 0.0), 4.0);
+
+                            float t = clamp(mix(height * 0.5 + 0.5, body, 0.45), 0.0, 1.0);
+                            vec3 lab = t < 0.5
+                                ? mix(uTrough, uBody, t * 2.0)
+                                : mix(uBody, uCrest, t * 2.0 - 1.0);
+                            vec3 col = rgbFromOklab(lab);
+
+                            col = mix(col, rgbFromOklab(uCrest), rim * 0.35);
+                            col += glint * uSheen;
+
+                            gl_FragColor = vec4(max(col, 0.0), 1.0);
+                        }
+                    `,
+                    uniforms: {
+                        uResolution: { value: new THREE.Vector2(1, 1) },
+                        uPointer: { value: new THREE.Vector2(0, 0) },
+                        uHold: { value: 0 },
+                        uTime: { value: 0 },
+                        uTrough: { value: parseHexToOklabVec("#19E3FF") },
+                        uBody: { value: parseHexToOklabVec("#00117C") },
+                        uCrest: { value: parseHexToOklabVec("#E6A8FF") },
+                        uKey: { value: keyVec },
+                        uScale: { value: 1.4 },
+                        uCount: { value: 5.0 },
+                        uSteep: { value: 0.62 },
+                        uShine: { value: 400.0 },
+                        uSheen: { value: 1.5 },
+                        uRipple: { value: 0.6 },
+                        uReach: { value: 0.57 }
+                    },
+                    depthTest: false,
+                    depthWrite: false
+                });
+
+                this.mesh = new THREE.Mesh(this.geometry, this.material);
+                this.scene.add(this.mesh);
+
+                this.target = new THREE.Vector2(0, 0);
+                this.eased = new THREE.Vector2(0, 0);
+                this.hold = 0;
+                this.wantHold = 0;
+                this.time = 0;
+                this.lastT = performance.now();
+                this.disposed = false;
+
+                el.addEventListener("pointermove", this.onPointerMove.bind(this));
+                el.addEventListener("pointerdown", this.onPointerMove.bind(this));
+                el.addEventListener("pointerleave", this.onPointerLeave.bind(this));
+
+                this.setSize(this.width, this.height);
+            }
+
+            onPointerMove(e) {
+                const rect = this.renderer.domElement.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * this.width;
+                const y = (1 - (e.clientY - rect.top) / rect.height) * this.height;
+                this.target.set(x, y);
+                if (this.wantHold === 0) this.eased.copy(this.target);
+                this.wantHold = 1;
+            }
+
+            onPointerLeave() {
+                this.wantHold = 0;
+            }
+
+            setSize(w, h) {
+                if (this.disposed || w <= 0 || h <= 0) return;
+                this.width = w;
+                this.height = h;
+                this.renderer.setSize(w, h, false);
+                const dpr = this.renderer.getPixelRatio();
+                const tw = w * dpr;
+                const th = h * dpr;
+                this.material.uniforms.uResolution.value.set(tw, th);
+                if (this.wantHold === 0) {
+                    this.target.set(tw * 0.5, th * 0.5);
+                    this.eased.copy(this.target);
+                }
+            }
+
+            start() {
+                const loop = () => {
+                    if (this.disposed) return;
+                    this.frameId = requestAnimationFrame(loop);
+                    this.step();
+                };
+                loop();
+            }
+
+            step() {
+                const now = performance.now();
+                let dt = (now - this.lastT) / 1000;
+                this.lastT = now;
+                if (!isFinite(dt) || dt < 0) dt = 0;
+                if (dt > 0.05) dt = 0.05;
+
+                this.time += dt * 2.2;
+                this.eased.lerp(this.target, 1 - Math.exp(-dt * 4.0));
+                this.hold += (this.wantHold - this.hold) * (1 - Math.exp(-dt * 3));
+
+                const u = this.material.uniforms;
+                u.uTime.value = this.time;
+                u.uPointer.value.copy(this.eased);
+                u.uHold.value = this.hold;
+
+                this.renderer.render(this.scene, this.camera);
+            }
+
+            dispose() {
+                this.disposed = true;
+                cancelAnimationFrame(this.frameId);
+                this.renderer.dispose();
+            }
+        }
+
+        let silkSceneInstance = null;
+        const silkContainer = document.getElementById('silk-waves-container');
+        if (silkContainer) {
+            silkSceneInstance = new SilkScene(silkContainer);
+            silkSceneInstance.start();
+            window.addEventListener('resize', () => {
+                silkSceneInstance.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
         const asciiContent = document.getElementById('asciiContent');
         function generateImgAscii() {
             const chars = "01#/*-+$%&";
@@ -1693,9 +2212,30 @@
             langBtn.innerText = isAr ? 'ع' : 'E';
         }
 
+        /* ── زر التبديل بين الثلاث وضعيات وتحديث الأيقونة وإظهار الخلفية ── */
         function triggerThemeSwitch() {
             const body = document.getElementById('body-tag');
-            body.classList.toggle('cream-mode');
+            const themeBtn = document.getElementById('themeToggleBtn');
+
+            if (!body.classList.contains('cream-mode') && !body.classList.contains('silk-mode')) {
+                // الانتقال إلى الثيم الكريمي الثاني
+                body.classList.add('cream-mode');
+                themeBtn.innerHTML = '✧';
+            } else if (body.classList.contains('cream-mode')) {
+                // الانتقال إلى الثيم الثالث (الموجات الحريرية) وإظهار الـ WebGL Canvas
+                body.classList.remove('cream-mode');
+                body.classList.add('silk-mode');
+                themeBtn.innerHTML = '🌊';
+                if(silkSceneInstance) {
+                    setTimeout(() => {
+                        silkSceneInstance.setSize(window.innerWidth, window.innerHeight);
+                    }, 50);
+                }
+            } else {
+                // العودة إلى الثيم الأسود الأصلي
+                body.classList.remove('silk-mode');
+                themeBtn.innerHTML = '✦';
+            }
         }
 
         function navigate(id, navItemElement = null) {

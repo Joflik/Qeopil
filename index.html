@@ -179,6 +179,7 @@
             letter-spacing: -0.03em;
         }
 
+        /* ── خلفية المربعات (للوضعين الأول والثاني) ── */
         #bg-grid-canvas {
             position: fixed;
             top: 0;
@@ -193,6 +194,7 @@
             display: none;
         }
 
+        /* ── خلفية موجات الحرير (للوضع الثالث) ── */
         #silk-waves-container {
             position: fixed;
             top: 0;
@@ -312,6 +314,7 @@
             font-weight: 700;
         }
 
+        /* ── حاوية اللوغو بشفافية كاملة ── */
         .image-box { 
             position: relative; 
             width: 100%; 
@@ -394,7 +397,7 @@
             bottom: max(20px, env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%);
-            width: min(94vw, 440px);
+            width: min(92vw, 400px);
             height: 64px;
             z-index: 999;
             display: flex;
@@ -433,8 +436,8 @@
         }
 
         .glass-nav-item svg {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             fill: none;
             stroke: currentColor;
             stroke-width: 2;
@@ -760,7 +763,7 @@
             height: 22px !important;
         }
 
-        /* ── تأثير كشف الصور عند التحويم (الأرشيف القديم) ── */
+        /* ── تأثير كشف الصور عند التحويم ── */
         .hir-container {
             position: relative;
             width: 100%;
@@ -870,51 +873,6 @@
 
         .hir-list.any-hovered .hir-item:hover .hir-text {
             color: var(--accent-color);
-        }
-
-        /* ── قسم أرشيف الصور الرقمي (Depth Gallery الثلاثي الأبعاد) ── */
-        #digital-archive {
-            width: 100%;
-            height: 72vh;
-            min-height: 480px;
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-top: 10px;
-            perspective: 1400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            touch-action: none;
-            cursor: grab;
-        }
-        #digital-archive:active {
-            cursor: grabbing;
-        }
-        .depth-gallery-viewport {
-            position: relative;
-            width: 280px;
-            height: 380px;
-            transform-style: preserve-3d;
-        }
-        .depth-card-plate {
-            position: absolute;
-            inset: 0;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.65), 0 10px 20px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.28);
-            backface-visibility: hidden;
-            will-change: transform, opacity;
-            background: #121212;
-            transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.15s ease;
-        }
-        .depth-card-plate img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            pointer-events: none;
         }
 
         @keyframes fadeInOverlay {
@@ -1304,7 +1262,7 @@
             </div>
         </div>
 
-        <!-- 3. صفحة الأرشيف (Archive) القديمة -->
+        <!-- 3. صفحة الأرشيف (Archive) بدون عنوان، مع الصور الجديدة -->
         <div id="archive" class="section">
             <div class="hir-container" id="hirContainer">
                 <div class="hir-float-box" id="hirFloatBox">
@@ -1350,12 +1308,7 @@
             </div>
         </div>
 
-        <!-- 4. القسم الخامس: أرشيف الصور الرقمي ثلاثي الأبعاد المستوحى من Originkit -->
-        <div id="digital-archive" class="section">
-            <div class="depth-gallery-viewport" id="depthViewport"></div>
-        </div>
-
-        <!-- 5. صفحة الإعدادات (Settings) -->
+        <!-- 4. صفحة الإعدادات (Settings) -->
         <div id="settings" class="section">
             <h2 class="intro-title">
                 <span class="ar-only ripple-active">الإعدادات</span>
@@ -1408,7 +1361,7 @@
         </div>
     </div>
 
-    <!-- ── Glassmorphism Bottom Navigation Bar (5 أقسام متكاملة) ── -->
+    <!-- ── Glassmorphism Bottom Navigation Bar ── -->
     <nav class="glass-nav-container">
         <!-- 1. الرئيسية (Home) -->
         <div class="glass-nav-item active" data-target="home" onclick="navigate('home', this); playAudioClick();" title="الرئيسية">
@@ -1425,7 +1378,7 @@
                 <circle cx="18" cy="16" r="3"></circle>
             </svg>
         </div>
-        <!-- 3. الأرشيف القديم (Archive) -->
+        <!-- 3. الأرشيف (Archive) -->
         <div class="glass-nav-item" data-target="archive" onclick="navigate('archive', this); playAudioClick();" title="الأرشيف">
             <svg viewBox="0 0 24 24">
                 <polyline points="21 8 21 21 3 21 3 8"></polyline>
@@ -1433,15 +1386,7 @@
                 <line x1="10" y1="12" x2="14" y2="12"></line>
             </svg>
         </div>
-        <!-- 4. أرشيف الصور الرقمي ثلاثي الأبعاد (Digital Archive) -->
-        <div class="glass-nav-item" data-target="digital-archive" onclick="navigate('digital-archive', this); playAudioClick();" title="أرشيف الصور الرقمي ثلاثي الأبعاد">
-            <svg viewBox="0 0 24 24">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                <polyline points="21 15 16 10 5 21"></polyline>
-            </svg>
-        </div>
-        <!-- 5. الإعدادات (Settings) -->
+        <!-- 4. الإعدادات (Settings) -->
         <div class="glass-nav-item" data-target="settings" onclick="navigate('settings', this); playAudioClick();" title="الإعدادات">
             <svg viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="3"></circle>
@@ -1466,77 +1411,7 @@
                 const splash = document.getElementById('smoky-splash-container');
                 if (splash) splash.classList.add('fade-out');
             }, 2500);
-
-            initDepthGalleryEngine();
         });
-
-        /* ── محرك معرض العمق الحقيقي ثلاثي الأبعاد (Depth Gallery) ── */
-        const depthGallerySources = [
-            "https://images.unsplash.com/photo-1713456047285-52a8d18d1912?w=900&auto=format&fit=crop&q=60",
-            "https://images.unsplash.com/photo-1629747387925-6905ff5a558a?w=900&auto=format&fit=crop&q=60",
-            "https://images.unsplash.com/photo-1568044853110-277196781802?w=900&auto=format&fit=crop&q=60",
-            "https://images.unsplash.com/photo-1613698808499-f772ccb4f527?w=900&auto=format&fit=crop&q=60",
-            "https://images.unsplash.com/photo-1542305983-c4100e4b8cd2?w=900&auto=format&fit=crop&q=60",
-            "https://images.unsplash.com/photo-1720569103781-daf2ecb89e1b?w=900&auto=format&fit=crop&q=60"
-        ];
-
-        let galleryTarget = 0;
-        let galleryCurrent = 0;
-        const depthViewport = document.getElementById('depthViewport');
-
-        function initDepthGalleryEngine() {
-            if (!depthViewport) return;
-            depthViewport.innerHTML = '';
-            depthGallerySources.forEach((src) => {
-                const plate = document.createElement('div');
-                plate.className = 'depth-card-plate';
-                plate.innerHTML = `<img src="${src}" alt="Depth Gallery Plate">`;
-                depthViewport.appendChild(plate);
-            });
-            requestAnimationFrame(renderDepthGalleryLoop);
-        }
-
-        function renderDepthGalleryLoop() {
-            galleryCurrent += (galleryTarget - galleryCurrent) * 0.12;
-            const plates = depthViewport.querySelectorAll('.depth-card-plate');
-            const count = depthGallerySources.length;
-
-            plates.forEach((plate, i) => {
-                const pos = i - galleryCurrent;
-                const wrappedPos = ((pos % count) + count) % count;
-                const distance = wrappedPos - Math.floor(count / 2);
-                const z = -Math.abs(distance) * 140;
-                const scale = Math.max(0.4, 1 - Math.abs(distance) * 0.15);
-                const opacity = Math.abs(distance) > 2 ? 0 : 1 - Math.abs(distance) * 0.35;
-
-                plate.style.transform = `translate3d(0, 0, ${z}px) scale(${scale})`;
-                plate.style.opacity = Math.max(0, opacity);
-                plate.style.zIndex = count - Math.abs(Math.round(distance));
-            });
-
-            requestAnimationFrame(renderDepthGalleryLoop);
-        }
-
-        const archiveElem = document.getElementById('digital-archive');
-        if (archiveElem) {
-            archiveElem.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                galleryTarget += e.deltaY * 0.0025;
-            }, { passive: false });
-
-            let pointerStartY = 0;
-            archiveElem.addEventListener('pointerdown', (e) => {
-                pointerStartY = e.clientY;
-            });
-            archiveElem.addEventListener('pointermove', (e) => {
-                if (pointerStartY === 0) return;
-                const deltaY = e.clientY - pointerStartY;
-                galleryTarget -= deltaY * 0.008;
-                pointerStartY = e.clientY;
-            });
-            archiveElem.addEventListener('pointerup', () => { pointerStartY = 0; });
-            archiveElem.addEventListener('pointercancel', () => { pointerStartY = 0; });
-        }
 
         let audioCtx = null;
         let analyser = null;
@@ -1617,8 +1492,6 @@
             const durationTimeEl = card.querySelector('.duration-time');
             const playIcon = card.querySelector('.play-icon');
 
-            if (!audio) return;
-
             audio.addEventListener('loadedmetadata', () => {
                 if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
             });
@@ -1655,10 +1528,24 @@
             }
 
             if (rail) {
-                rail.addEventListener('mousedown', (e) => { isSeeking = true; handleSeek(e); });
-                rail.addEventListener('touchstart', (e) => { isSeeking = true; handleSeek(e); }, { passive: true });
-                window.addEventListener('mousemove', (e) => { if (isSeeking) handleSeek(e); });
-                window.addEventListener('touchmove', (e) => { if (isSeeking) handleSeek(e); }, { passive: true });
+                rail.addEventListener('mousedown', (e) => {
+                    isSeeking = true;
+                    handleSeek(e);
+                });
+
+                rail.addEventListener('touchstart', (e) => {
+                    isSeeking = true;
+                    handleSeek(e);
+                }, { passive: true });
+
+                window.addEventListener('mousemove', (e) => {
+                    if (isSeeking) handleSeek(e);
+                });
+
+                window.addEventListener('touchmove', (e) => {
+                    if (isSeeking) handleSeek(e);
+                }, { passive: true });
+
                 window.addEventListener('mouseup', () => { isSeeking = false; });
                 window.addEventListener('touchend', () => { isSeeking = false; });
             }
@@ -1691,6 +1578,7 @@
             const playIcon = card.querySelector('.play-icon');
             
             if (!audioElement) return;
+
             connectAudioElementToAnalyser(audioElement);
 
             if (audioElement.paused) {
@@ -1704,7 +1592,9 @@
                     setPlayIconState(playIcon, true);
                     currentPlayingAudio = audioElement;
                     isPlaying = true;
-                }).catch(err => {});
+                }).catch(err => {
+                    console.log("تعذر التشغيل:", err);
+                });
             } else {
                 audioElement.pause();
                 setPlayIconState(playIcon, false);
@@ -1719,6 +1609,7 @@
             const currentIndex = allCards.indexOf(currentCard);
             const nextIndex = (currentIndex + 1) % allCards.length;
             const isFS = currentCard.classList.contains('fullscreen');
+
             if (isFS) currentCard.classList.remove('fullscreen');
             playSpecificCard(allCards[nextIndex], isFS);
         }
@@ -1729,6 +1620,7 @@
             const currentIndex = allCards.indexOf(currentCard);
             const prevIndex = (currentIndex - 1 + allCards.length) % allCards.length;
             const isFS = currentCard.classList.contains('fullscreen');
+
             if (isFS) currentCard.classList.remove('fullscreen');
             playSpecificCard(allCards[prevIndex], isFS);
         }
@@ -1738,6 +1630,7 @@
             const currentIndex = allCards.indexOf(currentCard);
             const nextIndex = (currentIndex + 1) % allCards.length;
             const isFS = currentCard.classList.contains('fullscreen');
+
             if (isFS) currentCard.classList.remove('fullscreen');
             playSpecificCard(allCards[nextIndex], isFS);
         }
@@ -1769,7 +1662,9 @@
                     if (!maintainFullscreen) {
                         targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
-                }).catch(err => {});
+                }).catch(err => {
+                    console.log("تعذر التشغيل تلقائياً:", err);
+                });
             }
         }
 
@@ -1797,11 +1692,14 @@
                 const cardRect = card.getBoundingClientRect();
                 const cardCenter = cardRect.top + cardRect.height / 2;
                 const distance = Math.abs(containerCenter - cardCenter);
+                
                 const maxDistance = containerRect.height / 2;
                 let scale = 1 - (distance / maxDistance) * 0.22;
                 scale = Math.max(0.78, Math.min(1, scale));
+                
                 let opacity = 1 - (distance / maxDistance) * 0.4;
                 opacity = Math.max(0.4, Math.min(1, opacity));
+
                 card.style.transform = `scale(${scale})`;
                 card.style.opacity = opacity;
             });
@@ -1836,21 +1734,31 @@
         animateFloatBox();
 
         if (hirContainer) {
-            window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
             hirItems.forEach((item) => {
                 const idx = parseInt(item.getAttribute('data-index'));
+
                 item.addEventListener('mouseenter', () => {
                     isInsideHIR = true;
                     hirFloatBox.classList.add('active');
                     hirList.classList.add('any-hovered');
+
                     hirImgLayers.forEach((layer) => {
                         const layerIdx = parseInt(layer.getAttribute('data-index'));
                         layer.classList.remove('active', 'above');
-                        if (layerIdx === idx) layer.classList.add('active');
-                        else if (layerIdx < idx) layer.classList.add('above');
+                        if (layerIdx === idx) {
+                            layer.classList.add('active');
+                        } else if (layerIdx < idx) {
+                            layer.classList.add('above');
+                        }
                     });
                 });
             });
+
             hirContainer.addEventListener('mouseleave', () => {
                 isInsideHIR = false;
                 hirFloatBox.classList.remove('active');
@@ -1864,21 +1772,36 @@
         const gap = 4;
         let cols = 0, rows = 0;
         let pixels = [];
-        const palette = ['rgb(255, 0, 127)', 'rgb(255, 128, 191)', 'rgb(186, 85, 211)', 'rgb(0, 240, 255)', 'rgb(255, 0, 212)'];
+
+        const palette = [
+            'rgb(255, 0, 127)',   
+            'rgb(255, 128, 191)', 
+            'rgb(186, 85, 211)',  
+            'rgb(0, 240, 255)',   
+            'rgb(255, 0, 212)'    
+        ];
 
         function resizeFullGrid() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             cols = Math.ceil(canvas.width / (pixelSize + gap)) + 2;
             rows = Math.ceil(canvas.height / (pixelSize + gap)) + 2;
+
             pixels = [];
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
+                    const baseX = c * (pixelSize + gap);
+                    const baseY = r * (pixelSize + gap);
+                    const centerX = cols / 2;
+                    const centerY = rows / 2;
+                    const distFromCenter = Math.sqrt(Math.pow(c - centerX, 2) + Math.pow(r - centerY, 2));
+
                     pixels.push({
-                        baseX: c * (pixelSize + gap),
-                        baseY: r * (pixelSize + gap),
+                        baseX: baseX,
+                        baseY: baseY,
                         colIndex: c,
                         rowIndex: r,
+                        distFromCenter: Math.floor(distFromCenter),
                         color: palette[Math.floor(Math.random() * palette.length)],
                         currentAlpha: 0.05,
                         targetAlpha: 0.05
@@ -1886,6 +1809,7 @@
                 }
             }
         }
+
         window.addEventListener('resize', resizeFullGrid);
         resizeFullGrid();
 
@@ -1893,6 +1817,7 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             const time = Date.now() * 0.003;
             const nowSec = Date.now() * 0.0015;
+
             let bassBoost = 0;
             if (isPlaying && analyser && dataArray) {
                 analyser.getByteFrequencyData(dataArray);
@@ -1900,29 +1825,43 @@
             }
 
             pixels.forEach(p => {
+                let renderX = p.baseX;
                 let renderY = p.baseY;
                 let audioBoost = 0;
                 let pAlpha = 0.05;
 
                 if (isPlaying && dataArray) {
-                    renderY += Math.sin(time * 3 + p.colIndex * 0.15 + p.rowIndex * 0.15) * (8 + bassBoost * 18);
-                    const freqValue = dataArray[p.colIndex % dataArray.length] / 255;
+                    const unifiedWave = Math.sin(time * 3 + p.colIndex * 0.15 + p.rowIndex * 0.15) * (8 + bassBoost * 18);
+                    renderY += unifiedWave;
+
+                    const freqIndex = p.colIndex % dataArray.length;
+                    const freqValue = dataArray[freqIndex] / 255;
                     audioBoost = Math.pow(freqValue, 2) * 0.6;
+
                     p.targetAlpha = 0.08 + (audioBoost * 0.7);
                 } else {
                     const wave = Math.sin(nowSec + p.baseX * 0.02 + p.baseY * 0.02);
-                    p.targetAlpha = 0.03 + Math.max(0, wave * 0.07);
+                    pAlpha = 0.03 + Math.max(0, wave * 0.07);
+                    p.targetAlpha = pAlpha;
                 }
 
                 p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
-                const currentSize = pixelSize * (1 + (audioBoost * 0.35));
+
+                const scale = 1 + (audioBoost * 0.35);
+                const currentSize = pixelSize * scale;
                 const offset = (currentSize - pixelSize) / 2;
 
                 ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
-                ctx.fillRect(p.baseX - offset, renderY - offset, currentSize, currentSize);
+                ctx.fillRect(renderX - offset, renderY - offset, currentSize, currentSize);
+
+                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.6})`);
+                ctx.lineWidth = 0.5 + (audioBoost * 0.5);
+                ctx.strokeRect(renderX - offset, renderY - offset, currentSize, currentSize);
             });
+
             requestAnimationFrame(animateFullGrid);
         }
+
         animateFullGrid();
 
         /* ── محرك موجات الحرير (Silk Waves Engine) ── */
@@ -1933,16 +1872,23 @@
             let r = ((num >> 16) & 255) / 255;
             let g = ((num >> 8) & 255) / 255;
             let b = (num & 255) / 255;
+
             r = r > 0.04045 ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
             g = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
             b = b > 0.04045 ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
+
             const l_val = 0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b;
             const m_val = 0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b;
             const s_val = 0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b;
+
+            const l_ = Math.cbrt(l_val);
+            const m_ = Math.cbrt(m_val);
+            const s_ = Math.cbrt(s_val);
+
             return new THREE.Vector3(
-                0.2104542553 * Math.cbrt(l_val) + 0.7936177850 * Math.cbrt(m_val) - 0.0040720468 * Math.cbrt(s_val),
-                1.9779984951 * Math.cbrt(l_val) - 2.4285922050 * Math.cbrt(m_val) + 0.4505937099 * Math.cbrt(s_val),
-                0.0259040371 * Math.cbrt(l_val) + 0.7827717662 * Math.cbrt(m_val) - 0.8086757660 * Math.cbrt(s_val)
+                0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
+                1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
+                0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
             );
         }
 
@@ -1951,35 +1897,124 @@
                 this.container = container;
                 this.width = container.clientWidth || window.innerWidth;
                 this.height = container.clientHeight || window.innerHeight;
+
                 this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
                 this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
                 this.renderer.outputColorSpace = THREE.SRGBColorSpace;
                 const el = this.renderer.domElement;
-                el.style.position = "absolute"; el.style.inset = "0"; el.style.width = "100%"; el.style.height = "100%"; el.style.touchAction = "none";
+                el.style.position = "absolute";
+                el.style.inset = "0";
+                el.style.width = "100%";
+                el.style.height = "100%";
+                el.style.touchAction = "none";
                 container.appendChild(el);
+
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.Camera();
                 this.geometry = new THREE.PlaneGeometry(2, 2);
-                const keyVec = new THREE.Vector3(-0.42, 0.58, 0.7).normalize();
+
+                const KEY = [-0.42, 0.58, 0.7];
+                const keyVec = new THREE.Vector3(KEY[0], KEY[1], KEY[2]).normalize();
+
                 this.material = new THREE.ShaderMaterial({
-                    vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+                    vertexShader: `
+                        varying vec2 vUv;
+                        void main() {
+                            vUv = uv;
+                            gl_Position = vec4(position.xy, 0.0, 1.0);
+                        }
+                    `,
                     fragmentShader: `
                         precision highp float;
-                        uniform vec2 uResolution; uniform vec2 uPointer; uniform float uHold; uniform float uTime;
-                        uniform vec3 uTrough; uniform vec3 uBody; uniform vec3 uCrest; uniform vec3 uKey;
+                        #define MAX_LAYERS 7
+                        #define GOLDEN 2.39996323
+
+                        uniform vec2 uResolution;
+                        uniform vec2 uPointer;
+                        uniform float uHold;
+                        uniform float uTime;
+                        uniform vec3 uTrough;
+                        uniform vec3 uBody;
+                        uniform vec3 uCrest;
+                        uniform vec3 uKey;
+                        uniform float uScale;
+                        uniform float uCount;
+                        uniform float uSteep;
+                        uniform float uShine;
+                        uniform float uSheen;
+                        uniform float uRipple;
+                        uniform float uReach;
+
                         varying vec2 vUv;
+
                         vec3 rgbFromOklab(vec3 lab) {
                             float l = lab.x + 0.3963377774 * lab.y + 0.2158037573 * lab.z;
                             float m = lab.x - 0.1055613458 * lab.y - 0.0638541728 * lab.z;
                             float s = lab.x - 0.0894841775 * lab.y - 1.291485548 * lab.z;
-                            l = l*l*l; m = m*m*m; s = s*s*s;
-                            return vec3(4.0767416621*l - 3.3077115913*m + 0.2309699292*s, -1.2684380046*l + 2.6097574011*m - 0.3413193965*s, -0.0041960863*l - 0.7034186147*m + 1.707614701*s);
+                            l = l * l * l;
+                            m = m * m * m;
+                            s = s * s * s;
+                            return vec3(
+                                4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+                                -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+                                -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
+                            );
                         }
+
                         void main() {
-                            vec2 p = (vUv * uResolution - uResolution * 0.5) / min(uResolution.x, uResolution.y);
-                            float h = sin(dot(p, vec2(1.0, 1.0)) * 1.4 + uTime) * 0.5 + 0.5;
-                            vec3 lab = mix(uTrough, uCrest, h);
-                            gl_FragColor = vec4(rgbFromOklab(lab), 1.0);
+                            float unit = min(uResolution.x, uResolution.y);
+                            vec2 p = (vUv * uResolution - uResolution * 0.5) / unit;
+
+                            float height = 0.0;
+                            vec2 slope = vec2(0.0);
+                            float amp = 1.0;
+                            float freq = uScale;
+                            float norm = 0.0;
+
+                            for (int i = 0; i < MAX_LAYERS; i++) {
+                                if (float(i) < uCount) {
+                                    float fi = float(i);
+                                    float a = fi * GOLDEN;
+                                    vec2 dir = vec2(cos(a), sin(a));
+                                    float phase = dot(p, dir) * freq + uTime * (0.7 + fi * 0.31);
+                                    height += sin(phase) * amp;
+                                    slope += dir * cos(phase) * amp * freq;
+                                    norm += amp;
+                                    amp *= 0.55;
+                                    freq *= 1.93;
+                                }
+                            }
+
+                            height /= max(norm, 0.0001);
+                            slope /= max(norm, 0.0001);
+
+                            vec2 rel = p - (uPointer - uResolution * 0.5) / unit;
+                            float dist = length(rel);
+                            float env = exp(-(dist * dist) / (uReach * uReach)) * uHold;
+                            float ring = dist * uScale * 1.6 - uTime * 2.2;
+                            height += sin(ring) * env * uRipple;
+                            slope += (rel / max(dist, 0.0001)) * cos(ring) * uScale * 1.6 * env * uRipple;
+
+                            vec3 n = normalize(vec3(-slope * uSteep, 1.0));
+                            vec3 view = vec3(0.0, 0.0, 1.0);
+                            vec3 halfway = normalize(uKey + view);
+
+                            float body = dot(n, uKey) * 0.5 + 0.5;
+                            float sp = max(dot(n, halfway), 0.0);
+
+                            float glint = pow(sp, uShine) + pow(sp, uShine * 0.16) * 0.14;
+                            float rim = pow(1.0 - max(dot(n, view), 0.0), 4.0);
+
+                            float t = clamp(mix(height * 0.5 + 0.5, body, 0.45), 0.0, 1.0);
+                            vec3 lab = t < 0.5
+                                ? mix(uTrough, uBody, t * 2.0)
+                                : mix(uBody, uCrest, t * 2.0 - 1.0);
+                            vec3 col = rgbFromOklab(lab);
+
+                            col = mix(col, rgbFromOklab(uCrest), rim * 0.35);
+                            col += glint * uSheen;
+
+                            gl_FragColor = vec4(max(col, 0.0), 1.0);
                         }
                     `,
                     uniforms: {
@@ -1990,29 +2025,97 @@
                         uTrough: { value: parseHexToOklabVec("#19E3FF") },
                         uBody: { value: parseHexToOklabVec("#00117C") },
                         uCrest: { value: parseHexToOklabVec("#E6A8FF") },
-                        uKey: { value: keyVec }
+                        uKey: { value: keyVec },
+                        uScale: { value: 1.4 },
+                        uCount: { value: 5.0 },
+                        uSteep: { value: 0.62 },
+                        uShine: { value: 400.0 },
+                        uSheen: { value: 1.5 },
+                        uRipple: { value: 0.6 },
+                        uReach: { value: 0.57 }
                     },
-                    depthTest: false, depthWrite: false
+                    depthTest: false,
+                    depthWrite: false
                 });
+
                 this.mesh = new THREE.Mesh(this.geometry, this.material);
                 this.scene.add(this.mesh);
+
+                this.target = new THREE.Vector2(0, 0);
+                this.eased = new THREE.Vector2(0, 0);
+                this.hold = 0;
+                this.wantHold = 0;
+                this.time = 0;
                 this.lastT = performance.now();
+                this.disposed = false;
+
+                el.addEventListener("pointermove", this.onPointerMove.bind(this));
+                el.addEventListener("pointerdown", this.onPointerMove.bind(this));
+                el.addEventListener("pointerleave", this.onPointerLeave.bind(this));
+
                 this.setSize(this.width, this.height);
             }
+
+            onPointerMove(e) {
+                const rect = this.renderer.domElement.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * this.width;
+                const y = (1 - (e.clientY - rect.top) / rect.height) * this.height;
+                this.target.set(x, y);
+                if (this.wantHold === 0) this.eased.copy(this.target);
+                this.wantHold = 1;
+            }
+
+            onPointerLeave() {
+                this.wantHold = 0;
+            }
+
             setSize(w, h) {
-                if (w <= 0 || h <= 0) return;
-                this.width = w; this.height = h;
+                if (this.disposed || w <= 0 || h <= 0) return;
+                this.width = w;
+                this.height = h;
                 this.renderer.setSize(w, h, false);
                 const dpr = this.renderer.getPixelRatio();
-                this.material.uniforms.uResolution.value.set(w * dpr, h * dpr);
+                const tw = w * dpr;
+                const th = h * dpr;
+                this.material.uniforms.uResolution.value.set(tw, th);
+                if (this.wantHold === 0) {
+                    this.target.set(tw * 0.5, th * 0.5);
+                    this.eased.copy(this.target);
+                }
             }
+
             start() {
                 const loop = () => {
+                    if (this.disposed) return;
                     this.frameId = requestAnimationFrame(loop);
-                    this.material.uniforms.uTime.value += 0.015;
-                    this.renderer.render(this.scene, this.camera);
+                    this.step();
                 };
                 loop();
+            }
+
+            step() {
+                const now = performance.now();
+                let dt = (now - this.lastT) / 1000;
+                this.lastT = now;
+                if (!isFinite(dt) || dt < 0) dt = 0;
+                if (dt > 0.05) dt = 0.05;
+
+                this.time += dt * 2.2;
+                this.eased.lerp(this.target, 1 - Math.exp(-dt * 4.0));
+                this.hold += (this.wantHold - this.hold) * (1 - Math.exp(-dt * 3));
+
+                const u = this.material.uniforms;
+                u.uTime.value = this.time;
+                u.uPointer.value.copy(this.eased);
+                u.uHold.value = this.hold;
+
+                this.renderer.render(this.scene, this.camera);
+            }
+
+            dispose() {
+                this.disposed = true;
+                cancelAnimationFrame(this.frameId);
+                this.renderer.dispose();
             }
         }
 
@@ -2021,7 +2124,9 @@
         if (silkContainer) {
             silkSceneInstance = new SilkScene(silkContainer);
             silkSceneInstance.start();
-            window.addEventListener('resize', () => silkSceneInstance.setSize(window.innerWidth, window.innerHeight));
+            window.addEventListener('resize', () => {
+                silkSceneInstance.setSize(window.innerWidth, window.innerHeight);
+            });
         }
 
         const asciiContent = document.getElementById('asciiContent');
@@ -2037,23 +2142,30 @@
         setInterval(generateImgAscii, 150);
 
         const scannerArea = document.getElementById('scannerArea');
-        let isMoving = true, resumeTimeout = null;
+        let isMoving = true; 
+        let resumeTimeout = null;
+
         function updatePosition(clientX) {
             if(!scannerArea) return;
             const rect = scannerArea.getBoundingClientRect();
-            const percent = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+            const x = clientX - rect.left;
+            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
             scannerArea.style.setProperty('--clip-pos', percent + '%');
         }
+
         if(scannerArea) {
             scannerArea.addEventListener('mousemove', (e) => handleUserInteraction(e));
             scannerArea.addEventListener('touchmove', (e) => handleUserInteraction(e));
         }
+
         function handleUserInteraction(e) {
             isMoving = false;
-            updatePosition(e.touches ? e.touches[0].clientX : e.clientX);
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            updatePosition(clientX);
             clearTimeout(resumeTimeout);
             resumeTimeout = setTimeout(() => { isMoving = true; autoAnimate(); }, 3000);
         }
+
         let pos = 0, dir = 0.5;
         function autoAnimate() {
             if (isMoving && scannerArea) {
@@ -2067,12 +2179,15 @@
 
         const initRipple = (el) => {
             const originalText = el.innerText;
-            let isAnimating = false, waves = [];
+            let isAnimating = false;
+            let waves = [];
             const glitchChars = '.,·-─~+:;=*π""┐┌┘┴┬╗╔╝╚╬╠╣╩╦║░▒▓█▄▀▌▐■!?&#$@0123456789*';
+
             const runAnimation = () => {
                 const now = Date.now();
                 waves = waves.filter(w => now - w.startTime < 800);
                 if (waves.length === 0) { el.innerText = originalText; isAnimating = false; return; }
+
                 el.innerText = originalText.split("").map((char, i) => {
                     if (char === " " || char === "\n") return char;
                     let result = char;
@@ -2087,33 +2202,87 @@
                 }).join("");
                 requestAnimationFrame(runAnimation);
             };
+
             el.addEventListener('mouseenter', (e) => {
                 const rect = el.getBoundingClientRect();
                 waves.push({ startPos: Math.round(((e.clientX - rect.left) / rect.width) * originalText.length), startTime: Date.now() });
                 if (!isAnimating) { isAnimating = true; requestAnimationFrame(runAnimation); }
             });
         };
+
         document.querySelectorAll('.ripple-active').forEach(initRipple);
 
         function triggerLanguageSwitch() {
             const html = document.getElementById('main-html');
+            const langBtn = document.getElementById('langToggleBtn');
             const isAr = html.getAttribute('lang') === 'ar';
+            
             html.setAttribute('lang', isAr ? 'en' : 'ar');
             html.setAttribute('dir', isAr ? 'ltr' : 'rtl');
-            document.getElementById('langToggleBtn').innerText = isAr ? 'ع' : 'E';
+            
+            langBtn.innerText = isAr ? 'ع' : 'E';
+
+            setTimeout(initScrollHighlights, 50);
         }
 
         function triggerThemeSwitch() {
             const body = document.getElementById('body-tag');
+            const themeBtn = document.getElementById('themeToggleBtn');
+
             if (!body.classList.contains('cream-mode') && !body.classList.contains('silk-mode')) {
                 body.classList.add('cream-mode');
+                themeBtn.innerHTML = '✧';
             } else if (body.classList.contains('cream-mode')) {
                 body.classList.remove('cream-mode');
                 body.classList.add('silk-mode');
-                if(silkSceneInstance) setTimeout(() => silkSceneInstance.setSize(window.innerWidth, window.innerHeight), 50);
+                themeBtn.innerHTML = '✦';
+
+                if(silkSceneInstance) {
+                    setTimeout(() => {
+                        silkSceneInstance.setSize(window.innerWidth, window.innerHeight);
+                    }, 50);
+                }
             } else {
                 body.classList.remove('silk-mode');
+                themeBtn.innerHTML = '✦';
             }
+        }
+
+        function initScrollHighlights() {
+            document.querySelectorAll('.scroll-highlight-container').forEach(container => {
+                const p = container.querySelector('.scroll-highlight-text');
+                if (!p) return;
+
+                const visibleSubSpan = p.querySelector(document.documentElement.getAttribute('lang') === 'en' ? '.en-only' : '.ar-only');
+                if (!visibleSubSpan) return;
+
+                if (!visibleSubSpan.dataset.processed) {
+                    visibleSubSpan.dataset.processed = "true";
+                    const text = visibleSubSpan.textContent.trim();
+                    const words = text.split(/\s+/).filter(Boolean);
+                    visibleSubSpan.innerHTML = words.map(word => `<span class="word" style="display:inline-block; color:rgba(255, 128, 191, 0.25); transition:color 0.1s;">${word}</span>`).join(" ");
+                }
+
+                const targets = visibleSubSpan.querySelectorAll('.word');
+                if (targets.length === 0) return;
+
+                gsap.set(targets, { color: "rgba(255, 128, 191, 0.25)" });
+                
+                ScrollTrigger.getAll().forEach(st => {
+                    if (st.trigger === container) st.kill();
+                });
+
+                gsap.to(targets, {
+                    color: "var(--text-light)",
+                    stagger: 0.15,
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top 75%",
+                        end: "bottom 25%",
+                        scrub: true
+                    }
+                });
+            });
         }
 
         function navigate(id, navItemElement = null) {
@@ -2123,13 +2292,18 @@
             window.scrollTo(0, 0);
 
             document.querySelectorAll('.glass-nav-item').forEach(item => item.classList.remove('active'));
+            
             if (navItemElement) {
                 navItemElement.classList.add('active');
             } else {
                 const activeNav = document.querySelector(`.glass-nav-item[data-target="${id}"]`);
                 if (activeNav) activeNav.classList.add('active');
             }
+
+            setTimeout(initScrollHighlights, 100);
         }
+
+        setTimeout(initScrollHighlights, 200);
     </script>
 </body>
 </html>

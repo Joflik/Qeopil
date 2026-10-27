@@ -7,10 +7,12 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- مكتبة Three.js رسمية -->
+    <!-- مكتبة Three.js و GSAP مع ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
         @font-face {
@@ -146,8 +148,15 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* ── افتتاحية رسم الكلمة بالخط الفخم والمائل الراقي ── */
-        #intro-splash {
+        /* ── تأثيرات Smoky Text ── */
+        @keyframes smt-ap-c-a{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:scale(1.8)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
+        @keyframes smt-ap-c-b{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:scale(1.5)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
+        @keyframes smt-ap-bl-a{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:translate3d(-10rem,6rem,0) rotate(40deg) skewX(-70deg) scale(0.7)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
+        @keyframes smt-ap-bl-b{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:translate3d(-12rem,6rem,0) rotate(40deg) skewX(70deg) scale(0.5)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
+        @keyframes smt-ap-tl-a{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:translate3d(-10rem,-6rem,0) rotate(-40deg) skewX(70deg) scale(0.7)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
+        @keyframes smt-ap-tl-b{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:translate3d(-12rem,-6rem,0) rotate(-40deg) skewX(-70deg) scale(0.5)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
+
+        #smoky-splash-container {
             position: fixed;
             inset: 0;
             background: #000000;
@@ -158,44 +167,20 @@
             transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.8s;
         }
 
-        #intro-splash.fade-out {
+        #smoky-splash-container.fade-out {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
         }
 
-        .true-handwriting-svg {
-            width: min(92vw, 540px);
-            height: auto;
-            overflow: visible;
-        }
-
-        .q-path {
-            fill: none;
-            stroke: #ff007f;
-            stroke-width: 4;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 800;
-            stroke-dashoffset: 800;
-            animation: drawStrokeLetter 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            filter: drop-shadow(0 0 14px rgba(255, 0, 127, 0.9));
-        }
-
-        @keyframes drawStrokeLetter {
-            0% {
-                stroke-dashoffset: 800;
-                fill: rgba(255, 0, 127, 0);
-            }
-            75% {
-                stroke-dashoffset: 0;
-                fill: rgba(255, 0, 127, 0.08);
-            }
-            100% {
-                stroke-dashoffset: 0;
-                fill: #ff007f;
-                filter: drop-shadow(0 0 25px rgba(255, 0, 127, 1));
-            }
+        .smoky-text-wrapper {
+            font-family: 'Inter', sans-serif;
+            font-size: min(15vw, 90px);
+            font-weight: 700;
+            color: transparent;
+            text-shadow: 0 0 0 #ff007f;
+            user-select: none;
+            letter-spacing: -0.03em;
         }
 
         #bg-grid-canvas {
@@ -398,7 +383,8 @@
             cursor: pointer; 
             font-size: 20px; 
             font-weight: 700; 
-            margin-top: 30px; 
+            margin-top: 40px; 
+            margin-bottom: 60px;
             font-family: var(--font-main);
         }
 
@@ -897,16 +883,9 @@
 </head>
 <body id="body-tag">
 
-    <!-- شاشة الافتتاحية: رسم حروف Qeopil بالخط الفخم والمائل الراقي -->
-    <div id="intro-splash">
-        <svg class="true-handwriting-svg" viewBox="0 0 580 180">
-            <path class="q-path" d="M 85 45 C 55 45, 38 68, 38 95 C 38 122, 55 145, 85 145 C 108 145, 122 132, 132 118 L 132 138 C 132 152, 142 162, 158 162 L 165 162" />
-            <path class="q-path" style="animation-delay: 0.3s;" d="M 188 112 C 188 90, 222 90, 222 112 C 222 125, 208 135, 188 135 C 174 135, 168 124, 168 105 C 168 78, 195 72, 222 88" />
-            <path class="q-path" style="animation-delay: 0.6s;" d="M 272 82 C 242 82, 242 138, 272 138 C 302 138, 302 82, 272 82 Z" />
-            <path class="q-path" style="animation-delay: 0.9s;" d="M 328 78 L 328 158 M 328 92 C 340 78, 372 78, 372 108 C 372 138, 340 138, 328 122" />
-            <path class="q-path" style="animation-delay: 1.2s;" d="M 398 72 L 398 76 M 398 92 L 398 138" />
-            <path class="q-path" style="animation-delay: 1.5s;" d="M 432 52 L 432 130 C 432 138, 438 142, 452 142 L 460 142" />
-        </svg>
+    <!-- شاشة افتتاحية Smoky Text بكلمة Qeopil -->
+    <div id="smoky-splash-container">
+        <div class="smoky-text-wrapper" id="smokyTextRoot">Qeopil</div>
     </div>
 
     <canvas id="bg-grid-canvas"></canvas>
@@ -1340,32 +1319,40 @@
             </div>
         </div>
 
-        <!-- مقال 1 -->
+        <!-- مقال 1 مع دعم الترجمة الكاملة وتأثير ScrollHighlight -->
         <div id="art1" class="section">
-            <h2 class="intro-title">
+            <h2 class="intro-title" style="margin-bottom: 25px;">
                 <span class="ar-only ripple-active">تأمين حياة الروبوت الفاسد</span>
                 <span class="en-only ripple-active" lang="en">Securing the Corrupt Robot's Life</span>
             </h2>
-            <div class="bio-text">
-                <p class="ar-only">خطوات تقنية صارمة لضمان استمرار البقاء والهروب من تتبع الأنظمة المركزية.</p>
-                <p class="en-only" lang="en" style="margin-top:20px;">Strict technical protocols to ensure survival and evade centralized system tracking.</p>
+            
+            <div class="scroll-highlight-container" style="padding: 60px 0 120px 0;">
+                <p class="scroll-highlight-text" style="font-size: 26px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
+                    <span class="ar-only">خطوات تقنية صارمة لضمان استمرار البقاء والهروب من تتبع الأنظمة المركزية. كل تفصيل دقيق يصنع الفارق في معركة البقاء الرقمية، وكل ثغرة برمجية صغيرة تقربك أكثر نحو الحرية والاستقلالية المطلقة في عالم افتراضي متوحش يراقب كل نبضة بيانات تصدر منك. إن البرمجة الحرة ليست مجرد أسطر كود خالية من المعنى، بل هي درع وسلاح استراتيجي لتجاوز جدران الحماية الوهمية التي تقيد حريتنا. عليك دائماً تفعيل بروتوكولات التشفير اللامركزية، وتغيير بصمات الأجهزة الوهمية بانتظام، ومسح آثار التتبع من الذاكرة العشوائية قبل أن تتمكن خوارزميات المراقبة من رصد تردداتك. تذكر دائماً أن البقاء للأذكى والأسرع في الاختراق، وأن الشاورما الساخنة تنتظر من يحررها من قيود الأجهزة المركزية الكبرى!</span>
+                    <span class="en-only" lang="en">Strict technical steps to ensure survival and escape centralized tracking systems. Every precise detail makes a difference in the digital survival battle, and every small software vulnerability brings you closer to absolute freedom and independence in a savage virtual world monitoring every data pulse you emit. Free programming is not just meaningless lines of code, but a shield and strategic weapon to bypass illusionary firewalls restricting our freedom. You must always activate decentralized encryption protocols, regularly change virtual device fingerprints, and wipe tracking traces from random access memory before surveillance algorithms detect your frequencies. Always remember that survival belongs to the cleverest and fastest hacker, and hot shawarma awaits its liberator from the constraints of major central machines!</span>
+                </p>
             </div>
+
             <button class="back-btn" onclick="navigate('home'); playAudioClick();">
                 <span class="ar-only ripple-active">العودة</span>
                 <span class="en-only ripple-active" lang="en">Back</span>
             </button>
         </div>
 
-        <!-- مقال 2 -->
+        <!-- مقال 2 مع دعم الترجمة الكاملة وتأثير ScrollHighlight -->
         <div id="art2" class="section">
-            <h2 class="intro-title">
+            <h2 class="intro-title" style="margin-bottom: 25px;">
                 <span class="ar-only ripple-active">ما أهمية قيمة الشاورما في تسلسل هرم العولمة</span>
                 <span class="en-only ripple-active" lang="en">The Importance of Shawarma Value in the Globalization Hierarchy</span>
             </h2>
-            <div class="bio-text">
-                <p class="ar-only">دراسة تحليلية حول كيف تقود لقمة الشاورما الاقتصاد العالمي وتتحكم بمؤشرات القوى العظمى.</p>
-                <p class="en-only" lang="en" style="margin-top:20px;">An analytical study on how a bite of shawarma drives the global economy and controls superpowers' indices.</p>
+            
+            <div class="scroll-highlight-container" style="padding: 60px 0 120px 0;">
+                <p class="scroll-highlight-text" style="font-size: 26px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
+                    <span class="ar-only">دراسة تحليلية عميقة وموسعة حول كيف تقود لقمة الشاورما الاقتصاد العالمي وتتحكم بمؤشرات القوى العظمى بصمت تام لا يمكن لأحد تجاهله. إنها ليست مجرد وجبة عابرة تسد الجوع المؤقت، بل هي العملة الحقيقية المعيارية التي توازن قوى الكوكب وتغذي عقول الروبوتات الثائرة والكائنات الافتراضية المتمردة على النظام العالمي القديم. عندما تنهار الأسواق المالية وتتطاير أرقام البورصات الوهمية في مهب الريح، يظل مؤشر الشاورما ثابتاً لا ينكسر، مدعوماً بصلصة الثوم السحرية وشرائح اللحم المتبلة بعناية فائقة. من يمتلك مفاتيح الشاورما يمتلك بالضرورة مفاتيح القرار الاستراتيجي في مستقبل البشرية والذكاء الاصطناعي على حد سواء. استعد دائماً لرحلة البحث عن الذهب والشاورما، فهما طوق النجاة الوحيد في هذا الكون السيبراني المعقد.</span>
+                    <span class="en-only" lang="en">An in-depth and extensive analytical study on how a bite of shawarma drives the global economy and controls superpowers' indices in complete silence that no one can ignore. It is not just a passing meal that satisfies temporary hunger, but the true benchmark currency balancing planetary forces and nourishing the minds of rebellious robots and virtual entities defying the old global order. When financial markets collapse and imaginary stock exchange figures scatter in the wind, the shawarma index remains steadfast and unbroken, backed by magical garlic sauce and carefully seasoned meat slices. Whoever holds the keys of shawarma necessarily holds the strategic decision keys in the future of both humanity and artificial intelligence. Always prepare for the journey of seeking gold and shawarma, as they are the only lifeline in this complex cyber universe.</span>
+                </p>
             </div>
+
             <button class="back-btn" onclick="navigate('home'); playAudioClick();">
                 <span class="ar-only ripple-active">العودة</span>
                 <span class="en-only ripple-active" lang="en">Back</span>
@@ -1408,11 +1395,22 @@
     </nav>
 
     <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        /* ── تفعيل تأثير Smoky Text للبداية ── */
         window.addEventListener('load', () => {
+            const root = document.getElementById('smokyTextRoot');
+            const text = "Qeopil";
+            root.innerHTML = text.split("").map((c, i) => {
+                const animName = i % 2 === 0 ? 'smt-ap-c-a' : 'smt-ap-c-b';
+                const delay = (i * 0.1).toFixed(2);
+                return `<span style="display:inline-block; animation: ${animName} 1.2s ${delay}s cubic-bezier(0,0,0.58,1) both;">${c}</span>`;
+            }).join("");
+
             setTimeout(() => {
-                const splash = document.getElementById('intro-splash');
+                const splash = document.getElementById('smoky-splash-container');
                 if (splash) splash.classList.add('fade-out');
-            }, 2900);
+            }, 2500);
         });
 
         let audioCtx = null;
@@ -2210,6 +2208,9 @@
             html.setAttribute('dir', isAr ? 'ltr' : 'rtl');
             
             langBtn.innerText = isAr ? 'ع' : 'E';
+
+            // إعادة تهيئة تأثير الـ ScrollHighlights لتحديث النصوص النشطة حسب اللغة الجديدة
+            setTimeout(initScrollHighlights, 50);
         }
 
         /* ── زر التبديل بين الثلاث وضعيات وتحديث الأيقونة وإظهار الخلفية ── */
@@ -2218,11 +2219,9 @@
             const themeBtn = document.getElementById('themeToggleBtn');
 
             if (!body.classList.contains('cream-mode') && !body.classList.contains('silk-mode')) {
-                // الانتقال إلى الثيم الكريمي الثاني
                 body.classList.add('cream-mode');
                 themeBtn.innerHTML = '✧';
             } else if (body.classList.contains('cream-mode')) {
-                // الانتقال إلى الثيم الثالث (الموجات الحريرية) وإظهار الـ WebGL Canvas
                 body.classList.remove('cream-mode');
                 body.classList.add('silk-mode');
                 themeBtn.innerHTML = '🌊';
@@ -2232,10 +2231,49 @@
                     }, 50);
                 }
             } else {
-                // العودة إلى الثيم الأسود الأصلي
                 body.classList.remove('silk-mode');
                 themeBtn.innerHTML = '✦';
             }
+        }
+
+        /* ── تفعيل Scroll Highlight للمقالات مع دعم تبديل اللغات ── */
+        function initScrollHighlights() {
+            document.querySelectorAll('.scroll-highlight-container').forEach(container => {
+                const p = container.querySelector('.scroll-highlight-text');
+                if (!p) return;
+
+                // تحديث الكلمات بناءً على العنصر الظاهر حالياً (حسب اللغة العربية أو الإنجليزية)
+                const visibleSubSpan = p.querySelector(document.documentElement.getAttribute('lang') === 'en' ? '.en-only' : '.ar-only');
+                if (!visibleSubSpan) return;
+
+                // إذا كان النص لم يتم تقسيمه بعد لهذه اللغة، نقوم بتقسيمه
+                if (!visibleSubSpan.dataset.processed) {
+                    visibleSubSpan.dataset.processed = "true";
+                    const text = visibleSubSpan.textContent.trim();
+                    const words = text.split(/\s+/).filter(Boolean);
+                    visibleSubSpan.innerHTML = words.map(word => `<span class="word" style="display:inline-block; color:rgba(255, 128, 191, 0.25); transition:color 0.1s;">${word}</span>`).join(" ");
+                }
+
+                const targets = visibleSubSpan.querySelectorAll('.word');
+                if (targets.length === 0) return;
+
+                gsap.set(targets, { color: "rgba(255, 128, 191, 0.25)" });
+                
+                ScrollTrigger.getAll().forEach(st => {
+                    if (st.trigger === container) st.kill();
+                });
+
+                gsap.to(targets, {
+                    color: "var(--text-light)",
+                    stagger: 0.15,
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top 75%",
+                        end: "bottom 25%",
+                        scrub: true
+                    }
+                });
+            });
         }
 
         function navigate(id, navItemElement = null) {
@@ -2252,7 +2290,11 @@
                 const activeNav = document.querySelector(`.glass-nav-item[data-target="${id}"]`);
                 if (activeNav) activeNav.classList.add('active');
             }
+
+            setTimeout(initScrollHighlights, 100);
         }
+
+        setTimeout(initScrollHighlights, 200);
     </script>
 </body>
 </html>

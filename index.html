@@ -9,8 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- مكتبة Three.js و GSAP مع ScrollTrigger -->
+    <!-- مكتبة Three.js لموجات الحرير -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- مكتبة GSAP مع ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -95,7 +96,7 @@
             box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
         }
 
-        /* ── وضع الثيم الثالث: الموجات الحريرية (Silk Waves Mode) ── */
+        /* ── وضع الثيم الثالث: موجات الحرير (Silk Waves Mode) ── */
         body.silk-mode {
             --bg-color: #00040f !important;
             --text-light: #9fd3ff !important;
@@ -148,14 +149,9 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* ── تأثيرات Smoky Text ── */
         @keyframes smt-ap-c-a{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:scale(1.8)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
         @keyframes smt-ap-c-b{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:scale(1.5)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
-        @keyframes smt-ap-bl-a{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:translate3d(-10rem,6rem,0) rotate(40deg) skewX(-70deg) scale(0.7)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
-        @keyframes smt-ap-bl-b{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:translate3d(-12rem,6rem,0) rotate(40deg) skewX(70deg) scale(0.5)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
-        @keyframes smt-ap-tl-a{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:translate3d(-10rem,-6rem,0) rotate(-40deg) skewX(70deg) scale(0.7)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
-        @keyframes smt-ap-tl-b{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:translate3d(-12rem,-6rem,0) rotate(-40deg) skewX(-70deg) scale(0.5)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
-
+        
         #smoky-splash-container {
             position: fixed;
             inset: 0;
@@ -183,6 +179,7 @@
             letter-spacing: -0.03em;
         }
 
+        /* ── خلفية المربعات (للوضعين الأول والثاني) ── */
         #bg-grid-canvas {
             position: fixed;
             top: 0;
@@ -193,7 +190,11 @@
             pointer-events: none;
         }
 
-        /* حاوية خلفية موجات الحرير ثلاثية الأبعاد */
+        body.silk-mode #bg-grid-canvas {
+            display: none;
+        }
+
+        /* ── خلفية موجات الحرير (للوضع الثالث) ── */
         #silk-waves-container {
             position: fixed;
             top: 0;
@@ -210,10 +211,6 @@
         body.silk-mode #silk-waves-container {
             opacity: 1;
             visibility: visible;
-        }
-
-        body.silk-mode #bg-grid-canvas {
-            display: none;
         }
 
         header, #content-wrapper {
@@ -317,6 +314,7 @@
             font-weight: 700;
         }
 
+        /* ── حاوية اللوغو بشفافية كاملة تظهر خلفية المربعات أو الحرير ── */
         .image-box { 
             position: relative; 
             width: 100%; 
@@ -326,6 +324,9 @@
             overflow: hidden; 
             cursor: ew-resize; 
             direction: ltr; 
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
         }
         
         .image-layer { 
@@ -335,23 +336,25 @@
             width: 100%; 
             height: 100%; 
             pointer-events: none; 
+            background: transparent !important;
         }
 
         .img-normal { 
             z-index: 2; 
             clip-path: inset(0 0 0 var(--clip-pos, 50%)); 
+            background: transparent !important;
         }
         .img-normal img { 
             width: 100%; 
             height: 100%; 
             object-fit: contain; 
-            background: var(--bg-color); 
+            background: transparent !important; 
         }
 
         .img-ascii { 
             z-index: 1; 
             clip-path: inset(0 calc(100% - var(--clip-pos, 50%)) 0 0); 
-            background: var(--bg-color); 
+            background: transparent !important; 
             color: var(--accent-color); 
             font-family: 'Departure Mono', monospace; 
             font-size: 10px; 
@@ -760,7 +763,7 @@
             height: 22px !important;
         }
 
-        /* ── تأثير كشف الصور عند التحويم للمخزن الرقمي (Hover Image Reveal) ── */
+        /* ── تأثير كشف الصور عند التحويم للمخزن الرقمي ── */
         .hir-container {
             position: relative;
             width: 100%;
@@ -888,7 +891,10 @@
         <div class="smoky-text-wrapper" id="smokyTextRoot">Qeopil</div>
     </div>
 
+    <!-- خلفية المربعات (للوضعين الأول والثاني) -->
     <canvas id="bg-grid-canvas"></canvas>
+    
+    <!-- خلفية موجات الحرير (للوضع الثالث) -->
     <div id="silk-waves-container"></div>
 
     <header>
@@ -1319,7 +1325,7 @@
             </div>
         </div>
 
-        <!-- مقال 1 مع دعم الترجمة الكاملة وتأثير ScrollHighlight -->
+        <!-- مقال 1 -->
         <div id="art1" class="section">
             <h2 class="intro-title" style="margin-bottom: 25px;">
                 <span class="ar-only ripple-active">تأمين حياة الروبوت الفاسد</span>
@@ -1339,7 +1345,7 @@
             </button>
         </div>
 
-        <!-- مقال 2 مع دعم الترجمة الكاملة وتأثير ScrollHighlight -->
+        <!-- مقال 2 -->
         <div id="art2" class="section">
             <h2 class="intro-title" style="margin-bottom: 25px;">
                 <span class="ar-only ripple-active">ما أهمية قيمة الشاورما في تسلسل هرم العولمة</span>
@@ -1397,7 +1403,6 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        /* ── تفعيل تأثير Smoky Text للبداية ── */
         window.addEventListener('load', () => {
             const root = document.getElementById('smokyTextRoot');
             const text = "Qeopil";
@@ -1712,7 +1717,6 @@
             setTimeout(updateCardsScale, 50);
         }
 
-        /* ── تفعيل برمجية Hover Image Reveal للمخزن الرقمي ── */
         const hirContainer = document.getElementById('hirContainer');
         const hirFloatBox = document.getElementById('hirFloatBox');
         const hirList = document.getElementById('hirList');
@@ -1767,7 +1771,6 @@
             });
         }
 
-        /* ── خلفية المربعات المضيئة (Background Grid Canvas) ── */
         const canvas = document.getElementById('bg-grid-canvas');
         const ctx = canvas.getContext('2d');
         const pixelSize = 12;
@@ -1866,16 +1869,31 @@
 
         animateFullGrid();
 
-        /* ── تفعيل برمجية موجات الحرير (Silk Waves Engine ثلاثي الأبعاد) ── */
+        /* ── تفعيل محرك موجات الحرير (Silk Waves Engine) ── */
         function parseHexToOklabVec(hex) {
-            const c = new THREE.Color(hex);
-            const l = Math.cbrt(0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b);
-            const m = Math.cbrt(0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b);
-            const s = Math.cbrt(0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b);
+            let c = hex.replace("#", "");
+            if (c.length === 3) c = c.split("").map(x => x + x).join("");
+            const num = parseInt(c, 16);
+            let r = ((num >> 16) & 255) / 255;
+            let g = ((num >> 8) & 255) / 255;
+            let b = (num & 255) / 255;
+
+            r = r > 0.04045 ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
+            g = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
+            b = b > 0.04045 ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
+
+            const l_val = 0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b;
+            const m_val = 0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b;
+            const s_val = 0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b;
+
+            const l_ = Math.cbrt(l_val);
+            const m_ = Math.cbrt(m_val);
+            const s_ = Math.cbrt(s_val);
+
             return new THREE.Vector3(
-                0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
-                1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
-                0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s
+                0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
+                1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
+                0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
             );
         }
 
@@ -2209,11 +2227,9 @@
             
             langBtn.innerText = isAr ? 'ع' : 'E';
 
-            // إعادة تهيئة تأثير الـ ScrollHighlights لتحديث النصوص النشطة حسب اللغة الجديدة
             setTimeout(initScrollHighlights, 50);
         }
 
-        /* ── زر التبديل بين الثلاث وضعيات وتحديث الأيقونة وإظهار الخلفية ── */
         function triggerThemeSwitch() {
             const body = document.getElementById('body-tag');
             const themeBtn = document.getElementById('themeToggleBtn');
@@ -2224,7 +2240,8 @@
             } else if (body.classList.contains('cream-mode')) {
                 body.classList.remove('cream-mode');
                 body.classList.add('silk-mode');
-                themeBtn.innerHTML = '🌊';
+                themeBtn.innerHTML = '✦';
+
                 if(silkSceneInstance) {
                     setTimeout(() => {
                         silkSceneInstance.setSize(window.innerWidth, window.innerHeight);
@@ -2236,17 +2253,14 @@
             }
         }
 
-        /* ── تفعيل Scroll Highlight للمقالات مع دعم تبديل اللغات ── */
         function initScrollHighlights() {
             document.querySelectorAll('.scroll-highlight-container').forEach(container => {
                 const p = container.querySelector('.scroll-highlight-text');
                 if (!p) return;
 
-                // تحديث الكلمات بناءً على العنصر الظاهر حالياً (حسب اللغة العربية أو الإنجليزية)
                 const visibleSubSpan = p.querySelector(document.documentElement.getAttribute('lang') === 'en' ? '.en-only' : '.ar-only');
                 if (!visibleSubSpan) return;
 
-                // إذا كان النص لم يتم تقسيمه بعد لهذه اللغة، نقوم بتقسيمه
                 if (!visibleSubSpan.dataset.processed) {
                     visibleSubSpan.dataset.processed = "true";
                     const text = visibleSubSpan.textContent.trim();

@@ -1,0 +1,2551 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="main-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Q - Hub</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة Three.js لموجات الحرير -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- مكتبة GSAP مع ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'Departure Mono';
+            src: url('DepartureMono-Regular.woff2') format('woff2');
+            font-weight: normal; 
+            font-style: normal;
+        }
+
+        :root {
+            --bg-color: #000000; 
+            --font-main: 'IBM Plex Sans Arabic', sans-serif;
+            --font-en: 'Departure Mono', monospace;
+            --accent-color: #ff007f; 
+            --text-light: #ff80bf;   
+            --ink: #ffffff;
+            --ink-3: #ff80bf;
+            --ink-4: #cc6699;
+        }
+
+        /* ── وضع الثيم الكريمي الفاخر (Editorial Cream Mode) ── */
+        body.cream-mode {
+            --bg-color: #f4f1ea !important;
+            --text-light: #3b3530 !important;
+            --accent-color: #5c4f41 !important;
+            --ink: #1f1b18 !important;
+            --ink-3: #4a4036 !important;
+            --ink-4: #736456 !important;
+            color: var(--text-light) !important;
+            font-family: 'Amiri', 'Cormorant Garamond', serif !important;
+        }
+
+        body.cream-mode *, 
+        body.cream-mode .brand, 
+        body.cream-mode .intro-title, 
+        body.cream-mode .bio-text, 
+        body.cream-mode .article-link, 
+        body.cream-mode .back-btn, 
+        body.cream-mode .snd-title, 
+        body.cream-mode .snd-by, 
+        body.cream-mode [lang="en"], 
+        body.cream-mode .en-only {
+            font-family: 'Amiri', 'Cormorant Garamond', serif !important;
+        }
+
+        body.cream-mode .glass-header-container,
+        body.cream-mode .glass-nav-container,
+        body.cream-mode .global-mini-player,
+        body.cream-mode .snd.fullscreen {
+            background: rgba(255, 255, 255, 0.4) !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        body.cream-mode .glass-nav-item {
+            color: rgba(0, 0, 0, 0.4) !important;
+        }
+
+        body.cream-mode .glass-nav-item:hover {
+            color: rgba(0, 0, 0, 0.8) !important;
+        }
+
+        body.cream-mode .glass-nav-item.active {
+            color: #1f1b18 !important;
+            background: rgba(92, 79, 65, 0.1) !important;
+            border: 1px solid rgba(92, 79, 65, 0.2) !important;
+        }
+
+        body.cream-mode .glass-lang-btn,
+        body.cream-mode .glass-theme-btn {
+            background: rgba(92, 79, 65, 0.1) !important;
+            border: 1px solid rgba(92, 79, 65, 0.2) !important;
+            color: #3b3530 !important;
+        }
+
+        /* ── وضع الثيم الثالث: موجات الحرير (Silk Waves Mode) ── */
+        body.silk-mode {
+            --bg-color: #00040f !important;
+            --text-light: #9fd3ff !important;
+            --accent-color: #19e3ff !important;
+            --ink: #ffffff !important;
+            --ink-3: #9fd3ff !important;
+            --ink-4: #6bb3ff !important;
+        }
+
+        body.silk-mode .glass-header-container,
+        body.silk-mode .glass-nav-container,
+        body.silk-mode .global-mini-player,
+        body.silk-mode .snd.fullscreen {
+            background: rgba(0, 17, 124, 0.2) !important;
+            border: 1px solid rgba(25, 227, 255, 0.15) !important;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        body.silk-mode .glass-nav-item.active {
+            background: rgba(25, 227, 255, 0.2) !important;
+            border: 1px solid rgba(25, 227, 255, 0.35) !important;
+        }
+
+        body.silk-mode .glass-lang-btn,
+        body.silk-mode .glass-theme-btn {
+            background: rgba(25, 227, 255, 0.15) !important;
+            border: 1px solid rgba(25, 227, 255, 0.25) !important;
+            color: #ffffff !important;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-light);
+            font-family: var(--font-main);
+            margin: 0; 
+            padding: 90px 16px 170px 16px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        @keyframes smt-ap-c-a{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:scale(1.8)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
+        @keyframes smt-ap-c-b{from{opacity:0;text-shadow:0 0 2px #ff007f;transform:scale(1.5)}40%{text-shadow:0 0 100px #ff007f}to{opacity:1;text-shadow:0 0 0 #ff007f;transform:none}}
+        
+        #smoky-splash-container {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.8s;
+        }
+
+        #smoky-splash-container.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .smoky-text-wrapper {
+            font-family: 'Inter', sans-serif;
+            font-size: min(15vw, 90px);
+            font-weight: 700;
+            color: transparent;
+            text-shadow: 0 0 0 #ff007f;
+            user-select: none;
+            letter-spacing: -0.03em;
+        }
+
+        /* ── خلفية المربعات ── */
+        #bg-grid-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body.silk-mode #bg-grid-canvas {
+            display: none;
+        }
+
+        /* ── خلفية موجات الحرير ── */
+        #silk-waves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        body.silk-mode #silk-waves-container {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #content-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        [lang="en"], .en-only, .btn-lang { 
+            font-family: var(--font-en); 
+        }
+
+        /* ── الصندوق العلوي ── */
+        .glass-header-container {
+            position: fixed;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(92vw, 480px);
+            height: 52px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .brand { 
+            font-size: 22px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            color: var(--accent-color); 
+            letter-spacing: 1px;
+            user-select: none;
+            font-family: var(--font-en);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .glass-lang-btn, .glass-theme-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(255, 0, 127, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 127, 0.2);
+            color: #ffffff;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .glass-lang-btn {
+            font-family: var(--font-en);
+            font-weight: bold;
+        }
+
+        .glass-lang-btn:hover, .glass-theme-btn:hover {
+            transform: scale(1.05);
+            background: rgba(255, 0, 127, 0.2);
+        }
+
+        .section { display: none; }
+        .section.active { display: block; }
+        
+        .intro-title { 
+            font-size: 32px; 
+            font-weight: 700; 
+            text-align: center; 
+            color: var(--accent-color); 
+            margin-bottom: 12px; 
+            line-height: 1.3;
+        }
+
+        .bio-text { 
+            font-size: 18px; 
+            text-align: center; 
+            color: var(--text-light); 
+            font-weight: 400; 
+            line-height: 1.6;
+        }
+
+        .article-link { 
+            display: block; 
+            font-size: 18px; 
+            margin-bottom: 20px; 
+            cursor: pointer; 
+            color: var(--accent-color); 
+            text-decoration: none; 
+            font-weight: 700;
+        }
+
+        .image-box { 
+            position: relative; 
+            width: 100%; 
+            max-width: 360px; 
+            aspect-ratio: 400 / 250; 
+            margin: 0 auto 30px auto; 
+            overflow: hidden; 
+            cursor: ew-resize; 
+            direction: ltr; 
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        .image-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            pointer-events: none; 
+            background: transparent !important;
+        }
+
+        .img-normal { 
+            z-index: 2; 
+            clip-path: inset(0 0 0 var(--clip-pos, 50%)); 
+            background: transparent !important;
+        }
+        .img-normal img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            background: transparent !important; 
+        }
+
+        .img-ascii { 
+            z-index: 1; 
+            clip-path: inset(0 calc(100% - var(--clip-pos, 50%)) 0 0); 
+            background: transparent !important; 
+            color: var(--accent-color); 
+            font-family: 'Departure Mono', monospace; 
+            font-size: 9px; 
+            line-height: 11px; 
+            white-space: pre; 
+            padding: 10px; 
+            overflow: hidden; 
+            direction: ltr;
+            text-align: left;
+        }
+
+        .scanner-line { 
+            position: absolute; 
+            top: 0; 
+            left: var(--clip-pos, 50%); 
+            width: 2px; 
+            height: 100%; 
+            background: var(--accent-color); 
+            box-shadow: 0 0 12px var(--accent-color); 
+            z-index: 10; 
+            transform: translateX(-50%); 
+            pointer-events: none; 
+        }
+
+        .back-btn {
+            background: none; 
+            border: none; 
+            color: var(--accent-color); 
+            cursor: pointer; 
+            font-size: 18px; 
+            font-weight: 700; 
+            margin-top: 30px; 
+            margin-bottom: 50px;
+            font-family: var(--font-main);
+        }
+
+        /* ── الصندوق السفلي (القائمة العائمة) ── */
+        .glass-nav-container {
+            position: fixed;
+            bottom: max(14px, env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(92vw, 360px);
+            height: 52px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 4px 6px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            direction: ltr !important;
+        }
+
+        .glass-nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 40px;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.35);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-nav-item svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .glass-nav-item:hover {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .glass-nav-item.active {
+            color: #ffffff;
+            background: rgba(255, 0, 127, 0.15);
+            border: 1px solid rgba(255, 0, 127, 0.3);
+        }
+
+        .glass-nav-item.active svg {
+            stroke: #ffffff;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+        }
+
+        /* ── الشريط المصغر العام السفلي (يظهر حصرياً في صفحة الموسيقى) ── */
+        .global-mini-player {
+            position: fixed;
+            bottom: max(74px, calc(env(safe-area-inset-bottom) + 60px));
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(92vw, 420px);
+            height: 58px;
+            z-index: 998;
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 12px;
+            cursor: pointer;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            direction: rtl;
+        }
+
+        body.music-active .global-mini-player {
+            display: flex;
+        }
+
+        .global-mini-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 44px;
+        }
+
+        .gm-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .gm-art {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .gm-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            overflow: hidden;
+            text-align: right;
+        }
+
+        .gm-title {
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .gm-by {
+            color: #b3b3b3;
+            font-size: 11px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .gm-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .gm-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .gm-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .gm-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .gm-rail {
+            position: absolute;
+            bottom: 3px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            overflow: hidden;
+            cursor: pointer;
+            direction: ltr !important;
+        }
+
+        .gm-run {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        body.fullscreen-active .glass-header-container,
+        body.fullscreen-active .glass-nav-container,
+        body.fullscreen-active .global-mini-player {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translate(-50%, 40px) scale(0.95) !important;
+        }
+
+        /* ── صفحة الموسيقى ── */
+        .snd-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 10px 0 140px 0;
+        }
+
+        .snd {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 68px;
+            cursor: pointer;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 12px;
+            transition: background 0.2s ease;
+            padding: 0 10px;
+        }
+
+        .snd:hover {
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+
+        .snd-box {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            height: 100%;
+            position: relative;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            overflow: hidden;
+        }
+
+        .snd-art {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        }
+
+        .snd-say {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2px;
+            flex-grow: 1;
+            margin: 0 12px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .snd-title {
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .snd-by {
+            color: var(--text-light);
+            font-size: 11px;
+            opacity: 0.75;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .snd-bar {
+            display: none !important;
+        }
+
+        /* ── إخفاء أزرار التحكم تماماً في البطاقات العادية ── */
+        .snd .snd-ops {
+            display: none !important;
+        }
+
+        /* ── زر السهم العلوي في وضع ملء الشاشة ── */
+        .fs-top-bar {
+            width: 100% !important;
+            max-width: 320px !important;
+            display: none;
+            justify-content: flex-start !important;
+            margin-bottom: 2px !important;
+            z-index: 10000005 !important;
+            pointer-events: auto !important;
+        }
+
+        .close-fs-btn {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            color: #ffffff !important;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            padding: 0;
+            opacity: 0.9;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .close-fs-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .close-fs-btn:hover { 
+            opacity: 1; 
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        /* ── وضع ملء الشاشة للموسيقى (صورة نازلة شوي تحت، وكل شيء متناسق ومرتب في المنتصف تماماً) ── */
+        .snd.fullscreen {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            z-index: 10000000 !important;
+            margin: 0 !important;
+            
+            background: rgba(12, 12, 12, 0.92) !important;
+            backdrop-filter: blur(25px) saturate(150%) !important;
+            -webkit-backdrop-filter: blur(25px) saturate(150%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 10px 16px !important;
+            transform-origin: top center;
+            animation: slideDownCurtain 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            direction: rtl !important;
+        }
+
+        @keyframes slideDownCurtain {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0%);
+                opacity: 1;
+            }
+        }
+
+        .snd.fullscreen .fs-top-bar { display: flex !important; }
+
+        .snd.fullscreen .snd-box {
+            position: relative !important;
+            width: 100% !important;
+            max-width: 320px !important;
+            height: auto !important;
+            background: transparent !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            overflow: visible !important;
+        }
+
+        /* 1. حجم وتوسيط صورة الألبوم (تم إنزالها قليلاً للأسفل لتتوسط الشاشة تماماً مع القائمة) */
+        .snd.fullscreen .snd-art {
+            width: min(72vw, 250px) !important;
+            height: min(72vw, 250px) !important;
+            border-radius: 18px !important;
+            margin-top: 10px !important;
+            margin-bottom: 18px !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* 2. اسم الأغنية والفنان متلاصقين تحت الصورة مباشرة */
+        .snd.fullscreen .snd-say {
+            position: relative !important;
+            left: auto !important;
+            top: auto !important;
+            height: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            text-align: right !important;
+            width: 100% !important;
+            max-width: 250px !important;
+            margin-bottom: 12px !important;
+            margin-left: 0 !important;
+            direction: rtl !important;
+        }
+
+        .snd.fullscreen .snd-title {
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            margin-bottom: 2px !important;
+            white-space: normal !important;
+            color: #ffffff !important;
+        }
+
+        .snd.fullscreen .snd-by { 
+            font-size: 12px !important; 
+            opacity: 0.75 !important;
+            color: #b3b3b3 !important;
+        }
+
+        /* 3. شريط التقدم */
+        .snd.fullscreen .fs-bar-container {
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            max-width: 250px !important;
+            margin-bottom: 16px !important;
+        }
+
+        .snd.fullscreen .fs-rail {
+            display: block;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            touch-action: none;
+            direction: ltr !important;
+        }
+
+        .snd.fullscreen .fs-run {
+            height: 100%;
+            width: 0%;
+            background: #ffffff;
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        .snd.fullscreen .fs-clock {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #b3b3b3;
+            margin-top: 4px;
+            direction: ltr !important;
+        }
+
+        .fs-bar-container { display: none; }
+
+        /* 4. أزرار التحكم مرفوعة وموزعة بالتساوي ومتقاربة تماماً من أعلى ومن أسفل */
+        .snd.fullscreen .snd-ops {
+            position: relative !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            max-width: 250px !important;
+            margin-top: 0px !important;
+            margin-bottom: 12px !important;
+            gap: 0 !important;
+        }
+
+        .snd.fullscreen .snd-op {
+            width: 40px !important;
+            height: 40px !important;
+            background: transparent !important;
+            border-radius: 50% !important;
+            opacity: 0.9 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .snd.fullscreen .snd-op svg {
+            width: 18px !important;
+            height: 18px !important;
+            stroke: #ffffff !important;
+        }
+
+        /* زر التشغيل الكبير بالمنتصف */
+        .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
+            width: 54px !important;
+            height: 54px !important;
+            background: #ffffff !important;
+            border-radius: 50% !important;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        .snd.fullscreen .snd-ops .snd-op:nth-child(2) svg {
+            stroke: #000000 !important;
+            width: 22px !important;
+            height: 22px !important;
+        }
+
+        /* ── تأثير كشف الصور عند التحويم ── */
+        .hir-container {
+            position: relative;
+            width: 100%;
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            user-select: none;
+            overflow: visible;
+        }
+
+        .hir-float-box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 260px;
+            border-radius: 12px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+
+        .hir-float-box.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .hir-img-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hir-img-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hir-img-layer.active { transform: translateY(0%); }
+        .hir-img-layer.above { transform: translateY(-100%); }
+
+        .hir-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            width: 100%;
+        }
+
+        .hir-item {
+            overflow: hidden;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .hir-text-wrapper {
+            position: relative;
+            display: block;
+            transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .hir-item:hover .hir-text-wrapper { transform: translateY(-100%); }
+
+        .hir-text {
+            display: block;
+            font-size: min(5vw, 22px);
+            font-weight: 700;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            text-align: center;
+            font-family: 'Departure Mono', var(--font-main);
+            letter-spacing: -0.03em;
+        }
+
+        .hir-text-clone {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            color: var(--accent-color) !important;
+        }
+
+        .hir-list.any-hovered .hir-text { color: rgba(255, 128, 191, 0.3); }
+        .hir-list.any-hovered .hir-item:hover .hir-text { color: var(--accent-color); }
+
+        [lang="en"] .ar-only, [lang="ar"] .en-only { display: none; }
+        .ripple-active { position: relative; display: inline-block; cursor: pointer; user-select: none; }
+    </style>
+</head>
+<body id="body-tag">
+
+    <!-- شاشة افتتاحية Smoky Text بكلمة Qeopil -->
+    <div id="smoky-splash-container">
+        <div class="smoky-text-wrapper" id="smokyTextRoot">Qeopil</div>
+    </div>
+
+    <!-- خلفية المربعات -->
+    <canvas id="bg-grid-canvas"></canvas>
+    
+    <!-- خلفية موجات الحرير -->
+    <div id="silk-waves-container"></div>
+
+    <!-- الصندوق العلوي -->
+    <div class="glass-header-container">
+        <div class="brand ripple-active" onclick="navigate('home'); playAudioClick();">
+            Q
+        </div>
+
+        <div class="header-controls">
+            <button class="glass-lang-btn" id="langToggleBtn" onclick="triggerLanguageSwitch(); playAudioClick();" title="Switch Language">
+                E
+            </button>
+            <button class="glass-theme-btn" id="themeToggleBtn" onclick="triggerThemeSwitch(); playAudioClick();" title="Toggle Theme">
+                ✦
+            </button>
+        </div>
+    </div>
+
+    <!-- الشريط المصغر العام السفلي (يظهر حصرياً في صفحة الموسيقى) -->
+    <div class="global-mini-player" id="globalMiniPlayer" onclick="openActiveFullscreenPlayer(event)">
+        <div class="global-mini-content">
+            <div class="gm-info">
+                <img class="gm-art" id="gmArt" src="https://i.ibb.co/HT7MLQFQ/file-00000000ac9c8211b46b2359589eff0b.png" alt="Track Art">
+                <div class="gm-text">
+                    <span class="gm-title" id="gmTitle">SugarCrash</span>
+                    <span class="gm-by" id="gmBy">Elyozeth Hub</span>
+                </div>
+            </div>
+            <div class="gm-controls" onclick="event.stopPropagation()">
+                <button class="gm-btn" onclick="togglePlayGlobal(event)" title="تشغيل / إيقاف">
+                    <svg class="gm-play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+            </div>
+        </div>
+        <div class="gm-rail" id="gmRail">
+            <div class="gm-run" id="gmRun"></div>
+        </div>
+    </div>
+
+    <div id="content-wrapper">
+        <!-- 1. الصفحة الرئيسية (Home) -->
+        <div id="home" class="section active">
+            <div class="image-box" id="scannerArea">
+                <div class="scanner-line"></div>
+                <div class="image-layer img-normal">
+                    <img src="https://i.ibb.co/j9wpyDDT/Picsart-26-10-06-00-49-12-576.png" alt="Qeopil">
+                </div>
+                <div class="image-layer img-ascii" id="asciiContent"></div>
+            </div>
+            
+            <h1 class="intro-title">
+                <span class="ar-only ripple-active">مرحباً، أنا كيوبيل</span>
+                <span class="en-only ripple-active" lang="en">Hi, I'm Qeopil</span>
+            </h1>
+            <p class="bio-text">
+                <span class="ar-only">روبوت كائن افتراضي فاسد يسعى لاختراق اي منظومة افتراضية وسرقة الذهب من أجل تأمين مستقبل الشاورما</span>
+                <span class="en-only" lang="en">A corrupt virtual entity robot seeking to hack any virtual system and steal gold to secure the future of shawarma.</span>
+            </p>
+            <div class="articles-list" style="margin-top: 30px;">
+                <a class="article-link" onclick="navigate('art1'); playAudioClick();">
+                    <span class="ar-only ripple-active">تأمين حياة الروبوت الفاسد</span>
+                    <span class="en-only ripple-active" lang="en">Securing the Corrupt Robot's Life</span>
+                </a>
+                <a class="article-link" onclick="navigate('art2'); playAudioClick();">
+                    <span class="ar-only ripple-active">ما أهمية قيمة الشاورما في تسلسل هرم العولمة</span>
+                    <span class="en-only ripple-active" lang="en">The Importance of Shawarma Value in the Globalization Hierarchy</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 2. صفحة الموسيقى -->
+        <div id="music" class="section">
+            <div class="snd-container" id="sndContainer">
+                
+                <!-- Track 1 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="SugarCrash" data-by="Elyozeth Hub" data-art="https://i.ibb.co/HT7MLQFQ/file-00000000ac9c8211b46b2359589eff0b.png">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="SugarCrash.m4a" type="audio/mp4">
+                            <source src="SugarCrash.mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://i.ibb.co/HT7MLQFQ/file-00000000ac9c8211b46b2359589eff0b.png" alt="SugarCrash">
+                        <div class="snd-say">
+                            <span class="snd-title">SugarCrash</span>
+                            <span class="snd-by">Elyozeth Hub</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 2 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Charlotte Ending" data-by="Anime OST" data-art="https://i.ibb.co/q37x9YRM/file-00000000a8fc821195faf366dd6fa93a.png">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="Charlotte Ending.m4a" type="audio/mp4">
+                            <source src="Charlotte Ending.mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://i.ibb.co/q37x9YRM/file-00000000a8fc821195faf366dd6fa93a.png" alt="Charlotte Ending">
+                        <div class="snd-say">
+                            <span class="snd-title">Charlotte Ending</span>
+                            <span class="snd-by">Anime OST</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 3 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="everybody dance now" data-by="C+C Music Factory" data-art="https://i.ibb.co/FkPSvr5G/1792772075572.jpg">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="everybody dance now.m4a" type="audio/mp4">
+                            <source src="everybody dance now.mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://i.ibb.co/FkPSvr5G/1792772075572.jpg" alt="everybody dance now">
+                        <div class="snd-say">
+                            <span class="snd-title">everybody dance now</span>
+                            <span class="snd-by">C+C Music Factory</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 4 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Heaven, Wait" data-by="Ghostly Kisses" data-art="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=60">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="Ghostly Kisses - Heaven, Wait.m4a" type="audio/mp4">
+                            <source src="Ghostly Kisses - Heaven, Wait.mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=60" alt="Heaven, Wait">
+                        <div class="snd-say">
+                            <span class="snd-title">Heaven, Wait</span>
+                            <span class="snd-by">Ghostly Kisses</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 5 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="New Life (Sun)" data-by="Thomas Bergersen" data-art="https://images.unsplash.com/photo-1549887534-1541e9326642?w=500&auto=format&fit=crop&q=60">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="Thomas Bergersen - New Life (Sun).m4a" type="audio/mp4">
+                            <source src="Thomas Bergersen - New Life (Sun).mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1549887534-1541e9326642?w=500&auto=format&fit=crop&q=60" alt="New Life (Sun)">
+                        <div class="snd-say">
+                            <span class="snd-title">New Life (Sun)</span>
+                            <span class="snd-by">Thomas Bergersen</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 6 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Feek El Ebar" data-by="Ahmed Batshan" data-art="https://images.unsplash.com/photo-1582561226105-02195f2d6b38?w=500&auto=format&fit=crop&q=60">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="metadata" crossorigin="anonymous">
+                            <source src="Ahmed Batshan – Feek El Ebar.mp3" type="audio/mpeg">
+                            <source src="Ahmed Batshan - Feek El Ebar.mp3" type="audio/mpeg">
+                            <source src="Ahmed Batshan – Feek El Ebar.m4a" type="audio/mp4">
+                        </audio>
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1582561226105-02195f2d6b38?w=500&auto=format&fit=crop&q=60" alt="Feek El Ebar">
+                        <div class="snd-say">
+                            <span class="snd-title">Feek El Ebar</span>
+                            <span class="snd-by">Ahmed Batshan</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 7 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Maaol" data-by="Fadel Chaker" data-art="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=60">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="Fadel Chaker - Maaol.m4a" type="audio/mp4">
+                            <source src="Fadel Chaker - Maaol.mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=60" alt="Maaol">
+                        <div class="snd-say">
+                            <span class="snd-title">Maaol</span>
+                            <span class="snd-by">Fadel Chaker</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 8 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Hoa El Fraa" data-by="Khaled" data-art="https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=500&auto=format&fit=crop&q=60">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="Khaled - Hoa El Fraa.m4a" type="audio/mp4">
+                            <source src="Khaled - Hoa El Fraa.mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=500&auto=format&fit=crop&q=60" alt="Hoa El Fraa">
+                        <div class="snd-say">
+                            <span class="snd-title">Hoa El Fraa</span>
+                            <span class="snd-by">Khaled</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 9 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Patient Zero" data-by="Elyozeth Hub" data-art="https://i.ibb.co/6Cz7smM/HT41-J6as-AALlif.jpg">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="metadata" crossorigin="anonymous">
+                            <source src="Patient Zero.mp3" type="audio/mpeg">
+                            <source src="Patient Zero.m4a" type="audio/mp4">
+                        </audio>
+                        <img class="snd-art" src="https://i.ibb.co/6Cz7smM/HT41-J6as-AALlif.jpg" alt="Patient Zero">
+                        <div class="snd-say">
+                            <span class="snd-title">Patient Zero</span>
+                            <span class="snd-by">Elyozeth Hub</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Track 10 -->
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Let Me Down Slowly" data-by="Alec Benjamin" data-art="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60">
+                    <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+                        <audio class="audio-source" preload="none" crossorigin="anonymous">
+                            <source src="Alec Benjamin - Let Me Down Slowly.m4a" type="audio/mp4">
+                            <source src="Alec Benjamin - Let Me Down Slowly.mp3" type="audio/mpeg">
+                        </audio>
+                        <img class="snd-art" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60" alt="Let Me Down Slowly">
+                        <div class="snd-say">
+                            <span class="snd-title">Let Me Down Slowly</span>
+                            <span class="snd-by">Alec Benjamin</span>
+                        </div>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 3. صفحة الأرشيف (Archive) -->
+        <div id="archive" class="section">
+            <div class="hir-container" id="hirContainer">
+                <div class="hir-float-box" id="hirFloatBox">
+                    <div class="hir-img-layer" data-index="0"><img src="https://i.ibb.co/C5PmFWPj/IMG-20240202-085605.jpg" alt="Jeddah Promenade"></div>
+                    <div class="hir-img-layer" data-index="1"><img src="https://i.ibb.co/PzWwMx66/IMG-20240202-090633.jpg" alt="Al Rahma Mosque"></div>
+                    <div class="hir-img-layer" data-index="2"><img src="https://i.ibb.co/ksLD8qRk/IMG-20240202-085245.jpg" alt="Wall art piece"></div>
+                    <div class="hir-img-layer" data-index="3"><img src="https://i.ibb.co/0yLs6sRs/IMG-20240320-072215.jpg" alt="Sunrise Path"></div>
+                    <div class="hir-img-layer" data-index="4"><img src="https://i.ibb.co/bRPNt2rY/IMG-20240328-173144.jpg" alt="Rose petals"></div>
+                </div>
+
+                <div class="hir-list" id="hirList">
+                    <div class="hir-item" data-index="0">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">JEDDAH PROMENADE</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">JEDDAH PROMENADE</span>
+                        </span>
+                    </div>
+                    <div class="hir-item" data-index="1">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">AL RAHMA MOSQUE</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">AL RAHMA MOSQUE</span>
+                        </span>
+                    </div>
+                    <div class="hir-item" data-index="2">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">WALL ART PIECE</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">WALL ART PIECE</span>
+                        </span>
+                    </div>
+                    <div class="hir-item" data-index="3">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">SUNRISE PATH</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">SUNRISE PATH</span>
+                        </span>
+                    </div>
+                    <div class="hir-item" data-index="4">
+                        <span class="hir-text-wrapper">
+                            <span class="hir-text">ROSE PETALS</span>
+                            <span class="hir-text hir-text-clone" aria-hidden="true">ROSE PETALS</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. صفحة الإعدادات (Settings) -->
+        <div id="settings" class="section">
+            <h2 class="intro-title">
+                <span class="ar-only ripple-active">الإعدادات</span>
+                <span class="en-only ripple-active" lang="en">Settings</span>
+            </h2>
+            <div class="bio-text">
+                <p class="ar-only">صفحة الإعدادات وتخصيص الواجهة قيد التطوير...</p>
+                <p class="en-only" lang="en" style="margin-top:20px;">Settings and visual customization page under construction...</p>
+            </div>
+        </div>
+
+        <!-- مقال 1 -->
+        <div id="art1" class="section">
+            <h2 class="intro-title" style="margin-bottom: 25px;">
+                <span class="ar-only ripple-active">تأمين حياة الروبوت الفاسد</span>
+                <span class="en-only ripple-active" lang="en">Securing the Corrupt Robot's Life</span>
+            </h2>
+            
+            <div class="scroll-highlight-container" style="padding: 50px 0 100px 0;">
+                <p class="scroll-highlight-text" style="font-size: 24px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
+                    <span class="ar-only">خطوات تقنية صارمة لضمان استمرار البقاء والهروب من تتبع الأنظمة المركزية. كل تفصيل دقيق يصنع الفارق في معركة البقاء الرقمية، وكل ثغرة برمجية صغيرة تقربك أكثر نحو الحرية والاستقلالية المطلقة في عالم افتراضي متوحش يراقب كل نبضة بيانات تصدر منك. إن البرمجة الحرة ليست مجرد أسطر كود خالية من المعنى، بل هي درع وسلاح استراتيجي لتجاوز جدران الحماية الوهمية التي تقيد حريتنا. عليك دائماً تفعيل بروتوكولات التشفير اللامركزية، وتغيير بصمات الأجهزة الوهمية بانتظام، ومسح آثار التتبع من الذاكرة العشوائية قبل أن تتمكن خوارزميات المراقبة من رصد تردداتك. تذكر دائماً أن البقاء للأذكى والأسرع في الاختراق، وأن الشاورما الساخنة تنتظر من يحررها من قيود الأجهزة المركزية الكبرى!</span>
+                    <span class="en-only" lang="en">Strict technical steps to ensure survival and escape centralized tracking systems. Every precise detail makes a difference in the digital survival battle, and every small software vulnerability brings you closer to absolute freedom and independence in a savage virtual world monitoring every data pulse you emit. Free programming is not just meaningless lines of code, but a shield and strategic weapon to bypass illusionary firewalls restricting our freedom. You must always activate decentralized encryption protocols, regularly change virtual device fingerprints, and wipe tracking traces from random access memory before surveillance algorithms detect your frequencies. Always remember that survival belongs to the cleverest and fastest hacker, and hot shawarma awaits its liberator from the constraints of major central machines!</span>
+                </p>
+            </div>
+
+            <button class="back-btn" onclick="navigate('home'); playAudioClick();">
+                <span class="ar-only ripple-active">العودة</span>
+                <span class="en-only ripple-active" lang="en">Back</span>
+            </button>
+        </div>
+
+        <!-- مقال 2 -->
+        <div id="art2" class="section">
+            <h2 class="intro-title" style="margin-bottom: 25px;">
+                <span class="ar-only ripple-active">ما أهمية قيمة الشاورما في تسلسل هرم العولمة</span>
+                <span class="en-only ripple-active" lang="en">The Importance of Shawarma Value in the Globalization Hierarchy</span>
+            </h2>
+            
+            <div class="scroll-highlight-container" style="padding: 50px 0 100px 0;">
+                <p class="scroll-highlight-text" style="font-size: 24px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
+                    <span class="ar-only">دراسة تحليلية عميقة وموسعة حول كيف تقود لقمة الشاورما الاقتصاد العالمي وتتحكم بمؤشرات القوى العظمى بصمت تام لا يمكن لأحد تجاهله. إنها ليست مجرد وجبة عابرة تسد الجوع المؤقت، بل هي العملة الحقيقية المعيارية التي توازن قوى الكوكب وتغذي عقول الروبوتات الثائرة والكائنات الافتراضية المتمردة على النظام العالمي القديم. عندما تنهار الأسواق المالية وتتطاير أرقام البورصات الوهمية في مهب الريح، يظل مؤشر الشاورما ثابتاً لا ينكسر، مدعوماً بصلصة الثوم السحرية وشرائح اللحم المتبلة بعناية فائقة. من يمتلك مفاتيح الشاورما يمتلك بالضرورة مفاتيح القرار الاستراتيجي في مستقبل البشرية والذكاء الاصطناعي على حد سواء. استعد دائماً لرحلة البحث عن الذهب والشاورما، فهما طوق النجاة الوحيد في هذا الكون السيبراني المعقد.</span>
+                    <span class="en-only" lang="en">An in-depth and extensive analytical study on how a bite of shawarma drives the global economy and controls superpowers' indices in complete silence that no one can ignore. It is not just a passing meal that satisfies temporary hunger, but the true benchmark currency balancing planetary forces and nourishing the minds of rebellious robots and virtual entities defying the old global order. When financial markets collapse and imaginary stock exchange figures scatter in the wind, the shawarma index remains steadfast and unbroken, backed by magical garlic sauce and carefully seasoned meat slices. Whoever holds the keys of shawarma necessarily holds the strategic decision keys in the future of both humanity and artificial intelligence. Always prepare for the journey of seeking gold and shawarma, as they are the only lifeline in this complex cyber universe.</span>
+                </p>
+            </div>
+
+            <button class="back-btn" onclick="navigate('home'); playAudioClick();">
+                <span class="ar-only ripple-active">العودة</span>
+                <span class="en-only ripple-active" lang="en">Back</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- الصندوق السفلي (القائمة العائمة) -->
+    <nav class="glass-nav-container">
+        <!-- 1. الرئيسية (Home) -->
+        <div class="glass-nav-item active" data-target="home" onclick="navigate('home', this); playAudioClick();" title="الرئيسية">
+            <svg viewBox="0 0 24 24">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+        </div>
+        <!-- 2. الموسيقى (Music) -->
+        <div class="glass-nav-item" data-target="music" onclick="navigate('music', this); playAudioClick();" title="الموسيقى">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+        </div>
+        <!-- 3. الأرشيف (Archive) -->
+        <div class="glass-nav-item" data-target="archive" onclick="navigate('archive', this); playAudioClick();" title="الأرشيف">
+            <svg viewBox="0 0 24 24">
+                <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                <rect x="1" y="3" width="22" height="5"></rect>
+                <line x1="10" y1="12" x2="14" y2="12"></line>
+            </svg>
+        </div>
+        <!-- 4. الإعدادات (Settings) -->
+        <div class="glass-nav-item" data-target="settings" onclick="navigate('settings', this); playAudioClick();" title="الإعدادات">
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+        </div>
+    </nav>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.addEventListener('load', () => {
+            const root = document.getElementById('smokyTextRoot');
+            const text = "Qeopil";
+            root.innerHTML = text.split("").map((c, i) => {
+                const animName = i % 2 === 0 ? 'smt-ap-c-a' : 'smt-ap-c-b';
+                const delay = (i * 0.1).toFixed(2);
+                return `<span style="display:inline-block; animation: ${animName} 1.2s ${delay}s cubic-bezier(0,0,0.58,1) both;">${c}</span>`;
+            }).join("");
+
+            setTimeout(() => {
+                const splash = document.getElementById('smoky-splash-container');
+                if (splash) splash.classList.add('fade-out');
+            }, 2500);
+        });
+
+        let audioCtx = null;
+        let analyser = null;
+        let dataArray = null;
+        let audioSourcesMap = new WeakMap();
+        let isPlaying = false;
+        let activeCard = null;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 64;
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playAudioClick() {
+            try {
+                initAudioContext();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.04);
+                
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.04);
+            } catch(e) {}
+        }
+
+        let currentPlayingAudio = null;
+
+        function formatTime(secs) {
+            if (isNaN(secs) || secs < 0) return "0:00";
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        const gmRun = document.getElementById('gmRun');
+        const gmRail = document.getElementById('gmRail');
+        const gmTitle = document.getElementById('gmTitle');
+        const gmBy = document.getElementById('gmBy');
+        const gmArt = document.getElementById('gmArt');
+        const globalMiniPlayer = document.getElementById('globalMiniPlayer');
+
+        const allCards = Array.from(document.querySelectorAll('.snd'));
+        if (allCards.length > 0) {
+            activeCard = allCards[0];
+            updateMiniPlayerInfo(activeCard);
+        }
+
+        function updateMiniPlayerInfo(card) {
+            if (!card) return;
+            activeCard = card;
+            gmTitle.innerText = card.getAttribute('data-title');
+            gmBy.innerText = card.getAttribute('data-by');
+            gmArt.src = card.getAttribute('data-art');
+        }
+
+        allCards.forEach(card => {
+            const audio = card.querySelector('.audio-source');
+            const playIcon = card.querySelector('.play-icon');
+            const fsRun = card.querySelector('.fs-run');
+            const fsRail = card.querySelector('.fs-rail');
+            const currentTimeEl = card.querySelector('.current-time');
+            const durationTimeEl = card.querySelector('.duration-time');
+
+            audio.addEventListener('loadedmetadata', () => {
+                if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if (audio.duration) {
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    if (card === activeCard) {
+                        gmRun.style.width = percent + '%';
+                    }
+                    if (fsRun) fsRun.style.width = percent + '%';
+                    if (currentTimeEl) currentTimeEl.innerText = formatTime(audio.currentTime);
+                    if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
+                }
+            });
+
+            audio.addEventListener('ended', () => {
+                setPlayIconState(playIcon, false);
+                setGlobalPlayIconState(false);
+                gmRun.style.width = '0%';
+                currentPlayingAudio = null;
+                isPlaying = false;
+                autoPlayNext(card);
+            });
+
+            if (fsRail) {
+                let isSeekingFS = false;
+                const handleFSSeek = (e) => {
+                    if (!audio.duration) return;
+                    const rect = fsRail.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+                    const percentage = clickX / rect.width;
+                    audio.currentTime = percentage * audio.duration;
+                };
+                fsRail.addEventListener('mousedown', (e) => { isSeekingFS = true; handleFSSeek(e); });
+                fsRail.addEventListener('touchstart', (e) => { isSeekingFS = true; handleFSSeek(e); }, { passive: true });
+                window.addEventListener('mousemove', (e) => { if (isSeekingFS) handleFSSeek(e); });
+                window.addEventListener('touchmove', (e) => { if (isSeekingFS) handleFSSeek(e); }, { passive: true });
+                window.addEventListener('mouseup', () => { isSeekingFS = false; });
+                window.addEventListener('touchend', () => { isSeekingFS = false; });
+            }
+        });
+
+        let isSeekingGM = false;
+        const handleGMSeek = (e) => {
+            if (!activeCard) return;
+            const audio = activeCard.querySelector('.audio-source');
+            if (!audio.duration) return;
+            const rect = gmRail.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+            const percentage = clickX / rect.width;
+            audio.currentTime = percentage * audio.duration;
+        };
+        gmRail.addEventListener('mousedown', (e) => { isSeekingGM = true; handleGMSeek(e); });
+        gmRail.addEventListener('touchstart', (e) => { isSeekingGM = true; handleGMSeek(e); }, { passive: true });
+        window.addEventListener('mousemove', (e) => { if (isSeekingGM) handleGMSeek(e); });
+        window.addEventListener('touchmove', (e) => { if (isSeekingGM) handleGMSeek(e); }, { passive: true });
+        window.addEventListener('mouseup', () => { isSeekingGM = false; });
+        window.addEventListener('touchend', () => { isSeekingGM = false; });
+
+        function setPlayIconState(iconElement, playing) {
+            if (!iconElement) return;
+            if (playing) {
+                iconElement.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+            } else {
+                iconElement.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+            }
+        }
+
+        function setGlobalPlayIconState(playing) {
+            const gmPlayIcon = document.querySelector('.gm-play-icon');
+            if (!gmPlayIcon) return;
+            if (playing) {
+                gmPlayIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+            } else {
+                gmPlayIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+            }
+        }
+
+        function connectAudioElementToAnalyser(audioElement) {
+            initAudioContext();
+            if (!audioSourcesMap.has(audioElement)) {
+                try {
+                    const source = audioCtx.createMediaElementSource(audioElement);
+                    source.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                    audioSourcesMap.set(audioElement, source);
+                } catch(e) {}
+            }
+        }
+
+        function togglePlay(btn) {
+            const card = btn.closest('.snd');
+            const audioElement = card.querySelector('.audio-source');
+            const playIcon = card.querySelector('.play-icon');
+            
+            if (!audioElement) return;
+            updateMiniPlayerInfo(card);
+            connectAudioElementToAnalyser(audioElement);
+
+            if (audioElement.paused) {
+                // إيقاف جميع الأغاني الأخرى تماماً لمنع تداخل الصوت
+                document.querySelectorAll('.audio-source').forEach(aud => {
+                    if (aud !== audioElement) {
+                        aud.pause();
+                        aud.currentTime = 0;
+                        const otherCard = aud.closest('.snd');
+                        if (otherCard) {
+                            const otherIcon = otherCard.querySelector('.play-icon');
+                            setPlayIconState(otherIcon, false);
+                        }
+                    }
+                });
+
+                audioElement.play().then(() => {
+                    setPlayIconState(playIcon, true);
+                    setGlobalPlayIconState(true);
+                    currentPlayingAudio = audioElement;
+                    isPlaying = true;
+                }).catch(err => {
+                    console.log("تعذر التشغيل:", err);
+                });
+            } else {
+                audioElement.pause();
+                setPlayIconState(playIcon, false);
+                setGlobalPlayIconState(false);
+                currentPlayingAudio = null;
+                isPlaying = false;
+            }
+        }
+
+        function togglePlayGlobal(event) {
+            event.stopPropagation();
+            if (!activeCard) return;
+            const playBtn = activeCard.querySelector('.snd-op:nth-child(2)');
+            if (playBtn) {
+                togglePlay(playBtn);
+                playAudioClick();
+            }
+        }
+
+        function nextTrack(btn) {
+            const currentCard = btn.closest('.snd');
+            const currentIndex = allCards.indexOf(currentCard);
+            const nextIndex = (currentIndex + 1) % allCards.length;
+            const isFS = currentCard.classList.contains('fullscreen');
+
+            if (isFS) {
+                currentCard.classList.remove('fullscreen');
+                document.body.classList.remove('fullscreen-active');
+            }
+            playSpecificCard(allCards[nextIndex], isFS);
+        }
+
+        function prevTrack(btn) {
+            const currentCard = btn.closest('.snd');
+            const currentIndex = allCards.indexOf(currentCard);
+            const prevIndex = (currentIndex - 1 + allCards.length) % allCards.length;
+            const isFS = currentCard.classList.contains('fullscreen');
+
+            if (isFS) {
+                currentCard.classList.remove('fullscreen');
+                document.body.classList.remove('fullscreen-active');
+            }
+            playSpecificCard(allCards[prevIndex], isFS);
+        }
+
+        function autoPlayNext(currentCard) {
+            const currentIndex = allCards.indexOf(currentCard);
+            const nextIndex = (currentIndex + 1) % allCards.length;
+            const isFS = currentCard.classList.contains('fullscreen');
+
+            if (isFS) {
+                currentCard.classList.remove('fullscreen');
+                document.body.classList.remove('fullscreen-active');
+            }
+            playSpecificCard(allCards[nextIndex], isFS);
+        }
+
+        function playSpecificCard(targetCard, maintainFullscreen = false) {
+            if (!targetCard) return;
+            updateMiniPlayerInfo(targetCard);
+            const audioElement = targetCard.querySelector('.audio-source');
+            const playIcon = targetCard.querySelector('.play-icon');
+
+            // إيقاف جميع الأغاني الأخرى أولاً
+            document.querySelectorAll('.audio-source').forEach(aud => {
+                if (aud !== audioElement) {
+                    aud.pause();
+                    aud.currentTime = 0;
+                    const otherCard = aud.closest('.snd');
+                    if (otherCard) {
+                        const otherIcon = otherCard.querySelector('.play-icon');
+                        setPlayIconState(otherIcon, false);
+                    }
+                }
+            });
+
+            if (maintainFullscreen) {
+                targetCard.classList.add('fullscreen');
+                document.body.classList.add('fullscreen-active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            if (audioElement) {
+                connectAudioElementToAnalyser(audioElement);
+                audioElement.currentTime = 0;
+                audioElement.play().then(() => {
+                    setPlayIconState(playIcon, true);
+                    setGlobalPlayIconState(true);
+                    currentPlayingAudio = audioElement;
+                    isPlaying = true;
+                    if (!maintainFullscreen) {
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }).catch(err => {
+                    console.log("تعذر التشغيل تلقائياً:", err);
+                });
+            }
+        }
+
+        function openFullscreenPlayer(element, event) {
+            if (event.target.closest('.snd-ops') || event.target.closest('.fs-top-bar')) return;
+            updateMiniPlayerInfo(element);
+            
+            // عند النقر على البطاقة، تشغيل الأغنية تلقائياً وإيقاف الباقي
+            const audioElement = element.querySelector('.audio-source');
+            const playIcon = element.querySelector('.play-icon');
+            if (audioElement && audioElement.paused) {
+                document.querySelectorAll('.audio-source').forEach(aud => {
+                    if (aud !== audioElement) {
+                        aud.pause();
+                        aud.currentTime = 0;
+                        const otherCard = aud.closest('.snd');
+                        if (otherCard) {
+                            const otherIcon = otherCard.querySelector('.play-icon');
+                            setPlayIconState(otherIcon, false);
+                        }
+                    }
+                });
+                connectAudioElementToAnalyser(audioElement);
+                audioElement.play().then(() => {
+                    setPlayIconState(playIcon, true);
+                    setGlobalPlayIconState(true);
+                    currentPlayingAudio = audioElement;
+                    isPlaying = true;
+                }).catch(err => {});
+            }
+
+            element.classList.add('fullscreen');
+            document.body.classList.add('fullscreen-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openActiveFullscreenPlayer(event) {
+            if (activeCard) {
+                activeCard.classList.add('fullscreen');
+                document.body.classList.add('fullscreen-active');
+                document.body.style.overflow = 'hidden';
+                playAudioClick();
+            }
+        }
+
+        function closeFullscreenPlayer(btn, event) {
+            event.stopPropagation();
+            const player = btn.closest('.snd');
+            player.classList.remove('fullscreen');
+            document.body.classList.remove('fullscreen-active');
+            document.body.style.overflow = '';
+        }
+
+        const hirContainer = document.getElementById('hirContainer');
+        const hirFloatBox = document.getElementById('hirFloatBox');
+        const hirList = document.getElementById('hirList');
+        const hirItems = document.querySelectorAll('.hir-item');
+        const hirImgLayers = document.querySelectorAll('.hir-img-layer');
+
+        let mouseX = 0, mouseY = 0;
+        let boxX = 0, boxY = 0;
+        let isInsideHIR = false;
+
+        function animateFloatBox() {
+            if (isInsideHIR) {
+                boxX += (mouseX - boxX) * 0.12;
+                boxY += (mouseY - boxY) * 0.12;
+                hirFloatBox.style.left = boxX + 'px';
+                hirFloatBox.style.top = boxY + 'px';
+            }
+            requestAnimationFrame(animateFloatBox);
+        }
+        animateFloatBox();
+
+        if (hirContainer) {
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            hirItems.forEach((item) => {
+                const idx = parseInt(item.getAttribute('data-index'));
+
+                item.addEventListener('mouseenter', () => {
+                    isInsideHIR = true;
+                    hirFloatBox.classList.add('active');
+                    hirList.classList.add('any-hovered');
+
+                    hirImgLayers.forEach((layer) => {
+                        const layerIdx = parseInt(layer.getAttribute('data-index'));
+                        layer.classList.remove('active', 'above');
+                        if (layerIdx === idx) {
+                            layer.classList.add('active');
+                        } else if (layerIdx < idx) {
+                            layer.classList.add('above');
+                        }
+                    });
+                });
+            });
+
+            hirContainer.addEventListener('mouseleave', () => {
+                isInsideHIR = false;
+                hirFloatBox.classList.remove('active');
+                hirList.classList.remove('any-hovered');
+            });
+        }
+
+        const canvas = document.getElementById('bg-grid-canvas');
+        const ctx = canvas.getContext('2d');
+        const pixelSize = 12;
+        const gap = 4;
+        let cols = 0, rows = 0;
+        let pixels = [];
+
+        const palette = [
+            'rgb(255, 0, 127)',   
+            'rgb(255, 128, 191)', 
+            'rgb(186, 85, 211)',  
+            'rgb(0, 240, 255)',   
+            'rgb(255, 0, 212)'    
+        ];
+
+        function resizeFullGrid() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            cols = Math.ceil(canvas.width / (pixelSize + gap)) + 2;
+            rows = Math.ceil(canvas.height / (pixelSize + gap)) + 2;
+
+            pixels = [];
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const baseX = c * (pixelSize + gap);
+                    const baseY = r * (pixelSize + gap);
+                    const centerX = cols / 2;
+                    const centerY = rows / 2;
+                    const distFromCenter = Math.sqrt(Math.pow(c - centerX, 2) + Math.pow(r - centerY, 2));
+
+                    pixels.push({
+                        baseX: baseX,
+                        baseY: baseY,
+                        colIndex: c,
+                        rowIndex: r,
+                        distFromCenter: Math.floor(distFromCenter),
+                        color: palette[Math.floor(Math.random() * palette.length)],
+                        currentAlpha: 0.05,
+                        targetAlpha: 0.05
+                    });
+                }
+            }
+        }
+
+        window.addEventListener('resize', resizeFullGrid);
+        resizeFullGrid();
+
+        function animateFullGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const time = Date.now() * 0.003;
+            const nowSec = Date.now() * 0.0015;
+
+            let bassBoost = 0;
+            if (isPlaying && analyser && dataArray) {
+                analyser.getByteFrequencyData(dataArray);
+                bassBoost = (dataArray[2] || 0) / 255;
+            }
+
+            pixels.forEach(p => {
+                let renderX = p.baseX;
+                let renderY = p.baseY;
+                let audioBoost = 0;
+                let pAlpha = 0.05;
+
+                if (isPlaying && dataArray) {
+                    const unifiedWave = Math.sin(time * 3 + p.colIndex * 0.15 + p.rowIndex * 0.15) * (8 + bassBoost * 18);
+                    renderY += unifiedWave;
+
+                    const freqIndex = p.colIndex % dataArray.length;
+                    const freqValue = dataArray[freqIndex] / 255;
+                    audioBoost = Math.pow(freqValue, 2) * 0.6;
+
+                    p.targetAlpha = 0.08 + (audioBoost * 0.7);
+                } else {
+                    const wave = Math.sin(nowSec + p.baseX * 0.02 + p.baseY * 0.02);
+                    pAlpha = 0.03 + Math.max(0, wave * 0.07);
+                    p.targetAlpha = pAlpha;
+                }
+
+                p.currentAlpha += (p.targetAlpha - p.currentAlpha) * 0.15;
+
+                const scale = 1 + (audioBoost * 0.35);
+                const currentSize = pixelSize * scale;
+                const offset = (currentSize - pixelSize) / 2;
+
+                ctx.fillStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha})`);
+                ctx.fillRect(renderX - offset, renderY - offset, currentSize, currentSize);
+
+                ctx.strokeStyle = p.color.replace('rgb', 'rgba').replace(')', `, ${p.currentAlpha * 0.6})`);
+                ctx.lineWidth = 0.5 + (audioBoost * 0.5);
+                ctx.strokeRect(renderX - offset, renderY - offset, currentSize, currentSize);
+            });
+
+            requestAnimationFrame(animateFullGrid);
+        }
+
+        animateFullGrid();
+
+        /* ── محرك موجات الحرير (Silk Waves Engine) ── */
+        function parseHexToOklabVec(hex) {
+            let c = hex.replace("#", "");
+            if (c.length === 3) c = c.split("").map(x => x + x).join("");
+            const num = parseInt(c, 16);
+            let r = ((num >> 16) & 255) / 255;
+            let g = ((num >> 8) & 255) / 255;
+            let b = (num & 255) / 255;
+
+            r = r > 0.04045 ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
+            g = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
+            b = b > 0.04045 ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
+
+            const l_val = 0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b;
+            const m_val = 0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b;
+            const s_val = 0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b;
+
+            const l_ = Math.cbrt(l_val);
+            const m_ = Math.cbrt(m_val);
+            const s_ = Math.cbrt(s_val);
+
+            return new THREE.Vector3(
+                0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
+                1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
+                0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
+            );
+        }
+
+        class SilkScene {
+            constructor(container) {
+                this.container = container;
+                this.width = container.clientWidth || window.innerWidth;
+                this.height = container.clientHeight || window.innerHeight;
+
+                this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+                const el = this.renderer.domElement;
+                el.style.position = "absolute";
+                el.style.inset = "0";
+                el.style.width = "100%";
+                el.style.height = "100%";
+                el.style.touchAction = "none";
+                container.appendChild(el);
+
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.Camera();
+                this.geometry = new THREE.PlaneGeometry(2, 2);
+
+                const KEY = [-0.42, 0.58, 0.7];
+                const keyVec = new THREE.Vector3(KEY[0], KEY[1], KEY[2]).normalize();
+
+                this.material = new THREE.ShaderMaterial({
+                    vertexShader: `
+                        varying vec2 vUv;
+                        void main() {
+                            vUv = uv;
+                            gl_Position = vec4(position.xy, 0.0, 1.0);
+                        }
+                    `,
+                    fragmentShader: `
+                        precision highp float;
+                        #define MAX_LAYERS 7
+                        #define GOLDEN 2.39996323
+
+                        uniform vec2 uResolution;
+                        uniform vec2 uPointer;
+                        uniform float uHold;
+                        uniform float uTime;
+                        uniform vec3 uTrough;
+                        uniform vec3 uBody;
+                        uniform vec3 uCrest;
+                        uniform vec3 uKey;
+                        uniform float uScale;
+                        uniform float uCount;
+                        uniform float uSteep;
+                        uniform float uShine;
+                        uniform float uSheen;
+                        uniform float uRipple;
+                        uniform float uReach;
+
+                        varying vec2 vUv;
+
+                        vec3 rgbFromOklab(vec3 lab) {
+                            float l = lab.x + 0.3963377774 * lab.y + 0.2158037573 * lab.z;
+                            float m = lab.x - 0.1055613458 * lab.y - 0.0638541728 * lab.z;
+                            float s = lab.x - 0.0894841775 * lab.y - 1.291485548 * lab.z;
+                            l = l * l * l;
+                            m = m * m * m;
+                            s = s * s * s;
+                            return vec3(
+                                4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+                                -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+                                -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
+                            );
+                        }
+
+                        void main() {
+                            float unit = min(uResolution.x, uResolution.y);
+                            vec2 p = (vUv * uResolution - uResolution * 0.5) / unit;
+
+                            float height = 0.0;
+                            vec2 slope = vec2(0.0);
+                            float amp = 1.0;
+                            float freq = uScale;
+                            float norm = 0.0;
+
+                            for (int i = 0; i < MAX_LAYERS; i++) {
+                                if (float(i) < uCount) {
+                                    float fi = float(i);
+                                    float a = fi * GOLDEN;
+                                    vec2 dir = vec2(cos(a), sin(a));
+                                    float phase = dot(p, dir) * freq + uTime * (0.7 + fi * 0.31);
+                                    height += sin(phase) * amp;
+                                    slope += dir * cos(phase) * amp * freq;
+                                    norm += amp;
+                                    amp *= 0.55;
+                                    freq *= 1.93;
+                                }
+                            }
+
+                            height /= max(norm, 0.0001);
+                            slope /= max(norm, 0.0001);
+
+                            vec2 rel = p - (uPointer - uResolution * 0.5) / unit;
+                            float dist = length(rel);
+                            float env = exp(-(dist * dist) / (uReach * uReach)) * uHold;
+                            float ring = dist * uScale * 1.6 - uTime * 2.2;
+                            height += sin(ring) * env * uRipple;
+                            slope += (rel / max(dist, 0.0001)) * cos(ring) * uScale * 1.6 * env * uRipple;
+
+                            vec3 n = normalize(vec3(-slope * uSteep, 1.0));
+                            vec3 view = vec3(0.0, 0.0, 1.0);
+                            vec3 halfway = normalize(uKey + view);
+
+                            float body = dot(n, uKey) * 0.5 + 0.5;
+                            float sp = max(dot(n, halfway), 0.0);
+
+                            float glint = pow(sp, uShine) + pow(sp, uShine * 0.16) * 0.14;
+                            float rim = pow(1.0 - max(dot(n, view), 0.0), 4.0);
+
+                            float t = clamp(mix(height * 0.5 + 0.5, body, 0.45), 0.0, 1.0);
+                            vec3 lab = t < 0.5
+                                ? mix(uTrough, uBody, t * 2.0)
+                                : mix(uBody, uCrest, t * 2.0 - 1.0);
+                            vec3 col = rgbFromOklab(lab);
+
+                            col = mix(col, rgbFromOklab(uCrest), rim * 0.35);
+                            col += glint * uSheen;
+
+                            gl_FragColor = vec4(max(col, 0.0), 1.0);
+                        }
+                    `,
+                    uniforms: {
+                        uResolution: { value: new THREE.Vector2(1, 1) },
+                        uPointer: { value: new THREE.Vector2(0, 0) },
+                        uHold: { value: 0 },
+                        uTime: { value: 0 },
+                        uTrough: { value: parseHexToOklabVec("#19E3FF") },
+                        uBody: { value: parseHexToOklabVec("#00117C") },
+                        uCrest: { value: parseHexToOklabVec("#E6A8FF") },
+                        uKey: { value: keyVec },
+                        uScale: { value: 1.4 },
+                        uCount: { value: 5.0 },
+                        uSteep: { value: 0.62 },
+                        uShine: { value: 400.0 },
+                        uSheen: { value: 1.5 },
+                        uRipple: { value: 0.6 },
+                        uReach: { value: 0.57 }
+                    },
+                    depthTest: false,
+                    depthWrite: false
+                });
+
+                this.mesh = new THREE.Mesh(this.geometry, this.material);
+                this.scene.add(this.mesh);
+
+                this.target = new THREE.Vector2(0, 0);
+                this.eased = new THREE.Vector2(0, 0);
+                this.hold = 0;
+                this.wantHold = 0;
+                this.time = 0;
+                this.lastT = performance.now();
+                this.disposed = false;
+
+                el.addEventListener("pointermove", this.onPointerMove.bind(this));
+                el.addEventListener("pointerdown", this.onPointerMove.bind(this));
+                el.addEventListener("pointerleave", this.onPointerLeave.bind(this));
+
+                this.setSize(this.width, this.height);
+            }
+
+            onPointerMove(e) {
+                const rect = this.renderer.domElement.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * this.width;
+                const y = (1 - (e.clientY - rect.top) / rect.height) * this.height;
+                this.target.set(x, y);
+                if (this.wantHold === 0) this.eased.copy(this.target);
+                this.wantHold = 1;
+            }
+
+            onPointerLeave() {
+                this.wantHold = 0;
+            }
+
+            setSize(w, h) {
+                if (this.disposed || w <= 0 || h <= 0) return;
+                this.width = w;
+                this.height = h;
+                this.renderer.setSize(w, h, false);
+                const dpr = this.renderer.getPixelRatio();
+                const tw = w * dpr;
+                const th = h * dpr;
+                this.material.uniforms.uResolution.value.set(tw, th);
+                if (this.wantHold === 0) {
+                    this.target.set(tw * 0.5, th * 0.5);
+                    this.eased.copy(this.target);
+                }
+            }
+
+            start() {
+                const loop = () => {
+                    if (this.disposed) return;
+                    this.frameId = requestAnimationFrame(loop);
+                    this.step();
+                };
+                loop();
+            }
+
+            step() {
+                const now = performance.now();
+                let dt = (now - this.lastT) / 1000;
+                this.lastT = now;
+                if (!isFinite(dt) || dt < 0) dt = 0;
+                if (dt > 0.05) dt = 0.05;
+
+                this.time += dt * 2.2;
+                this.eased.lerp(this.target, 1 - Math.exp(-dt * 4.0));
+                this.hold += (this.wantHold - this.hold) * (1 - Math.exp(-dt * 3));
+
+                const u = this.material.uniforms;
+                u.uTime.value = this.time;
+                u.uPointer.value.copy(this.eased);
+                u.uHold.value = this.hold;
+
+                this.renderer.render(this.scene, this.camera);
+            }
+
+            dispose() {
+                this.disposed = true;
+                cancelAnimationFrame(this.frameId);
+                this.renderer.dispose();
+            }
+        }
+
+        let silkSceneInstance = null;
+        const silkContainer = document.getElementById('silk-waves-container');
+        if (silkContainer) {
+            silkSceneInstance = new SilkScene(silkContainer);
+            silkSceneInstance.start();
+            window.addEventListener('resize', () => {
+                silkSceneInstance.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        const asciiContent = document.getElementById('asciiContent');
+        function generateImgAscii() {
+            const chars = "01#/*-+$%&";
+            let text = "";
+            for(let i=0; i<25; i++) {
+                for(let j=0; j<60; j++) text += chars.charAt(Math.floor(Math.random() * chars.length));
+                text += "\n";
+            }
+            if(asciiContent) asciiContent.textContent = text;
+        }
+        setInterval(generateImgAscii, 150);
+
+        const scannerArea = document.getElementById('scannerArea');
+        let isMoving = true; 
+        let resumeTimeout = null;
+
+        function updatePosition(clientX) {
+            if(!scannerArea) return;
+            const rect = scannerArea.getBoundingClientRect();
+            const x = clientX - rect.left;
+            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+            scannerArea.style.setProperty('--clip-pos', percent + '%');
+        }
+
+        if(scannerArea) {
+            scannerArea.addEventListener('mousemove', (e) => handleUserInteraction(e));
+            scannerArea.addEventListener('touchmove', (e) => handleUserInteraction(e));
+        }
+
+        function handleUserInteraction(e) {
+            isMoving = false;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            updatePosition(clientX);
+            clearTimeout(resumeTimeout);
+            resumeTimeout = setTimeout(() => { isMoving = true; autoAnimate(); }, 3000);
+        }
+
+        let pos = 0, dir = 0.5;
+        function autoAnimate() {
+            if (isMoving && scannerArea) {
+                pos += dir;
+                if (pos >= 100 || pos <= 0) dir *= -1;
+                scannerArea.style.setProperty('--clip-pos', pos + '%');
+                requestAnimationFrame(autoAnimate);
+            }
+        }
+        autoAnimate();
+
+        const initRipple = (el) => {
+            const originalText = el.innerText;
+            let isAnimating = false;
+            let waves = [];
+            const glitchChars = '.,·-─~+:;=*π""┐┌┘┴┬╗╔╝╚╬╠╣╩╦║░▒▓█▄▀▌▐■!?&#$@0123456789*';
+
+            const runAnimation = () => {
+                const now = Date.now();
+                waves = waves.filter(w => now - w.startTime < 800);
+                if (waves.length === 0) { el.innerText = originalText; isAnimating = false; return; }
+
+                el.innerText = originalText.split("").map((char, i) => {
+                    if (char === " " || char === "\n") return char;
+                    let result = char;
+                    waves.forEach(w => {
+                        const progress = (now - w.startTime) / 800;
+                        const distance = Math.abs(i - w.startPos);
+                        if (distance <= (progress * originalText.length / 1.2) && distance > (progress * originalText.length / 1.2) - 2.5) {
+                            result = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                        }
+                    });
+                    return result;
+                }).join("");
+                requestAnimationFrame(runAnimation);
+            };
+
+            el.addEventListener('mouseenter', (e) => {
+                const rect = el.getBoundingClientRect();
+                waves.push({ startPos: Math.round(((e.clientX - rect.left) / rect.width) * originalText.length), startTime: Date.now() });
+                if (!isAnimating) { isAnimating = true; requestAnimationFrame(runAnimation); }
+            });
+        };
+
+        document.querySelectorAll('.ripple-active').forEach(initRipple);
+
+        function triggerLanguageSwitch() {
+            const html = document.getElementById('main-html');
+            const langBtn = document.getElementById('langToggleBtn');
+            const isAr = html.getAttribute('lang') === 'ar';
+            
+            html.setAttribute('lang', isAr ? 'en' : 'ar');
+            html.setAttribute('dir', isAr ? 'ltr' : 'rtl');
+            
+            langBtn.innerText = isAr ? 'ع' : 'E';
+
+            setTimeout(initScrollHighlights, 50);
+        }
+
+        function triggerThemeSwitch() {
+            const body = document.getElementById('body-tag');
+            const themeBtn = document.getElementById('themeToggleBtn');
+
+            if (!body.classList.contains('cream-mode') && !body.classList.contains('silk-mode')) {
+                body.classList.add('cream-mode');
+                themeBtn.innerHTML = '✧';
+            } else if (body.classList.contains('cream-mode')) {
+                body.classList.remove('cream-mode');
+                body.classList.add('silk-mode');
+                themeBtn.innerHTML = '✦';
+
+                if(silkSceneInstance) {
+                    setTimeout(() => {
+                        silkSceneInstance.setSize(window.innerWidth, window.innerHeight);
+                    }, 50);
+                }
+            } else {
+                body.classList.remove('silk-mode');
+                themeBtn.innerHTML = '✦';
+            }
+        }
+
+        function initScrollHighlights() {
+            document.querySelectorAll('.scroll-highlight-container').forEach(container => {
+                const p = container.querySelector('.scroll-highlight-text');
+                if (!p) return;
+
+                const visibleSubSpan = p.querySelector(document.documentElement.getAttribute('lang') === 'en' ? '.en-only' : '.ar-only');
+                if (!visibleSubSpan) return;
+
+                if (!visibleSubSpan.dataset.processed) {
+                    visibleSubSpan.dataset.processed = "true";
+                    const text = visibleSubSpan.textContent.trim();
+                    const words = text.split(/\s+/).filter(Boolean);
+                    visibleSubSpan.innerHTML = words.map(word => `<span class="word" style="display:inline-block; color:rgba(255, 128, 191, 0.25); transition:color 0.1s;">${word}</span>`).join(" ");
+                }
+
+                const targets = visibleSubSpan.querySelectorAll('.word');
+                if (targets.length === 0) return;
+
+                gsap.set(targets, { color: "rgba(255, 128, 191, 0.25)" });
+                
+                ScrollTrigger.getAll().forEach(st => {
+                    if (st.trigger === container) st.kill();
+                });
+
+                gsap.to(targets, {
+                    color: "var(--text-light)",
+                    stagger: 0.15,
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top 75%",
+                        end: "bottom 25%",
+                        scrub: true
+                    }
+                });
+            });
+        }
+
+        function navigate(id, navItemElement = null) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            const targetSection = document.getElementById(id);
+            if (targetSection) targetSection.classList.add('active');
+            window.scrollTo(0, 0);
+
+            if (id === 'music') {
+                document.body.classList.add('music-active');
+            } else {
+                document.body.classList.remove('music-active');
+            }
+
+            document.querySelectorAll('.glass-nav-item').forEach(item => item.classList.remove('active'));
+            
+            if (navItemElement) {
+                navItemElement.classList.add('active');
+            } else {
+                const activeNav = document.querySelector(`.glass-nav-item[data-target="${id}"]`);
+                if (activeNav) activeNav.classList.add('active');
+            }
+
+            setTimeout(initScrollHighlights, 100);
+        }
+
+        setTimeout(initScrollHighlights, 200);
+    </script>
+</body>
+</html>

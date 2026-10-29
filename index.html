@@ -713,16 +713,17 @@
             transform: scale(1.1);
         }
 
-        /* ── الهيدر العلوي المستقل (مرفوع قليلاً للأعلى ومنقول لأقصى اليمين تماماً بدون خلفية دائرية) ── */
+        /* ── الهيدر العلوي المستقل (مضبوط בדיוק ليطابق أبعاد الموقع الحقيقي فوق الألبوم مباشرة يميناً) ── */
         .fs-top-bar {
-            position: fixed !important;
-            top: max(8px, env(safe-area-inset-top)) !important;
-            left: 20px !important;
-            right: 20px !important;
-            height: 38px !important;
+            position: absolute !important;
+            top: calc(50% - min(43vw, 175px) - 45px) !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            width: min(86vw, 330px) !important;
+            height: 36px !important;
             display: none;
             align-items: center;
-            justify-content: flex-end !important; /* نقل السهم إلى أقصى اليمين تماماً */
+            justify-content: flex-end !important; /* ملاصق لأقصى اليمين تماماً وفوق الألبوم مباشرة */
             z-index: 10000005 !important;
             pointer-events: auto !important;
         }
@@ -757,7 +758,7 @@
             transform: scale(1.15);
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (توازن ممتاز للمسافات العلوية) ── */
+        /* ── وضع ملء الشاشة للموسيقى (مدروس للمتصفحات والمواقع الحقيقية) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -770,7 +771,7 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 85px 24px 30px 24px !important;
+            padding: 20px 24px 30px 24px !important;
             transform-origin: top center;
             animation: slideDownCurtain 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             direction: rtl !important;
@@ -792,7 +793,7 @@
         .snd.fullscreen .snd-box {
             position: relative !important;
             width: 100% !important;
-            max-width: 360px !important;
+            max-width: 330px !important;
             height: auto !important;
             background: transparent !important;
             display: flex !important;
@@ -801,14 +802,15 @@
             justify-content: center !important;
             padding: 0 !important;
             overflow: visible !important;
+            margin-top: 35px !important;
         }
 
-        /* 1. الغلاف عريض وممتلئ من الجانبين مثل سبوتيفاي وبدون فراغات مبالغ فيها */
+        /* 1. الغلاف عريض وممتلئ من الجانبين */
         .snd.fullscreen .snd-art {
             width: min(86vw, 330px) !important;
             height: min(86vw, 330px) !important;
             border-radius: 12px !important;
-            margin-bottom: 22px !important;
+            margin-bottom: 20px !important;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
@@ -823,7 +825,7 @@
             align-items: flex-start !important;
             text-align: right !important;
             width: 100% !important;
-            margin-bottom: 18px !important;
+            margin-bottom: 16px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
@@ -847,7 +849,7 @@
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
-            margin-bottom: 22px !important;
+            margin-bottom: 20px !important;
         }
 
         .snd.fullscreen .fs-rail {

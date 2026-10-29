@@ -677,51 +677,18 @@
             display: none !important;
         }
 
-        .snd-ops {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            flex-shrink: 0;
-            z-index: 3;
+        /* ── إخفاء أزرار التحكم تماماً في البطاقات العادية لتصبح مثل سبوتيفاي ── */
+        .snd .snd-ops {
+            display: none !important;
         }
 
-        .snd-op {
-            background: transparent;
-            border: none;
-            color: var(--ink);
-            cursor: pointer;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            opacity: 0.75;
-            transition: all 0.2s;
-        }
-
-        .snd-op svg {
-            width: 15px;
-            height: 15px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .snd-op:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        /* ── زر السهم العلوي ── */
+        /* ── زر السهم العلوي في وضع ملء الشاشة ── */
         .fs-top-bar {
             width: 100% !important;
-            max-width: 300px !important;
+            max-width: 320px !important;
             display: none;
             justify-content: flex-start !important;
-            margin-bottom: 0px !important;
+            margin-bottom: 8px !important;
             z-index: 10000005 !important;
             pointer-events: auto !important;
         }
@@ -758,7 +725,7 @@
             background: rgba(255, 255, 255, 0.2) !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (شفاف، متناسق، تقريب العناصر بوسط الشاشة) ── */
+        /* ── وضع ملء الشاشة للموسيقى (متوازن ومحشور بالمنتصف تماماً بدون فراغات مزعجة) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -768,17 +735,16 @@
             z-index: 10000000 !important;
             margin: 0 !important;
             
-            /* خلفية شفافة بالكامل مع تأثير غباش (Glassmorphism) لتظهر الخلفية من ورائها */
-            background: rgba(15, 15, 15, 0.45) !important;
-            backdrop-filter: blur(20px) saturate(150%) !important;
-            -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
+            background: rgba(12, 12, 12, 0.88) !important;
+            backdrop-filter: blur(25px) saturate(150%) !important;
+            -webkit-backdrop-filter: blur(25px) saturate(150%) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
 
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 10px !important;
+            padding: 12px !important;
             transform-origin: top center;
             animation: slideDownCurtain 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             direction: rtl !important;
@@ -800,7 +766,7 @@
         .snd.fullscreen .snd-box {
             position: relative !important;
             width: 100% !important;
-            max-width: 300px !important;
+            max-width: 320px !important;
             height: auto !important;
             background: transparent !important;
             display: flex !important;
@@ -811,14 +777,14 @@
             overflow: visible !important;
         }
 
-        /* 1. صورة الألبوم نازلة شوية ومحفوظة بحجم ممتاز */
+        /* 1. حجم وتوسيط صورة الألبوم في المنتصف */
         .snd.fullscreen .snd-art {
-            width: min(72vw, 250px) !important;
-            height: min(72vw, 250px) !important;
-            border-radius: 16px !important;
-            margin-top: 14px !important;
-            margin-bottom: 10px !important;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            width: min(75vw, 260px) !important;
+            height: min(75vw, 260px) !important;
+            border-radius: 18px !important;
+            margin-top: 0px !important;
+            margin-bottom: 16px !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
         /* 2. اسم الأغنية والفنان متلاصقين تحت الصورة مباشرة */
@@ -832,23 +798,23 @@
             align-items: flex-start !important;
             text-align: right !important;
             width: 100% !important;
-            max-width: 250px !important;
-            margin-bottom: 8px !important;
+            max-width: 260px !important;
+            margin-bottom: 14px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
 
         .snd.fullscreen .snd-title {
-            font-size: 18px !important;
+            font-size: 19px !important;
             font-weight: 700 !important;
-            margin-bottom: 2px !important;
+            margin-bottom: 3px !important;
             white-space: normal !important;
             color: #ffffff !important;
         }
 
         .snd.fullscreen .snd-by { 
-            font-size: 12px !important; 
-            opacity: 0.7 !important;
+            font-size: 13px !important; 
+            opacity: 0.75 !important;
             color: #b3b3b3 !important;
         }
 
@@ -857,8 +823,8 @@
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
-            max-width: 250px !important;
-            margin-bottom: 10px !important;
+            max-width: 260px !important;
+            margin-bottom: 16px !important;
         }
 
         .snd.fullscreen .fs-rail {
@@ -886,52 +852,55 @@
             justify-content: space-between;
             font-size: 11px;
             color: #b3b3b3;
-            margin-top: 3px;
+            margin-top: 4px;
             direction: ltr !important;
         }
 
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم مرفوعة لفوق تماماً ومتلاصقة مع الشريط بدون فراغ سفلي */
+        /* 4. أزرار التحكم مرفوعة لفوق تماماً وملاصقة للشريط وموزعة بالتساوي */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
-            max-width: 250px !important;
+            max-width: 260px !important;
             margin-top: 0px !important;
-            margin-bottom: 6px !important;
+            margin-bottom: 10px !important;
             gap: 0 !important;
         }
 
         .snd.fullscreen .snd-op {
-            width: 36px !important;
-            height: 36px !important;
+            width: 40px !important;
+            height: 40px !important;
             background: transparent !important;
             border-radius: 50% !important;
             opacity: 0.9 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
         .snd.fullscreen .snd-op svg {
-            width: 17px !important;
-            height: 17px !important;
+            width: 18px !important;
+            height: 18px !important;
             stroke: #ffffff !important;
         }
 
         /* زر التشغيل الكبير بالمنتصف */
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
-            width: 50px !important;
-            height: 50px !important;
+            width: 56px !important;
+            height: 56px !important;
             background: #ffffff !important;
             border-radius: 50% !important;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
         }
 
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) svg {
             stroke: #000000 !important;
-            width: 20px !important;
-            height: 20px !important;
+            width: 22px !important;
+            height: 22px !important;
         }
 
         /* ── تأثير كشف الصور عند التحويم ── */

@@ -577,7 +577,7 @@
         .gm-run {
             height: 100%;
             width: 0%;
-            background: var(--accent-color);
+            background: #ff007f;
             border-radius: 999px;
             pointer-events: none;
         }
@@ -676,7 +676,7 @@
         .snd-bar { display: none !important; }
         .snd .snd-ops { display: none !important; }
 
-        /* ── زر الانسداد العلوي (بدون إطار دائري) ── */
+        /* ── زر الانسداد العلوي ── */
         .fs-top-bar {
             width: 100% !important;
             max-width: 320px !important;
@@ -720,7 +720,7 @@
             background: transparent !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (بطاقة شفافة مع زيادة الشفافية لإظهار الخلفية) ── */
+        /* ── وضع ملء الشاشة للموسيقى ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -744,6 +744,8 @@
             animation: slideDownCurtain 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             direction: rtl !important;
             overflow-y: auto !important;
+            touch-action: pan-y;
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
 
         @keyframes slideDownCurtain {
@@ -770,7 +772,6 @@
             overflow: visible !important;
         }
 
-        /* 1. الصورة في وضع متناسق ونازلة تحت شوي */
         .snd.fullscreen .snd-art {
             width: min(84vw, 310px) !important;
             height: min(84vw, 310px) !important;
@@ -780,7 +781,6 @@
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
         }
 
-        /* 2. اسم الأغنية والفنان */
         .snd.fullscreen .snd-say {
             position: relative !important;
             left: auto !important;
@@ -811,7 +811,7 @@
             color: #b3b3b3 !important;
         }
 
-        /* 3. شريط التقدم (ظاهر ويعمل بسلاسة تامة) */
+        /* ── شريط التقدم الوردي المظهر ── */
         .snd.fullscreen .fs-bar-container {
             display: flex !important;
             flex-direction: column !important;
@@ -836,7 +836,7 @@
         .snd.fullscreen .fs-run {
             height: 100% !important;
             width: 0% !important;
-            background: #ffffff !important;
+            background: #ff007f !important;
             border-radius: 999px !important;
             pointer-events: none !important;
             will-change: width;
@@ -853,7 +853,6 @@
 
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم مرفوعة فوق وموزعة باحترافية */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
@@ -1892,7 +1891,7 @@
         }
 
         function openFullscreenPlayer(element, event) {
-            if (event.target.closest('.snd-ops') || event.target.closest('.fs-top-bar')) return;
+            if (event.target.closest('.snd-ops') || event.target.closest('.fs-top-bar') || event.target.closest('.fs-bar-container')) return;
             updateMiniPlayerInfo(element);
             
             const audioElement = element.querySelector('.audio-source');
@@ -1939,6 +1938,44 @@
             document.body.classList.remove('fullscreen-active');
             document.body.style.overflow = '';
         }
+
+        /* ── تفعيل حركة السحب والإفلات لإنزال أو رفع البطاقة ── */
+        document.querySelectorAll('.snd').forEach(card => {
+            let startY = 0;
+            let currentY = 0;
+            let isDragging = false;
+
+            card.addEventListener('touchstart', (e) => {
+                if (!card.classList.contains('fullscreen')) return;
+                startY = e.touches[0].clientY;
+                isDragging = true;
+                card.style.transition = 'none';
+            }, { passive: true });
+
+            card.addEventListener('touchmove', (e) => {
+                if (!isDragging || !card.classList.contains('fullscreen')) return;
+                currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+                if (diff > 0) {
+                    card.style.transform = `translateY(${diff}px)`;
+                    card.style.opacity = `${1 - (diff / 400)}`;
+                }
+            }, { passive: true });
+
+            card.addEventListener('touchend', (e) => {
+                if (!isDragging || !card.classList.contains('fullscreen')) return;
+                isDragging = false;
+                card.style.transition = 'transform 0.2s ease-out, opacity 0.2s ease-out';
+                const diff = currentY - startY;
+                if (diff > 100) {
+                    card.classList.remove('fullscreen');
+                    document.body.classList.remove('fullscreen-active');
+                    document.body.style.overflow = '';
+                }
+                card.style.transform = '';
+                card.style.opacity = '';
+            });
+        });
 
         const hirContainer = document.getElementById('hirContainer');
         const hirFloatBox = document.getElementById('hirFloatBox');

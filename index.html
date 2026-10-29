@@ -60,8 +60,9 @@
         }
 
         body.cream-mode .glass-header-container,
-        body.cream-mode .glass-nav-container {
-            background: rgba(255, 255, 255, 0.4) !important;
+        body.cream-mode .glass-nav-container,
+        body.cream-mode .global-mini-player {
+            background: rgba(255, 255, 255, 0.5) !important;
             border: 1px solid rgba(0, 0, 0, 0.05) !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
         }
@@ -98,8 +99,9 @@
         }
 
         body.silk-mode .glass-header-container,
-        body.silk-mode .glass-nav-container {
-            background: rgba(0, 17, 124, 0.2) !important;
+        body.silk-mode .glass-nav-container,
+        body.silk-mode .global-mini-player {
+            background: rgba(0, 17, 124, 0.25) !important;
             border: 1px solid rgba(25, 227, 255, 0.15) !important;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) !important;
         }
@@ -123,7 +125,7 @@
             color: var(--text-light);
             font-family: var(--font-main);
             margin: 0; 
-            padding: 90px 16px 110px 16px;
+            padding: 90px 16px 170px 16px;
             display: flex; 
             flex-direction: column; 
             align-items: center;
@@ -209,7 +211,7 @@
             font-family: var(--font-en); 
         }
 
-        /* ── الصندوق العلوي (مربع بحواف مقوسة) ── */
+        /* ── الصندوق العلوي ── */
         .glass-header-container {
             position: fixed;
             top: 14px;
@@ -222,13 +224,13 @@
             align-items: center;
             justify-content: space-between;
             padding: 4px 16px;
-
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px) saturate(150%);
             -webkit-backdrop-filter: blur(12px) saturate(150%);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
         .brand { 
@@ -263,7 +265,6 @@
             cursor: pointer;
             transition: all 0.2s ease;
             outline: none;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .glass-lang-btn {
@@ -382,7 +383,7 @@
             font-family: var(--font-main);
         }
 
-        /* ── الصندوق السفلي (مربع بحواف مقوسة) ── */
+        /* ── الصندوق السفلي (القائمة العائمة) ── */
         .glass-nav-container {
             position: fixed;
             bottom: max(14px, env(safe-area-inset-bottom));
@@ -395,14 +396,13 @@
             align-items: center;
             justify-content: space-around;
             padding: 4px 6px;
-
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px) saturate(150%);
             -webkit-backdrop-filter: blur(12px) saturate(150%);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
             direction: ltr !important;
         }
 
@@ -446,6 +446,147 @@
             filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
         }
 
+        /* ── الشريط المصغر العام المطابق لسبوتيفاي (فوق القائمة العائمة مباشرة) ── */
+        .global-mini-player {
+            position: fixed;
+            bottom: max(74px, calc(env(safe-area-inset-bottom) + 60px));
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(92vw, 420px);
+            height: 58px;
+            z-index: 998;
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 12px;
+            cursor: pointer;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            direction: rtl;
+        }
+
+        .global-mini-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 44px;
+        }
+
+        .gm-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .gm-art {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .gm-text {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            overflow: hidden;
+            text-align: right;
+        }
+
+        .gm-title {
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .gm-by {
+            color: #b3b3b3;
+            font-size: 11px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .gm-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .gm-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .gm-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .gm-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* شريط التمرير الرفيع أسفل الشريط المصغر */
+        .gm-rail {
+            position: absolute;
+            bottom: 3px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            overflow: hidden;
+            cursor: pointer;
+            direction: ltr !important;
+        }
+
+        .gm-run {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        /* إخفاء القوائم والشريط المصغر عند تفعيل وضع ملء الشاشة */
+        body.fullscreen-active .glass-header-container,
+        body.fullscreen-active .glass-nav-container,
+        body.fullscreen-active .global-mini-player {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translate(-50%, 40px) scale(0.95) !important;
+        }
+
         /* ── صفحة الموسيقى ── */
         .snd-container {
             display: flex;
@@ -455,7 +596,7 @@
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
-            padding: 10px 0 100px 0;
+            padding: 10px 0 120px 0;
         }
 
         .snd {
@@ -528,50 +669,9 @@
             overflow: hidden;
         }
 
+        /* إخفاء شريط التقدم القديم داخل عناصر القائمة (لأننا أضفناه في الشريط المصغر السفلي) */
         .snd-bar {
-            position: absolute;
-            left: 0;
-            bottom: 4px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .snd:hover .snd-bar, .snd.fullscreen .snd-bar {
-            opacity: 1;
-        }
-
-        .snd-rail {
-            display: block;
-            height: 3px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.2);
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
-            touch-action: none;
-            direction: ltr !important;
-        }
-
-        .snd-run {
-            display: block;
-            height: 3px;
-            width: 0%;
-            background: var(--accent-color);
-            border-radius: 999px;
-            pointer-events: none;
-        }
-
-        .snd-clock {
-            display: flex;
-            justify-content: space-between;
-            font-size: 9px;
-            color: var(--text-light);
-            opacity: 0.6;
-            direction: ltr !important;
+            display: none !important;
         }
 
         .snd-ops {
@@ -612,44 +712,50 @@
             transform: scale(1.1);
         }
 
-        /* ── زر الخروج من وضع ملء الشاشة (حر تماماً وواضح في أعلى الزاوية) ── */
+        /* ── زر الإنزلاق والإغلاق (سهم ⌄ مطابق لسبوتيفاي) ── */
         .close-fs-btn {
             position: absolute;
             top: 24px;
             left: 24px;
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
             color: #ffffff;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 1000000;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            z-index: 10000002;
+            opacity: 0.85;
+            transition: opacity 0.2s;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (مصحح ومنعزل 100%) ── */
+        .close-fs-btn:hover {
+            opacity: 1;
+        }
+
+        /* ── وضع ملء الشاشة للموسيقى (ينسدل من الأعلى ويغطي الشاشة بالكامل) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
-            z-index: 999999 !important;
+            z-index: 10000000 !important;
             margin: 0 !important;
-            background: rgba(0, 0, 0, 0.95) !important;
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+            background: #0b0b0b !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 30px 20px !important;
-            animation: fadeInOverlay 0.2s ease forwards;
+            padding: 40px 24px !important;
+            animation: slideDownModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideDownModal {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0%); opacity: 1; }
         }
 
         .snd.fullscreen .snd-box {
@@ -668,14 +774,16 @@
 
         .snd.fullscreen .close-fs-btn { display: flex !important; }
 
+        /* 1. الغلاف مربع وكبير وبارز في الأعلى */
         .snd.fullscreen .snd-art {
-            width: min(70vw, 220px) !important;
-            height: min(70vw, 220px) !important;
-            border-radius: 16px !important;
-            margin-bottom: 24px !important;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            width: min(78vw, 280px) !important;
+            height: min(78vw, 280px) !important;
+            border-radius: 12px !important;
+            margin-bottom: 30px !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
         }
 
+        /* 2. اسم الأغنية والفنان تحته مباشرة */
         .snd.fullscreen .snd-say {
             position: relative !important;
             left: auto !important;
@@ -683,11 +791,12 @@
             height: auto !important;
             display: flex !important;
             flex-direction: column !important;
-            align-items: center !important;
-            text-align: center !important;
-            margin-bottom: 24px !important;
-            max-width: 100% !important;
+            align-items: flex-start !important;
+            text-align: right !important;
+            width: 100% !important;
+            margin-bottom: 20px !important;
             margin-left: 0 !important;
+            direction: rtl !important;
         }
 
         .snd.fullscreen .snd-title {
@@ -695,54 +804,94 @@
             font-weight: 700 !important;
             margin-bottom: 6px !important;
             white-space: normal !important;
-            text-align: center !important;
+            color: #ffffff !important;
         }
 
         .snd.fullscreen .snd-by { 
             font-size: 14px !important; 
-            opacity: 0.85 !important;
+            opacity: 0.7 !important;
+            color: #b3b3b3 !important;
         }
 
-        .snd.fullscreen .snd-bar {
-            position: relative !important;
-            left: auto !important;
-            bottom: auto !important;
-            width: 100% !important;
-            margin-bottom: 30px !important;
+        /* 3. شريط التقدم بوضع ملء الشاشة */
+        .snd.fullscreen .fs-bar-container {
             display: flex !important;
             flex-direction: column !important;
-            opacity: 1 !important;
+            width: 100% !important;
+            margin-bottom: 30px !important;
         }
 
-        .snd.fullscreen .snd-rail { height: 6px !important; }
-        .snd.fullscreen .snd-run { height: 6px !important; }
-
-        .snd.fullscreen .snd-clock {
-            opacity: 0.9 !important;
-            font-size: 11px !important;
-            margin-top: 6px !important;
+        .snd.fullscreen .fs-rail {
+            display: block;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            touch-action: none;
+            direction: ltr !important;
         }
 
+        .snd.fullscreen .fs-run {
+            height: 100%;
+            width: 0%;
+            background: #ffffff;
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        .snd.fullscreen .fs-clock {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #b3b3b3;
+            margin-top: 8px;
+            direction: ltr !important;
+        }
+
+        /* عناصر مؤقتة لشريط التقدم داخل وضع ملء الشاشة */
+        .fs-bar-container { display: none; }
+
+        /* 4. أزرار التحكم بأسلوب سبوتيفاي السفلي */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
             align-items: center !important;
-            justify-content: center !important;
-            gap: 25px !important;
-            margin-top: 5px !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            max-width: 320px !important;
+            margin-top: 10px !important;
+            gap: 0 !important;
         }
 
         .snd.fullscreen .snd-op {
-            width: 50px !important;
-            height: 50px !important;
-            background: rgba(255, 255, 255, 0.1) !important;
-            border-radius: 12px !important;
-            opacity: 1 !important;
+            width: 44px !important;
+            height: 44px !important;
+            background: transparent !important;
+            border-radius: 50% !important;
+            opacity: 0.9 !important;
         }
-        
+
         .snd.fullscreen .snd-op svg {
-            width: 22px !important;
-            height: 22px !important;
+            width: 20px !important;
+            height: 20px !important;
+            stroke: #ffffff !important;
+        }
+
+        /* زر التشغيل الكبير بالمنتصف */
+        .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
+            width: 64px !important;
+            height: 64px !important;
+            background: #ffffff !important;
+            border-radius: 50% !important;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .snd.fullscreen .snd-ops .snd-op:nth-child(2) svg {
+            stroke: #000000 !important;
+            width: 24px !important;
+            height: 24px !important;
         }
 
         /* ── تأثير كشف الصور عند التحويم ── */
@@ -845,11 +994,6 @@
         .hir-list.any-hovered .hir-text { color: rgba(255, 128, 191, 0.3); }
         .hir-list.any-hovered .hir-item:hover .hir-text { color: var(--accent-color); }
 
-        @keyframes fadeInOverlay {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
         [lang="en"] .ar-only, [lang="ar"] .en-only { display: none; }
         .ripple-active { position: relative; display: inline-block; cursor: pointer; user-select: none; }
     </style>
@@ -867,7 +1011,7 @@
     <!-- خلفية موجات الحرير -->
     <div id="silk-waves-container"></div>
 
-    <!-- الصندوق العلوي (مربع بحواف مقوسة) -->
+    <!-- الصندوق العلوي -->
     <div class="glass-header-container">
         <div class="brand ripple-active" onclick="navigate('home'); playAudioClick();">
             Q
@@ -880,6 +1024,27 @@
             <button class="glass-theme-btn" id="themeToggleBtn" onclick="triggerThemeSwitch(); playAudioClick();" title="Toggle Theme">
                 ✦
             </button>
+        </div>
+    </div>
+
+    <!-- الشريط المصغر العام السفلي (المطابق لسبوتيفاي) -->
+    <div class="global-mini-player" id="globalMiniPlayer" onclick="openActiveFullscreenPlayer(event)">
+        <div class="global-mini-content">
+            <div class="gm-info">
+                <img class="gm-art" id="gmArt" src="https://i.ibb.co/HT7MLQFQ/file-00000000ac9c8211b46b2359589eff0b.png" alt="Track Art">
+                <div class="gm-text">
+                    <span class="gm-title" id="gmTitle">SugarCrash</span>
+                    <span class="gm-by" id="gmBy">Elyozeth Hub</span>
+                </div>
+            </div>
+            <div class="gm-controls" onclick="event.stopPropagation()">
+                <button class="gm-btn" onclick="togglePlayGlobal(event)" title="تشغيل / إيقاف">
+                    <svg class="gm-play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+            </div>
+        </div>
+        <div class="gm-rail" id="gmRail">
+            <div class="gm-run" id="gmRun"></div>
         </div>
     </div>
 
@@ -919,8 +1084,8 @@
             <div class="snd-container" id="sndContainer">
                 
                 <!-- Track 1 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="SugarCrash" data-by="Elyozeth Hub" data-art="https://i.ibb.co/HT7MLQFQ/file-00000000ac9c8211b46b2359589eff0b.png">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="SugarCrash.m4a" type="audio/mp4">
@@ -931,9 +1096,10 @@
                             <span class="snd-title">SugarCrash</span>
                             <span class="snd-by">Elyozeth Hub</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <!-- شريط التقدم لملء الشاشة -->
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -950,8 +1116,8 @@
                 </div>
 
                 <!-- Track 2 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Charlotte Ending" data-by="Anime OST" data-art="https://i.ibb.co/q37x9YRM/file-00000000a8fc821195faf366dd6fa93a.png">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Charlotte Ending.m4a" type="audio/mp4">
@@ -962,9 +1128,9 @@
                             <span class="snd-title">Charlotte Ending</span>
                             <span class="snd-by">Anime OST</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -981,8 +1147,8 @@
                 </div>
 
                 <!-- Track 3 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="everybody dance now" data-by="C+C Music Factory" data-art="https://i.ibb.co/FkPSvr5G/1792772075572.jpg">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="everybody dance now.m4a" type="audio/mp4">
@@ -993,9 +1159,9 @@
                             <span class="snd-title">everybody dance now</span>
                             <span class="snd-by">C+C Music Factory</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -1012,8 +1178,8 @@
                 </div>
 
                 <!-- Track 4 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Heaven, Wait" data-by="Ghostly Kisses" data-art="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=60">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Ghostly Kisses - Heaven, Wait.m4a" type="audio/mp4">
@@ -1024,9 +1190,9 @@
                             <span class="snd-title">Heaven, Wait</span>
                             <span class="snd-by">Ghostly Kisses</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -1043,8 +1209,8 @@
                 </div>
 
                 <!-- Track 5 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="New Life (Sun)" data-by="Thomas Bergersen" data-art="https://images.unsplash.com/photo-1549887534-1541e9326642?w=500&auto=format&fit=crop&q=60">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Thomas Bergersen - New Life (Sun).m4a" type="audio/mp4">
@@ -1055,9 +1221,9 @@
                             <span class="snd-title">New Life (Sun)</span>
                             <span class="snd-by">Thomas Bergersen</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -1074,8 +1240,8 @@
                 </div>
 
                 <!-- Track 6 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Feek El Ebar" data-by="Ahmed Batshan" data-art="https://images.unsplash.com/photo-1582561226105-02195f2d6b38?w=500&auto=format&fit=crop&q=60">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="metadata" crossorigin="anonymous">
                             <source src="Ahmed Batshan – Feek El Ebar.mp3" type="audio/mpeg">
@@ -1087,9 +1253,9 @@
                             <span class="snd-title">Feek El Ebar</span>
                             <span class="snd-by">Ahmed Batshan</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -1106,8 +1272,8 @@
                 </div>
 
                 <!-- Track 7 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Maaol" data-by="Fadel Chaker" data-art="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=60">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Fadel Chaker - Maaol.m4a" type="audio/mp4">
@@ -1118,9 +1284,9 @@
                             <span class="snd-title">Maaol</span>
                             <span class="snd-by">Fadel Chaker</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -1137,8 +1303,8 @@
                 </div>
 
                 <!-- Track 8 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Hoa El Fraa" data-by="Khaled" data-art="https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=500&auto=format&fit=crop&q=60">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Khaled - Hoa El Fraa.m4a" type="audio/mp4">
@@ -1149,9 +1315,9 @@
                             <span class="snd-title">Hoa El Fraa</span>
                             <span class="snd-by">Khaled</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -1168,8 +1334,8 @@
                 </div>
 
                 <!-- Track 9 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Patient Zero" data-by="Elyozeth Hub" data-art="https://i.ibb.co/6Cz7smM/HT41-J6as-AALlif.jpg">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="metadata" crossorigin="anonymous">
                             <source src="Patient Zero.mp3" type="audio/mpeg">
@@ -1180,9 +1346,9 @@
                             <span class="snd-title">Patient Zero</span>
                             <span class="snd-by">Elyozeth Hub</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -1199,8 +1365,8 @@
                 </div>
 
                 <!-- Track 10 -->
-                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
+                <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Let Me Down Slowly" data-by="Alec Benjamin" data-art="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60">
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Alec Benjamin - Let Me Down Slowly.m4a" type="audio/mp4">
@@ -1211,9 +1377,9 @@
                             <span class="snd-title">Let Me Down Slowly</span>
                             <span class="snd-by">Alec Benjamin</span>
                         </div>
-                        <div class="snd-bar">
-                            <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
-                            <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
+                        <div class="fs-bar-container">
+                            <span class="fs-rail"><span class="fs-run"></span></span>
+                            <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
                     </div>
                     <div class="snd-ops" onclick="event.stopPropagation()">
@@ -1331,7 +1497,7 @@
         </div>
     </div>
 
-    <!-- الصندوق السفلي (مربع بحواف مقوسة) -->
+    <!-- الصندوق السفلي (القائمة العائمة) -->
     <nav class="glass-nav-container">
         <!-- 1. الرئيسية (Home) -->
         <div class="glass-nav-item active" data-target="home" onclick="navigate('home', this); playAudioClick();" title="الرئيسية">
@@ -1388,6 +1554,7 @@
         let dataArray = null;
         let audioSourcesMap = new WeakMap();
         let isPlaying = false;
+        let activeCard = null; // البطاقة النشطة حالياً
 
         function initAudioContext() {
             if (!audioCtx) {
@@ -1431,22 +1598,49 @@
             return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        document.querySelectorAll('.snd').forEach(card => {
+        // إعداد الشريط المصغر السفلي وشريط التقدم العام
+        const gmRun = document.getElementById('gmRun');
+        const gmRail = document.getElementById('gmRail');
+        const gmTitle = document.getElementById('gmTitle');
+        const gmBy = document.getElementById('gmBy');
+        const gmArt = document.getElementById('gmArt');
+        const globalMiniPlayer = document.getElementById('globalMiniPlayer');
+
+        // تحديد أول بطاقة كافتراضية للشريط المصغر
+        const allCards = Array.from(document.querySelectorAll('.snd'));
+        if (allCards.length > 0) {
+            activeCard = allCards[0];
+            updateMiniPlayerInfo(activeCard);
+        }
+
+        function updateMiniPlayerInfo(card) {
+            if (!card) return;
+            activeCard = card;
+            gmTitle.innerText = card.getAttribute('data-title');
+            gmBy.innerText = card.getAttribute('data-by');
+            gmArt.src = card.getAttribute('data-art');
+        }
+
+        // ربط أحداث الصوت لكل بطاقة
+        allCards.forEach(card => {
             const audio = card.querySelector('.audio-source');
-            const runBar = card.querySelector('.snd-run');
-            const rail = card.querySelector('.snd-rail');
+            const playIcon = card.querySelector('.play-icon');
+            const fsRun = card.querySelector('.fs-run');
+            const fsRail = card.querySelector('.fs-rail');
             const currentTimeEl = card.querySelector('.current-time');
             const durationTimeEl = card.querySelector('.duration-time');
-            const playIcon = card.querySelector('.play-icon');
 
             audio.addEventListener('loadedmetadata', () => {
                 if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
             });
 
             audio.addEventListener('timeupdate', () => {
-                if (audio.duration && !isSeeking) {
+                if (audio.duration) {
                     const percent = (audio.currentTime / audio.duration) * 100;
-                    if (runBar) runBar.style.width = percent + '%';
+                    if (card === activeCard) {
+                        gmRun.style.width = percent + '%';
+                    }
+                    if (fsRun) fsRun.style.width = percent + '%';
                     if (currentTimeEl) currentTimeEl.innerText = formatTime(audio.currentTime);
                     if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
                 }
@@ -1454,49 +1648,51 @@
 
             audio.addEventListener('ended', () => {
                 setPlayIconState(playIcon, false);
-                if (runBar) runBar.style.width = '0%';
+                setGlobalPlayIconState(false);
+                gmRun.style.width = '0%';
                 currentPlayingAudio = null;
                 isPlaying = false;
                 autoPlayNext(card);
             });
 
-            let isSeeking = false;
-
-            function handleSeek(e) {
-                if (!audio.duration) return;
-                const rect = rail.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
-                const percentage = clickX / rect.width;
-                
-                audio.currentTime = percentage * audio.duration;
-                if (runBar) runBar.style.width = (percentage * 100) + '%';
-                if (currentTimeEl) currentTimeEl.innerText = formatTime(audio.currentTime);
-            }
-
-            if (rail) {
-                rail.addEventListener('mousedown', (e) => {
-                    isSeeking = true;
-                    handleSeek(e);
-                });
-
-                rail.addEventListener('touchstart', (e) => {
-                    isSeeking = true;
-                    handleSeek(e);
-                }, { passive: true });
-
-                window.addEventListener('mousemove', (e) => {
-                    if (isSeeking) handleSeek(e);
-                });
-
-                window.addEventListener('touchmove', (e) => {
-                    if (isSeeking) handleSeek(e);
-                }, { passive: true });
-
-                window.addEventListener('mouseup', () => { isSeeking = false; });
-                window.addEventListener('touchend', () => { isSeeking = false; });
+            // تفاعل شريط التقدم بوضع ملء الشاشة
+            if (fsRail) {
+                let isSeekingFS = false;
+                const handleFSSeek = (e) => {
+                    if (!audio.duration) return;
+                    const rect = fsRail.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+                    const percentage = clickX / rect.width;
+                    audio.currentTime = percentage * audio.duration;
+                };
+                fsRail.addEventListener('mousedown', (e) => { isSeekingFS = true; handleFSSeek(e); });
+                fsRail.addEventListener('touchstart', (e) => { isSeekingFS = true; handleFSSeek(e); }, { passive: true });
+                window.addEventListener('mousemove', (e) => { if (isSeekingFS) handleFSSeek(e); });
+                window.addEventListener('touchmove', (e) => { if (isSeekingFS) handleFSSeek(e); }, { passive: true });
+                window.addEventListener('mouseup', () => { isSeekingFS = false; });
+                window.addEventListener('touchend', () => { isSeekingFS = false; });
             }
         });
+
+        // تفاعل شريط التقدم في الشريط المصغر السفلي
+        let isSeekingGM = false;
+        const handleGMSeek = (e) => {
+            if (!activeCard) return;
+            const audio = activeCard.querySelector('.audio-source');
+            if (!audio.duration) return;
+            const rect = gmRail.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+            const percentage = clickX / rect.width;
+            audio.currentTime = percentage * audio.duration;
+        };
+        gmRail.addEventListener('mousedown', (e) => { isSeekingGM = true; handleGMSeek(e); });
+        gmRail.addEventListener('touchstart', (e) => { isSeekingGM = true; handleGMSeek(e); }, { passive: true });
+        window.addEventListener('mousemove', (e) => { if (isSeekingGM) handleGMSeek(e); });
+        window.addEventListener('touchmove', (e) => { if (isSeekingGM) handleGMSeek(e); }, { passive: true });
+        window.addEventListener('mouseup', () => { isSeekingGM = false; });
+        window.addEventListener('touchend', () => { isSeekingGM = false; });
 
         function setPlayIconState(iconElement, playing) {
             if (!iconElement) return;
@@ -1504,6 +1700,16 @@
                 iconElement.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
             } else {
                 iconElement.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+            }
+        }
+
+        function setGlobalPlayIconState(playing) {
+            const gmPlayIcon = document.querySelector('.gm-play-icon');
+            if (!gmPlayIcon) return;
+            if (playing) {
+                gmPlayIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+            } else {
+                gmPlayIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
             }
         }
 
@@ -1525,7 +1731,7 @@
             const playIcon = card.querySelector('.play-icon');
             
             if (!audioElement) return;
-
+            updateMiniPlayerInfo(card);
             connectAudioElementToAnalyser(audioElement);
 
             if (audioElement.paused) {
@@ -1537,6 +1743,7 @@
                 }
                 audioElement.play().then(() => {
                     setPlayIconState(playIcon, true);
+                    setGlobalPlayIconState(true);
                     currentPlayingAudio = audioElement;
                     isPlaying = true;
                 }).catch(err => {
@@ -1545,45 +1752,63 @@
             } else {
                 audioElement.pause();
                 setPlayIconState(playIcon, false);
+                setGlobalPlayIconState(false);
                 currentPlayingAudio = null;
                 isPlaying = false;
             }
         }
 
+        function togglePlayGlobal(event) {
+            event.stopPropagation();
+            if (!activeCard) return;
+            const playBtn = activeCard.querySelector('.snd-op:nth-child(2)');
+            if (playBtn) {
+                togglePlay(playBtn);
+                playAudioClick();
+            }
+        }
+
         function nextTrack(btn) {
             const currentCard = btn.closest('.snd');
-            const allCards = Array.from(document.querySelectorAll('.snd'));
             const currentIndex = allCards.indexOf(currentCard);
             const nextIndex = (currentIndex + 1) % allCards.length;
             const isFS = currentCard.classList.contains('fullscreen');
 
-            if (isFS) currentCard.classList.remove('fullscreen');
+            if (isFS) {
+                currentCard.classList.remove('fullscreen');
+                document.body.classList.remove('fullscreen-active');
+            }
             playSpecificCard(allCards[nextIndex], isFS);
         }
 
         function prevTrack(btn) {
             const currentCard = btn.closest('.snd');
-            const allCards = Array.from(document.querySelectorAll('.snd'));
             const currentIndex = allCards.indexOf(currentCard);
             const prevIndex = (currentIndex - 1 + allCards.length) % allCards.length;
             const isFS = currentCard.classList.contains('fullscreen');
 
-            if (isFS) currentCard.classList.remove('fullscreen');
+            if (isFS) {
+                currentCard.classList.remove('fullscreen');
+                document.body.classList.remove('fullscreen-active');
+            }
             playSpecificCard(allCards[prevIndex], isFS);
         }
 
         function autoPlayNext(currentCard) {
-            const allCards = Array.from(document.querySelectorAll('.snd'));
             const currentIndex = allCards.indexOf(currentCard);
             const nextIndex = (currentIndex + 1) % allCards.length;
             const isFS = currentCard.classList.contains('fullscreen');
 
-            if (isFS) currentCard.classList.remove('fullscreen');
+            if (isFS) {
+                currentCard.classList.remove('fullscreen');
+                document.body.classList.remove('fullscreen-active');
+            }
             playSpecificCard(allCards[nextIndex], isFS);
         }
 
         function playSpecificCard(targetCard, maintainFullscreen = false) {
             if (!targetCard) return;
+            updateMiniPlayerInfo(targetCard);
             const audioElement = targetCard.querySelector('.audio-source');
             const playIcon = targetCard.querySelector('.play-icon');
 
@@ -1596,6 +1821,7 @@
 
             if (maintainFullscreen) {
                 targetCard.classList.add('fullscreen');
+                document.body.classList.add('fullscreen-active');
                 document.body.style.overflow = 'hidden';
             }
 
@@ -1604,6 +1830,7 @@
                 audioElement.currentTime = 0;
                 audioElement.play().then(() => {
                     setPlayIconState(playIcon, true);
+                    setGlobalPlayIconState(true);
                     currentPlayingAudio = audioElement;
                     isPlaying = true;
                     if (!maintainFullscreen) {
@@ -1616,15 +1843,27 @@
         }
 
         function openFullscreenPlayer(element, event) {
-            if (event.target.closest('.snd-ops') || event.target.closest('.close-fs-btn') || event.target.closest('.snd-bar')) return;
+            if (event.target.closest('.snd-ops') || event.target.closest('.close-fs-btn')) return;
+            updateMiniPlayerInfo(element);
             element.classList.add('fullscreen');
+            document.body.classList.add('fullscreen-active');
             document.body.style.overflow = 'hidden';
+        }
+
+        function openActiveFullscreenPlayer(event) {
+            if (activeCard) {
+                activeCard.classList.add('fullscreen');
+                document.body.classList.add('fullscreen-active');
+                document.body.style.overflow = 'hidden';
+                playAudioClick();
+            }
         }
 
         function closeFullscreenPlayer(btn, event) {
             event.stopPropagation();
             const player = btn.closest('.snd');
             player.classList.remove('fullscreen');
+            document.body.classList.remove('fullscreen-active');
             document.body.style.overflow = '';
         }
 

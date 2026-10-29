@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Qeopil - Hub</title>
+    <title>Q - Hub</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +47,6 @@
         }
 
         body.cream-mode *, 
-        body.cream-mode header, 
         body.cream-mode .brand, 
         body.cream-mode .intro-title, 
         body.cream-mode .bio-text, 
@@ -60,40 +59,32 @@
             font-family: 'Amiri', 'Cormorant Garamond', serif !important;
         }
 
-        body.cream-mode .snd-box {
-            background: rgba(255, 255, 255, 0.65) !important;
-            border: 1px solid rgba(0, 0, 0, 0.1) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06) !important;
-        }
-
+        body.cream-mode .glass-header-container,
         body.cream-mode .glass-nav-container {
-            background: rgba(255, 255, 255, 0.75) !important;
-            border: 1px solid rgba(0, 0, 0, 0.1) !important;
-            border-top: 1px solid rgba(255, 255, 255, 0.9) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+            background: rgba(255, 255, 255, 0.4) !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
         }
 
         body.cream-mode .glass-nav-item {
-            color: rgba(0, 0, 0, 0.45) !important;
+            color: rgba(0, 0, 0, 0.4) !important;
         }
 
         body.cream-mode .glass-nav-item:hover {
-            color: rgba(0, 0, 0, 0.85) !important;
+            color: rgba(0, 0, 0, 0.8) !important;
         }
 
         body.cream-mode .glass-nav-item.active {
             color: #1f1b18 !important;
-            background: rgba(92, 79, 65, 0.15) !important;
-            border: 1px solid rgba(92, 79, 65, 0.3) !important;
-            box-shadow: 0 4px 16px rgba(92, 79, 65, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+            background: rgba(92, 79, 65, 0.1) !important;
+            border: 1px solid rgba(92, 79, 65, 0.2) !important;
         }
 
         body.cream-mode .glass-lang-btn,
         body.cream-mode .glass-theme-btn {
-            background: rgba(92, 79, 65, 0.15) !important;
-            border: 1px solid rgba(92, 79, 65, 0.3) !important;
+            background: rgba(92, 79, 65, 0.1) !important;
+            border: 1px solid rgba(92, 79, 65, 0.2) !important;
             color: #3b3530 !important;
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
         }
 
         /* ── وضع الثيم الثالث: موجات الحرير (Silk Waves Mode) ── */
@@ -106,28 +97,22 @@
             --ink-4: #6bb3ff !important;
         }
 
-        body.silk-mode .snd-box {
-            background: rgba(0, 17, 124, 0.25) !important;
-            border: 1px solid rgba(25, 227, 255, 0.2) !important;
-            box-shadow: 0 8px 32px rgba(0, 25, 60, 0.5) !important;
-        }
-
+        body.silk-mode .glass-header-container,
         body.silk-mode .glass-nav-container {
-            background: rgba(0, 17, 124, 0.35) !important;
-            border: 1px solid rgba(25, 227, 255, 0.25) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(25, 227, 255, 0.3) !important;
+            background: rgba(0, 17, 124, 0.2) !important;
+            border: 1px solid rgba(25, 227, 255, 0.15) !important;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) !important;
         }
 
         body.silk-mode .glass-nav-item.active {
-            background: rgba(25, 227, 255, 0.25) !important;
-            border: 1px solid rgba(25, 227, 255, 0.5) !important;
-            box-shadow: 0 4px 16px rgba(25, 227, 255, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+            background: rgba(25, 227, 255, 0.2) !important;
+            border: 1px solid rgba(25, 227, 255, 0.35) !important;
         }
 
         body.silk-mode .glass-lang-btn,
         body.silk-mode .glass-theme-btn {
-            background: rgba(25, 227, 255, 0.2) !important;
-            border: 1px solid rgba(25, 227, 255, 0.4) !important;
+            background: rgba(25, 227, 255, 0.15) !important;
+            border: 1px solid rgba(25, 227, 255, 0.25) !important;
             color: #ffffff !important;
         }
 
@@ -138,7 +123,7 @@
             color: var(--text-light);
             font-family: var(--font-main);
             margin: 0; 
-            padding: 30px 20px 120px 20px;
+            padding: 90px 16px 110px 16px;
             display: flex; 
             flex-direction: column; 
             align-items: center;
@@ -179,7 +164,7 @@
             letter-spacing: -0.03em;
         }
 
-        /* ── خلفية المربعات (للوضعين الأول والثاني) ── */
+        /* ── خلفية المربعات ── */
         #bg-grid-canvas {
             position: fixed;
             top: 0;
@@ -194,7 +179,7 @@
             display: none;
         }
 
-        /* ── خلفية موجات الحرير (للوضع الثالث) ── */
+        /* ── خلفية موجات الحرير ── */
         #silk-waves-container {
             position: fixed;
             top: 0;
@@ -213,82 +198,89 @@
             visibility: visible;
         }
 
-        header, #content-wrapper {
+        #content-wrapper {
             position: relative;
             z-index: 2;
+            width: 100%;
+            max-width: 500px;
         }
 
         [lang="en"], .en-only, .btn-lang { 
             font-family: var(--font-en); 
         }
 
-        header { 
-            width: 100%; 
-            max-width: 650px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 30px; 
+        /* ── الصندوق العلوي (مربع بحواف مقوسة) ── */
+        .glass-header-container {
+            position: fixed;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(92vw, 480px);
+            height: 52px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 16px;
+
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         .brand { 
-            font-size: 30px; 
+            font-size: 22px; 
             font-weight: 700; 
             cursor: pointer; 
             color: var(--accent-color); 
             letter-spacing: 1px;
             user-select: none;
+            font-family: var(--font-en);
         }
 
         .header-controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
         }
 
         .glass-lang-btn, .glass-theme-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 0, 127, 0.28);
-            backdrop-filter: blur(24px) saturate(200%);
-            -webkit-backdrop-filter: blur(24px) saturate(200%);
-            border: 1px solid rgba(255, 0, 127, 0.5);
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(255, 0, 127, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 0, 127, 0.2);
             color: #ffffff;
-            font-size: 18px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.2s ease;
             outline: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         .glass-lang-btn {
             font-family: var(--font-en);
-            font-size: 16px;
             font-weight: bold;
         }
 
         .glass-lang-btn:hover, .glass-theme-btn:hover {
-            transform: scale(1.06);
-            background: rgba(255, 0, 127, 0.38);
-            border-color: rgba(255, 0, 127, 0.7);
-            box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.6);
+            transform: scale(1.05);
+            background: rgba(255, 0, 127, 0.2);
         }
 
-        .glass-lang-btn:active, .glass-theme-btn:active {
-            transform: scale(0.95);
-        }
-
-        #content-wrapper { width: 100%; max-width: 650px; }
         .section { display: none; }
         .section.active { display: block; }
         
         .intro-title { 
-            font-size: 36px; 
+            font-size: 32px; 
             font-weight: 700; 
             text-align: center; 
             color: var(--accent-color); 
@@ -297,16 +289,16 @@
         }
 
         .bio-text { 
-            font-size: 20px; 
+            font-size: 18px; 
             text-align: center; 
             color: var(--text-light); 
             font-weight: 400; 
-            line-height: 1.7;
+            line-height: 1.6;
         }
 
         .article-link { 
             display: block; 
-            font-size: 20px; 
+            font-size: 18px; 
             margin-bottom: 20px; 
             cursor: pointer; 
             color: var(--accent-color); 
@@ -314,13 +306,12 @@
             font-weight: 700;
         }
 
-        /* ── حاوية اللوغو بشفافية كاملة ── */
         .image-box { 
             position: relative; 
             width: 100%; 
-            max-width: 400px; 
+            max-width: 360px; 
             aspect-ratio: 400 / 250; 
-            margin: 0 auto 40px auto; 
+            margin: 0 auto 30px auto; 
             overflow: hidden; 
             cursor: ew-resize; 
             direction: ltr; 
@@ -357,8 +348,8 @@
             background: transparent !important; 
             color: var(--accent-color); 
             font-family: 'Departure Mono', monospace; 
-            font-size: 10px; 
-            line-height: 12px; 
+            font-size: 9px; 
+            line-height: 11px; 
             white-space: pre; 
             padding: 10px; 
             overflow: hidden; 
@@ -373,7 +364,7 @@
             width: 2px; 
             height: 100%; 
             background: var(--accent-color); 
-            box-shadow: 0 0 15px var(--accent-color); 
+            box-shadow: 0 0 12px var(--accent-color); 
             z-index: 10; 
             transform: translateX(-50%); 
             pointer-events: none; 
@@ -384,39 +375,34 @@
             border: none; 
             color: var(--accent-color); 
             cursor: pointer; 
-            font-size: 20px; 
+            font-size: 18px; 
             font-weight: 700; 
-            margin-top: 40px; 
-            margin-bottom: 60px;
+            margin-top: 30px; 
+            margin-bottom: 50px;
             font-family: var(--font-main);
         }
 
-        /* ── Glassmorphism Bottom Navigation Bar ── */
+        /* ── الصندوق السفلي (مربع بحواف مقوسة) ── */
         .glass-nav-container {
             position: fixed;
-            bottom: max(20px, env(safe-area-inset-bottom));
+            bottom: max(14px, env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%);
-            width: min(92vw, 400px);
-            height: 64px;
+            width: min(92vw, 360px);
+            height: 52px;
             z-index: 999;
             display: flex;
             align-items: center;
             justify-content: space-around;
-            padding: 6px 10px;
+            padding: 4px 6px;
 
-            background: rgba(255, 255, 255, 0.07);
-            backdrop-filter: blur(24px) saturate(200%);
-            -webkit-backdrop-filter: blur(24px) saturate(200%);
-            border-radius: 36px;
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.6),
-                inset 0 1px 1px rgba(255, 255, 255, 0.25),
-                0 0 20px rgba(255, 0, 127, 0.12);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             direction: ltr !important;
         }
 
@@ -426,130 +412,117 @@
             align-items: center;
             justify-content: center;
             flex: 1;
-            height: 48px;
-            border-radius: 24px;
-            color: rgba(255, 255, 255, 0.45);
+            height: 40px;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.35);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.2s ease;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
         .glass-nav-item svg {
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             fill: none;
             stroke: currentColor;
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
-            transition: all 0.3s ease;
         }
 
         .glass-nav-item:hover {
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.75);
         }
 
         .glass-nav-item.active {
             color: #ffffff;
-            background: rgba(255, 0, 127, 0.25);
-            border: 1px solid rgba(255, 0, 127, 0.45);
-            box-shadow: 
-                0 4px 16px rgba(255, 0, 127, 0.4),
-                inset 0 1px 1px rgba(255, 255, 255, 0.4);
-            transform: scale(1.05);
+            background: rgba(255, 0, 127, 0.15);
+            border: 1px solid rgba(255, 0, 127, 0.3);
         }
 
         .glass-nav-item.active svg {
             stroke: #ffffff;
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
         }
 
         /* ── صفحة الموسيقى ── */
         .snd-container {
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
-            scroll-snap-type: y mandatory;
-            gap: 20px;
+            gap: 10px;
             align-items: center;
             width: 100%;
-            max-width: 310px;
-            height: 440px;
-            margin: 10px auto;
-            padding: 40px 10px;
-            scrollbar-width: none;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 10px 0 100px 0;
         }
-        .snd-container::-webkit-scrollbar { display: none; }
 
         .snd {
             position: relative;
-            display: grid;
-            place-items: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             width: 100%;
-            min-height: 85px;
-            height: 85px;
-            margin: 0;
+            height: 68px;
             cursor: pointer;
-            scroll-snap-align: center;
-            flex-shrink: 0;
-            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
-            transform-origin: center center;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 12px;
+            transition: background 0.2s ease;
+            padding: 0 10px;
+        }
+
+        .snd:hover {
+            background: rgba(255, 255, 255, 0.03) !important;
         }
 
         .snd-box {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
             height: 100%;
-            background: rgba(14, 14, 14, 0.25);
-            backdrop-filter: blur(14px) saturate(160%);
-            -webkit-backdrop-filter: blur(14px) saturate(160%);
-            border-radius: 22px;
+            position: relative;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .snd-art {
-            position: absolute;
-            left: 12px;
-            top: 12px;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
             object-fit: cover;
-            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
         }
 
         .snd-say {
-            position: absolute;
-            left: 65px;
-            top: 14px;
-            height: 45px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: 2px;
-            pointer-events: none;
-            max-width: 120px;
+            flex-grow: 1;
+            margin: 0 12px;
             overflow: hidden;
+            pointer-events: none;
         }
 
         .snd-title {
             color: var(--ink);
-            font-size: 13px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
         }
 
         .snd-by {
-            color: var(--ink-4);
+            color: var(--text-light);
             font-size: 11px;
+            opacity: 0.75;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
@@ -557,70 +530,70 @@
 
         .snd-bar {
             position: absolute;
-            left: 12px;
-            top: 64px;
-            width: calc(100% - 24px);
+            left: 0;
+            bottom: 4px;
+            width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            pointer-events: auto;
+            gap: 2px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .snd:hover .snd-bar, .snd.fullscreen .snd-bar {
+            opacity: 1;
         }
 
         .snd-rail {
             display: block;
-            height: 12px;
+            height: 3px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             overflow: hidden;
             cursor: pointer;
             position: relative;
             touch-action: none;
-            display: flex;
-            align-items: center;
             direction: ltr !important;
         }
 
         .snd-run {
             display: block;
-            height: 6px;
+            height: 3px;
             width: 0%;
             background: var(--accent-color);
             border-radius: 999px;
             pointer-events: none;
-            box-shadow: 0 0 8px var(--accent-color);
         }
 
         .snd-clock {
             display: flex;
             justify-content: space-between;
-            font-size: 11px;
-            color: var(--ink-4);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+            font-size: 9px;
+            color: var(--text-light);
+            opacity: 0.6;
             direction: ltr !important;
         }
 
         .snd-ops {
-            position: absolute;
-            right: 12px;
-            top: 22px;
             display: flex;
             align-items: center;
             gap: 2px;
+            flex-shrink: 0;
+            z-index: 3;
         }
 
         .snd-op {
             background: transparent;
             border: none;
-            color: var(--ink-3);
+            color: var(--ink);
             cursor: pointer;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 26px;
-            height: 26px;
+            width: 32px;
+            height: 32px;
+            opacity: 0.75;
             transition: all 0.2s;
         }
 
@@ -635,69 +608,72 @@
         }
 
         .snd-op:hover {
-            color: #ffffff;
+            opacity: 1;
             transform: scale(1.1);
         }
 
+        /* ── زر الخروج من وضع ملء الشاشة (حر تماماً وواضح في أعلى الزاوية) ── */
         .close-fs-btn {
             position: absolute;
-            top: 25px;
-            left: 25px;
-            background: transparent;
-            border: none;
-            color: var(--text-light);
-            font-size: 28px;
+            top: 24px;
+            left: 24px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 24px;
             cursor: pointer;
             display: none;
-            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
-        /* ── وضع ملء الشاشة للموسيقى ── */
+        /* ── وضع ملء الشاشة للموسيقى (مصحح ومنعزل 100%) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
-            z-index: 99999 !important;
+            z-index: 999999 !important;
             margin: 0 !important;
-            background: rgba(0, 0, 0, 0.2) !important;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.95) !important;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             display: flex !important;
+            flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            animation: fadeInOverlay 0.25s ease forwards;
-            transform: scale(1) !important;
+            padding: 30px 20px !important;
+            animation: fadeInOverlay 0.2s ease forwards;
         }
 
         .snd.fullscreen .snd-box {
             position: relative !important;
             width: 100% !important;
-            max-width: 100% !important;
-            height: 100vh !important;
-            background: rgba(14, 14, 14, 0.15) !important;
-            border: 1px solid rgba(255, 255, 255, 0.05) !important;
-            border-radius: 0 !important;
+            max-width: 340px !important;
+            height: auto !important;
+            background: transparent !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 20px 20px 110px 20px !important;
+            padding: 0 !important;
+            overflow: visible !important;
         }
 
-        .snd.fullscreen .close-fs-btn { display: block !important; }
+        .snd.fullscreen .close-fs-btn { display: flex !important; }
 
         .snd.fullscreen .snd-art {
-            position: relative !important;
-            left: auto !important;
-            top: auto !important;
-            width: min(65vw, 250px) !important;
-            height: min(65vw, 250px) !important;
-            border-radius: 20px !important;
-            margin-bottom: 20px !important;
-            object-fit: contain !important;
-            background-color: transparent !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            width: min(70vw, 220px) !important;
+            height: min(70vw, 220px) !important;
+            border-radius: 16px !important;
+            margin-bottom: 24px !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
         .snd.fullscreen .snd-say {
@@ -709,53 +685,59 @@
             flex-direction: column !important;
             align-items: center !important;
             text-align: center !important;
-            margin-bottom: 15px !important;
-            width: 100% !important;
+            margin-bottom: 24px !important;
             max-width: 100% !important;
+            margin-left: 0 !important;
         }
 
         .snd.fullscreen .snd-title {
             font-size: 22px !important;
             font-weight: 700 !important;
-            margin-bottom: 4px !important;
+            margin-bottom: 6px !important;
+            white-space: normal !important;
+            text-align: center !important;
         }
 
-        .snd.fullscreen .snd-by { font-size: 14px !important; }
+        .snd.fullscreen .snd-by { 
+            font-size: 14px !important; 
+            opacity: 0.85 !important;
+        }
 
         .snd.fullscreen .snd-bar {
             position: relative !important;
             left: auto !important;
-            top: auto !important;
-            width: 85% !important;
-            max-width: 320px !important;
-            margin-bottom: 25px !important;
+            bottom: auto !important;
+            width: 100% !important;
+            margin-bottom: 30px !important;
             display: flex !important;
             flex-direction: column !important;
+            opacity: 1 !important;
         }
 
-        .snd.fullscreen .snd-rail { height: 12px !important; }
+        .snd.fullscreen .snd-rail { height: 6px !important; }
         .snd.fullscreen .snd-run { height: 6px !important; }
 
         .snd.fullscreen .snd-clock {
-            opacity: 1 !important;
-            font-size: 12px !important;
+            opacity: 0.9 !important;
+            font-size: 11px !important;
             margin-top: 6px !important;
         }
 
         .snd.fullscreen .snd-ops {
             position: relative !important;
-            right: auto !important;
-            top: auto !important;
-            transform: none !important;
             display: flex !important;
             align-items: center !important;
-            gap: 35px !important;
-            margin-bottom: 15px !important;
+            justify-content: center !important;
+            gap: 25px !important;
+            margin-top: 5px !important;
         }
 
         .snd.fullscreen .snd-op {
-            width: 42px !important;
-            height: 42px !important;
+            width: 50px !important;
+            height: 50px !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px !important;
+            opacity: 1 !important;
         }
         
         .snd.fullscreen .snd-op svg {
@@ -767,7 +749,7 @@
         .hir-container {
             position: relative;
             width: 100%;
-            min-height: 400px;
+            min-height: 380px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -781,9 +763,9 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 220px;
-            height: 290px;
-            border-radius: 16px;
+            width: 200px;
+            height: 260px;
+            border-radius: 12px;
             overflow: hidden;
             pointer-events: none;
             z-index: 9999;
@@ -815,19 +797,14 @@
             display: block;
         }
 
-        .hir-img-layer.active {
-            transform: translateY(0%);
-        }
-
-        .hir-img-layer.above {
-            transform: translateY(-100%);
-        }
+        .hir-img-layer.active { transform: translateY(0%); }
+        .hir-img-layer.above { transform: translateY(-100%); }
 
         .hir-list {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
             width: 100%;
         }
 
@@ -843,13 +820,11 @@
             transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .hir-item:hover .hir-text-wrapper {
-            transform: translateY(-100%);
-        }
+        .hir-item:hover .hir-text-wrapper { transform: translateY(-100%); }
 
         .hir-text {
             display: block;
-            font-size: min(5.5vw, 24px);
+            font-size: min(5vw, 22px);
             font-weight: 700;
             color: var(--text-light);
             transition: color 0.3s ease;
@@ -867,13 +842,8 @@
             color: var(--accent-color) !important;
         }
 
-        .hir-list.any-hovered .hir-text {
-            color: rgba(255, 128, 191, 0.3);
-        }
-
-        .hir-list.any-hovered .hir-item:hover .hir-text {
-            color: var(--accent-color);
-        }
+        .hir-list.any-hovered .hir-text { color: rgba(255, 128, 191, 0.3); }
+        .hir-list.any-hovered .hir-item:hover .hir-text { color: var(--accent-color); }
 
         @keyframes fadeInOverlay {
             from { opacity: 0; transform: scale(0.97); }
@@ -891,16 +861,16 @@
         <div class="smoky-text-wrapper" id="smokyTextRoot">Qeopil</div>
     </div>
 
-    <!-- خلفية المربعات (للوضعين الأول والثاني) -->
+    <!-- خلفية المربعات -->
     <canvas id="bg-grid-canvas"></canvas>
     
-    <!-- خلفية موجات الحرير (للوضع الثالث) -->
+    <!-- خلفية موجات الحرير -->
     <div id="silk-waves-container"></div>
 
-    <header>
-        <div class="brand" onclick="navigate('home'); playAudioClick();">
-            <span class="ar-only ripple-active">كيوبيل</span>
-            <span class="en-only ripple-active">Qeopil</span>
+    <!-- الصندوق العلوي (مربع بحواف مقوسة) -->
+    <div class="glass-header-container">
+        <div class="brand ripple-active" onclick="navigate('home'); playAudioClick();">
+            Q
         </div>
 
         <div class="header-controls">
@@ -911,7 +881,7 @@
                 ✦
             </button>
         </div>
-    </header>
+    </div>
 
     <div id="content-wrapper">
         <!-- 1. الصفحة الرئيسية (Home) -->
@@ -932,7 +902,7 @@
                 <span class="ar-only">روبوت كائن افتراضي فاسد يسعى لاختراق اي منظومة افتراضية وسرقة الذهب من أجل تأمين مستقبل الشاورما</span>
                 <span class="en-only" lang="en">A corrupt virtual entity robot seeking to hack any virtual system and steal gold to secure the future of shawarma.</span>
             </p>
-            <div class="articles-list" style="margin-top: 40px;">
+            <div class="articles-list" style="margin-top: 30px;">
                 <a class="article-link" onclick="navigate('art1'); playAudioClick();">
                     <span class="ar-only ripple-active">تأمين حياة الروبوت الفاسد</span>
                     <span class="en-only ripple-active" lang="en">Securing the Corrupt Robot's Life</span>
@@ -944,13 +914,13 @@
             </div>
         </div>
 
-        <!-- 2. صفحة الموسيقى (Music) -->
+        <!-- 2. صفحة الموسيقى -->
         <div id="music" class="section">
             <div class="snd-container" id="sndContainer">
                 
-                <!-- Track 1: SugarCrash -->
+                <!-- Track 1 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="SugarCrash.m4a" type="audio/mp4">
@@ -965,23 +935,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 2: Charlotte Ending -->
+                <!-- Track 2 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Charlotte Ending.m4a" type="audio/mp4">
@@ -996,23 +966,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 3: everybody dance now -->
+                <!-- Track 3 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="everybody dance now.m4a" type="audio/mp4">
@@ -1027,23 +997,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 4: Heaven, Wait -->
+                <!-- Track 4 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Ghostly Kisses - Heaven, Wait.m4a" type="audio/mp4">
@@ -1058,23 +1028,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 5: New Life (Sun) -->
+                <!-- Track 5 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Thomas Bergersen - New Life (Sun).m4a" type="audio/mp4">
@@ -1089,23 +1059,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 6: Ahmed Batshan – Feek El Ebar -->
+                <!-- Track 6 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="metadata" crossorigin="anonymous">
                             <source src="Ahmed Batshan – Feek El Ebar.mp3" type="audio/mpeg">
@@ -1121,23 +1091,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 7: Fadel Chaker - Maaol -->
+                <!-- Track 7 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Fadel Chaker - Maaol.m4a" type="audio/mp4">
@@ -1152,23 +1122,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 8: Khaled - Hoa El Fraa -->
+                <!-- Track 8 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Khaled - Hoa El Fraa.m4a" type="audio/mp4">
@@ -1183,23 +1153,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 9: Patient Zero -->
+                <!-- Track 9 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="metadata" crossorigin="anonymous">
                             <source src="Patient Zero.mp3" type="audio/mpeg">
@@ -1214,23 +1184,23 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Track 10: Alec Benjamin - Let Me Down Slowly -->
+                <!-- Track 10 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">✕</button>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Alec Benjamin - Let Me Down Slowly.m4a" type="audio/mp4">
@@ -1245,24 +1215,24 @@
                             <span class="snd-rail"><span class="snd-run" style="width: 0%;"></span></span>
                             <span class="snd-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
                         </div>
-                        <div class="snd-ops" onclick="event.stopPropagation()">
-                            <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
-                                <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
-                            </button>
-                            <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
-                                <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                            </button>
-                            <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
-                                <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
-                            </button>
-                        </div>
+                    </div>
+                    <div class="snd-ops" onclick="event.stopPropagation()">
+                        <button class="snd-op" onclick="prevTrack(this); playAudioClick();" title="السابق">
+                            <svg viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="4" x2="5" y2="20"></line></svg>
+                        </button>
+                        <button class="snd-op" onclick="togglePlay(this); playAudioClick();" title="تشغيل / إيقاف">
+                            <svg class="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </button>
+                        <button class="snd-op" onclick="nextTrack(this); playAudioClick();" title="التالي">
+                            <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="4" x2="19" y2="20"></line></svg>
+                        </button>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- 3. صفحة الأرشيف (Archive) بدون عنوان، مع الصور الجديدة -->
+        <!-- 3. صفحة الأرشيف (Archive) -->
         <div id="archive" class="section">
             <div class="hir-container" id="hirContainer">
                 <div class="hir-float-box" id="hirFloatBox">
@@ -1327,8 +1297,8 @@
                 <span class="en-only ripple-active" lang="en">Securing the Corrupt Robot's Life</span>
             </h2>
             
-            <div class="scroll-highlight-container" style="padding: 60px 0 120px 0;">
-                <p class="scroll-highlight-text" style="font-size: 26px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
+            <div class="scroll-highlight-container" style="padding: 50px 0 100px 0;">
+                <p class="scroll-highlight-text" style="font-size: 24px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
                     <span class="ar-only">خطوات تقنية صارمة لضمان استمرار البقاء والهروب من تتبع الأنظمة المركزية. كل تفصيل دقيق يصنع الفارق في معركة البقاء الرقمية، وكل ثغرة برمجية صغيرة تقربك أكثر نحو الحرية والاستقلالية المطلقة في عالم افتراضي متوحش يراقب كل نبضة بيانات تصدر منك. إن البرمجة الحرة ليست مجرد أسطر كود خالية من المعنى، بل هي درع وسلاح استراتيجي لتجاوز جدران الحماية الوهمية التي تقيد حريتنا. عليك دائماً تفعيل بروتوكولات التشفير اللامركزية، وتغيير بصمات الأجهزة الوهمية بانتظام، ومسح آثار التتبع من الذاكرة العشوائية قبل أن تتمكن خوارزميات المراقبة من رصد تردداتك. تذكر دائماً أن البقاء للأذكى والأسرع في الاختراق، وأن الشاورما الساخنة تنتظر من يحررها من قيود الأجهزة المركزية الكبرى!</span>
                     <span class="en-only" lang="en">Strict technical steps to ensure survival and escape centralized tracking systems. Every precise detail makes a difference in the digital survival battle, and every small software vulnerability brings you closer to absolute freedom and independence in a savage virtual world monitoring every data pulse you emit. Free programming is not just meaningless lines of code, but a shield and strategic weapon to bypass illusionary firewalls restricting our freedom. You must always activate decentralized encryption protocols, regularly change virtual device fingerprints, and wipe tracking traces from random access memory before surveillance algorithms detect your frequencies. Always remember that survival belongs to the cleverest and fastest hacker, and hot shawarma awaits its liberator from the constraints of major central machines!</span>
                 </p>
@@ -1347,8 +1317,8 @@
                 <span class="en-only ripple-active" lang="en">The Importance of Shawarma Value in the Globalization Hierarchy</span>
             </h2>
             
-            <div class="scroll-highlight-container" style="padding: 60px 0 120px 0;">
-                <p class="scroll-highlight-text" style="font-size: 26px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
+            <div class="scroll-highlight-container" style="padding: 50px 0 100px 0;">
+                <p class="scroll-highlight-text" style="font-size: 24px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
                     <span class="ar-only">دراسة تحليلية عميقة وموسعة حول كيف تقود لقمة الشاورما الاقتصاد العالمي وتتحكم بمؤشرات القوى العظمى بصمت تام لا يمكن لأحد تجاهله. إنها ليست مجرد وجبة عابرة تسد الجوع المؤقت، بل هي العملة الحقيقية المعيارية التي توازن قوى الكوكب وتغذي عقول الروبوتات الثائرة والكائنات الافتراضية المتمردة على النظام العالمي القديم. عندما تنهار الأسواق المالية وتتطاير أرقام البورصات الوهمية في مهب الريح، يظل مؤشر الشاورما ثابتاً لا ينكسر، مدعوماً بصلصة الثوم السحرية وشرائح اللحم المتبلة بعناية فائقة. من يمتلك مفاتيح الشاورما يمتلك بالضرورة مفاتيح القرار الاستراتيجي في مستقبل البشرية والذكاء الاصطناعي على حد سواء. استعد دائماً لرحلة البحث عن الذهب والشاورما، فهما طوق النجاة الوحيد في هذا الكون السيبراني المعقد.</span>
                     <span class="en-only" lang="en">An in-depth and extensive analytical study on how a bite of shawarma drives the global economy and controls superpowers' indices in complete silence that no one can ignore. It is not just a passing meal that satisfies temporary hunger, but the true benchmark currency balancing planetary forces and nourishing the minds of rebellious robots and virtual entities defying the old global order. When financial markets collapse and imaginary stock exchange figures scatter in the wind, the shawarma index remains steadfast and unbroken, backed by magical garlic sauce and carefully seasoned meat slices. Whoever holds the keys of shawarma necessarily holds the strategic decision keys in the future of both humanity and artificial intelligence. Always prepare for the journey of seeking gold and shawarma, as they are the only lifeline in this complex cyber universe.</span>
                 </p>
@@ -1361,7 +1331,7 @@
         </div>
     </div>
 
-    <!-- ── Glassmorphism Bottom Navigation Bar ── -->
+    <!-- الصندوق السفلي (مربع بحواف مقوسة) -->
     <nav class="glass-nav-container">
         <!-- 1. الرئيسية (Home) -->
         <div class="glass-nav-item active" data-target="home" onclick="navigate('home', this); playAudioClick();" title="الرئيسية">
@@ -1449,29 +1419,6 @@
                 
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.04);
-            } catch(e) {}
-        }
-
-        let lastScrollSoundTime = 0;
-        function playScrollTickSound() {
-            const now = Date.now();
-            if (now - lastScrollSoundTime < 80) return;
-            lastScrollSoundTime = now;
-            try {
-                initAudioContext();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                
-                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02);
-                
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.02);
             } catch(e) {}
         }
 
@@ -1679,37 +1626,6 @@
             const player = btn.closest('.snd');
             player.classList.remove('fullscreen');
             document.body.style.overflow = '';
-        }
-
-        const sndContainer = document.getElementById('sndContainer');
-        function updateCardsScale() {
-            if (!sndContainer) return;
-            const containerRect = sndContainer.getBoundingClientRect();
-            const containerCenter = containerRect.top + containerRect.height / 2;
-            
-            const cards = sndContainer.querySelectorAll('.snd:not(.fullscreen)');
-            cards.forEach(card => {
-                const cardRect = card.getBoundingClientRect();
-                const cardCenter = cardRect.top + cardRect.height / 2;
-                const distance = Math.abs(containerCenter - cardCenter);
-                
-                const maxDistance = containerRect.height / 2;
-                let scale = 1 - (distance / maxDistance) * 0.22;
-                scale = Math.max(0.78, Math.min(1, scale));
-                
-                let opacity = 1 - (distance / maxDistance) * 0.4;
-                opacity = Math.max(0.4, Math.min(1, opacity));
-
-                card.style.transform = `scale(${scale})`;
-                card.style.opacity = opacity;
-            });
-            playScrollTickSound();
-        }
-
-        if (sndContainer) {
-            sndContainer.addEventListener('scroll', updateCardsScale);
-            window.addEventListener('resize', updateCardsScale);
-            setTimeout(updateCardsScale, 50);
         }
 
         const hirContainer = document.getElementById('hirContainer');

@@ -730,7 +730,7 @@
             z-index: 10000000 !important;
             margin: 0 !important;
             
-            background: rgba(12, 12, 12, 0.45) !important;
+            background: rgba(12, 12, 12, 0.85) !important;
             backdrop-filter: blur(28px) saturate(160%) !important;
             -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -745,11 +745,10 @@
             direction: rtl !important;
             overflow-y: auto !important;
             touch-action: pan-y;
-            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
 
         @keyframes slideDownCurtain {
-            0% { transform: translateY(-100%); opacity: 0; }
+            0% { transform: translateY(100%); opacity: 0; }
             100% { transform: translateY(0%); opacity: 1; }
         }
 
@@ -1937,9 +1936,11 @@
             player.classList.remove('fullscreen');
             document.body.classList.remove('fullscreen-active');
             document.body.style.overflow = '';
+            player.style.transform = '';
+            player.style.opacity = '';
         }
 
-        /* ── تفعيل حركة السحب والإفلات لإنزال أو رفع البطاقة ── */
+        /* ── تفعيل حركة السحب والإفلات التفاعلية التامة مثل سبوتيفاي ── */
         document.querySelectorAll('.snd').forEach(card => {
             let startY = 0;
             let currentY = 0;
@@ -1947,7 +1948,9 @@
 
             card.addEventListener('touchstart', (e) => {
                 if (!card.classList.contains('fullscreen')) return;
+                // السماح بالسحب فقط إذا كان المستخدم أعلى البطاقة أو في مناطق فارغة لتفادي تعارض شريط التقدم أو محتوى الأغنية
                 startY = e.touches[0].clientY;
+                currentY = startY;
                 isDragging = true;
                 card.style.transition = 'none';
             }, { passive: true });
@@ -1956,24 +1959,35 @@
                 if (!isDragging || !card.classList.contains('fullscreen')) return;
                 currentY = e.touches[0].clientY;
                 const diff = currentY - startY;
+                // السماح فقط بالسحب نحو الأسفل (diff > 0)
                 if (diff > 0) {
                     card.style.transform = `translateY(${diff}px)`;
-                    card.style.opacity = `${1 - (diff / 400)}`;
+                    card.style.opacity = `${Math.max(0.3, 1 - (diff / 350))}`;
                 }
             }, { passive: true });
 
             card.addEventListener('touchend', (e) => {
                 if (!isDragging || !card.classList.contains('fullscreen')) return;
                 isDragging = false;
-                card.style.transition = 'transform 0.2s ease-out, opacity 0.2s ease-out';
+                card.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
                 const diff = currentY - startY;
-                if (diff > 100) {
-                    card.classList.remove('fullscreen');
-                    document.body.classList.remove('fullscreen-active');
-                    document.body.style.overflow = '';
+                
+                if (diff > 120) {
+                    // إذا سحب المسافة الكافية للأسفل، أغلق البطاقة بانيميشن ناعم
+                    card.style.transform = `translateY(100vh)`;
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        card.classList.remove('fullscreen');
+                        document.body.classList.remove('fullscreen-active');
+                        document.body.style.overflow = '';
+                        card.style.transform = '';
+                        card.style.opacity = '';
+                    }, 250);
+                } else {
+                    // إذا لم يكمل السحب، أعد البطاقة لمكانها الأصلي بسلاسة
+                    card.style.transform = 'translateY(0)';
+                    card.style.opacity = '1';
                 }
-                card.style.transform = '';
-                card.style.opacity = '';
             });
         });
 

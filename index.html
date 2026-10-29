@@ -677,7 +677,7 @@
             display: none !important;
         }
 
-        /* ── إخفاء أزرار التحكم تماماً في البطاقات العادية لتصبح مثل سبوتيفاي ── */
+        /* ── إخفاء أزرار التحكم تماماً في البطاقات العادية ── */
         .snd .snd-ops {
             display: none !important;
         }
@@ -688,7 +688,7 @@
             max-width: 320px !important;
             display: none;
             justify-content: flex-start !important;
-            margin-bottom: 8px !important;
+            margin-bottom: 2px !important;
             z-index: 10000005 !important;
             pointer-events: auto !important;
         }
@@ -725,7 +725,7 @@
             background: rgba(255, 255, 255, 0.2) !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (متوازن ومحشور بالمنتصف تماماً بدون فراغات مزعجة) ── */
+        /* ── وضع ملء الشاشة للموسيقى (صورة نازلة شوي تحت، وكل شيء متناسق ومرتب في المنتصف تماماً) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -735,7 +735,7 @@
             z-index: 10000000 !important;
             margin: 0 !important;
             
-            background: rgba(12, 12, 12, 0.88) !important;
+            background: rgba(12, 12, 12, 0.92) !important;
             backdrop-filter: blur(25px) saturate(150%) !important;
             -webkit-backdrop-filter: blur(25px) saturate(150%) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -744,7 +744,7 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 12px !important;
+            padding: 10px 16px !important;
             transform-origin: top center;
             animation: slideDownCurtain 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             direction: rtl !important;
@@ -777,13 +777,13 @@
             overflow: visible !important;
         }
 
-        /* 1. حجم وتوسيط صورة الألبوم في المنتصف */
+        /* 1. حجم وتوسيط صورة الألبوم (تم إنزالها قليلاً للأسفل لتتوسط الشاشة تماماً مع القائمة) */
         .snd.fullscreen .snd-art {
-            width: min(75vw, 260px) !important;
-            height: min(75vw, 260px) !important;
+            width: min(72vw, 250px) !important;
+            height: min(72vw, 250px) !important;
             border-radius: 18px !important;
-            margin-top: 0px !important;
-            margin-bottom: 16px !important;
+            margin-top: 10px !important;
+            margin-bottom: 18px !important;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
@@ -798,32 +798,32 @@
             align-items: flex-start !important;
             text-align: right !important;
             width: 100% !important;
-            max-width: 260px !important;
-            margin-bottom: 14px !important;
+            max-width: 250px !important;
+            margin-bottom: 12px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
 
         .snd.fullscreen .snd-title {
-            font-size: 19px !important;
+            font-size: 18px !important;
             font-weight: 700 !important;
-            margin-bottom: 3px !important;
+            margin-bottom: 2px !important;
             white-space: normal !important;
             color: #ffffff !important;
         }
 
         .snd.fullscreen .snd-by { 
-            font-size: 13px !important; 
+            font-size: 12px !important; 
             opacity: 0.75 !important;
             color: #b3b3b3 !important;
         }
 
-        /* 3. شريط التقدم مرفوع لفوق وقريب من النصوص */
+        /* 3. شريط التقدم */
         .snd.fullscreen .fs-bar-container {
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
-            max-width: 260px !important;
+            max-width: 250px !important;
             margin-bottom: 16px !important;
         }
 
@@ -858,16 +858,16 @@
 
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم مرفوعة لفوق تماماً وملاصقة للشريط وموزعة بالتساوي */
+        /* 4. أزرار التحكم مرفوعة وموزعة بالتساوي ومتقاربة تماماً من أعلى ومن أسفل */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
-            max-width: 260px !important;
+            max-width: 250px !important;
             margin-top: 0px !important;
-            margin-bottom: 10px !important;
+            margin-bottom: 12px !important;
             gap: 0 !important;
         }
 
@@ -890,8 +890,8 @@
 
         /* زر التشغيل الكبير بالمنتصف */
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
-            width: 56px !important;
-            height: 56px !important;
+            width: 54px !important;
+            height: 54px !important;
             background: #ffffff !important;
             border-radius: 50% !important;
             box-shadow: 0 6px 18px rgba(0,0,0,0.4);
@@ -1778,12 +1778,19 @@
             connectAudioElementToAnalyser(audioElement);
 
             if (audioElement.paused) {
-                if (currentPlayingAudio && currentPlayingAudio !== audioElement) {
-                    currentPlayingAudio.pause();
-                    const prevCard = currentPlayingAudio.closest('.snd');
-                    const prevIcon = prevCard.querySelector('.play-icon');
-                    setPlayIconState(prevIcon, false);
-                }
+                // إيقاف جميع الأغاني الأخرى تماماً لمنع تداخل الصوت
+                document.querySelectorAll('.audio-source').forEach(aud => {
+                    if (aud !== audioElement) {
+                        aud.pause();
+                        aud.currentTime = 0;
+                        const otherCard = aud.closest('.snd');
+                        if (otherCard) {
+                            const otherIcon = otherCard.querySelector('.play-icon');
+                            setPlayIconState(otherIcon, false);
+                        }
+                    }
+                });
+
                 audioElement.play().then(() => {
                     setPlayIconState(playIcon, true);
                     setGlobalPlayIconState(true);
@@ -1855,12 +1862,18 @@
             const audioElement = targetCard.querySelector('.audio-source');
             const playIcon = targetCard.querySelector('.play-icon');
 
-            if (currentPlayingAudio && currentPlayingAudio !== audioElement) {
-                currentPlayingAudio.pause();
-                const prevCard = currentPlayingAudio.closest('.snd');
-                const prevIcon = prevCard.querySelector('.play-icon');
-                setPlayIconState(prevIcon, false);
-            }
+            // إيقاف جميع الأغاني الأخرى أولاً
+            document.querySelectorAll('.audio-source').forEach(aud => {
+                if (aud !== audioElement) {
+                    aud.pause();
+                    aud.currentTime = 0;
+                    const otherCard = aud.closest('.snd');
+                    if (otherCard) {
+                        const otherIcon = otherCard.querySelector('.play-icon');
+                        setPlayIconState(otherIcon, false);
+                    }
+                }
+            });
 
             if (maintainFullscreen) {
                 targetCard.classList.add('fullscreen');
@@ -1888,6 +1901,31 @@
         function openFullscreenPlayer(element, event) {
             if (event.target.closest('.snd-ops') || event.target.closest('.fs-top-bar')) return;
             updateMiniPlayerInfo(element);
+            
+            // عند النقر على البطاقة، تشغيل الأغنية تلقائياً وإيقاف الباقي
+            const audioElement = element.querySelector('.audio-source');
+            const playIcon = element.querySelector('.play-icon');
+            if (audioElement && audioElement.paused) {
+                document.querySelectorAll('.audio-source').forEach(aud => {
+                    if (aud !== audioElement) {
+                        aud.pause();
+                        aud.currentTime = 0;
+                        const otherCard = aud.closest('.snd');
+                        if (otherCard) {
+                            const otherIcon = otherCard.querySelector('.play-icon');
+                            setPlayIconState(otherIcon, false);
+                        }
+                    }
+                });
+                connectAudioElementToAnalyser(audioElement);
+                audioElement.play().then(() => {
+                    setPlayIconState(playIcon, true);
+                    setGlobalPlayIconState(true);
+                    currentPlayingAudio = audioElement;
+                    isPlaying = true;
+                }).catch(err => {});
+            }
+
             element.classList.add('fullscreen');
             document.body.classList.add('fullscreen-active');
             document.body.style.overflow = 'hidden';

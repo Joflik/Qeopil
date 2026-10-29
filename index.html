@@ -718,10 +718,10 @@
         /* ── زر السهم العلوي ── */
         .fs-top-bar {
             width: 100% !important;
-            max-width: 320px !important;
+            max-width: 300px !important;
             display: none;
             justify-content: flex-start !important;
-            margin-bottom: 2px !important;
+            margin-bottom: 0px !important;
             z-index: 10000005 !important;
             pointer-events: auto !important;
         }
@@ -758,7 +758,7 @@
             background: rgba(255, 255, 255, 0.2) !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (شفاف، مدمج، الصور نازلة والعناصر اللي تحت مرفوعة لفوق) ── */
+        /* ── وضع ملء الشاشة للموسيقى (شفاف، متناسق، تقريب العناصر بوسط الشاشة) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -769,7 +769,7 @@
             margin: 0 !important;
             
             /* خلفية شفافة بالكامل مع تأثير غباش (Glassmorphism) لتظهر الخلفية من ورائها */
-            background: rgba(15, 15, 15, 0.5) !important;
+            background: rgba(15, 15, 15, 0.45) !important;
             backdrop-filter: blur(20px) saturate(150%) !important;
             -webkit-backdrop-filter: blur(20px) saturate(150%) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -778,7 +778,7 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 15px !important;
+            padding: 10px !important;
             transform-origin: top center;
             animation: slideDownCurtain 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             direction: rtl !important;
@@ -800,7 +800,7 @@
         .snd.fullscreen .snd-box {
             position: relative !important;
             width: 100% !important;
-            max-width: 320px !important;
+            max-width: 300px !important;
             height: auto !important;
             background: transparent !important;
             display: flex !important;
@@ -811,17 +811,17 @@
             overflow: visible !important;
         }
 
-        /* 1. نزلنا الألبوم تحت شوية (أصبح متناسق وبارز) */
+        /* 1. صورة الألبوم نازلة شوية ومحفوظة بحجم ممتاز */
         .snd.fullscreen .snd-art {
-            width: min(75vw, 270px) !important;
-            height: min(75vw, 270px) !important;
+            width: min(72vw, 250px) !important;
+            height: min(72vw, 250px) !important;
             border-radius: 16px !important;
-            margin-top: 10px !important;
-            margin-bottom: 12px !important;
+            margin-top: 14px !important;
+            margin-bottom: 10px !important;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
 
-        /* 2. النصوص تحت الألبوم مباشرة وبدون فراغات */
+        /* 2. اسم الأغنية والفنان متلاصقين تحت الصورة مباشرة */
         .snd.fullscreen .snd-say {
             position: relative !important;
             left: auto !important;
@@ -832,14 +832,14 @@
             align-items: flex-start !important;
             text-align: right !important;
             width: 100% !important;
-            max-width: 270px !important;
-            margin-bottom: 10px !important;
+            max-width: 250px !important;
+            margin-bottom: 8px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
 
         .snd.fullscreen .snd-title {
-            font-size: 19px !important;
+            font-size: 18px !important;
             font-weight: 700 !important;
             margin-bottom: 2px !important;
             white-space: normal !important;
@@ -852,13 +852,13 @@
             color: #b3b3b3 !important;
         }
 
-        /* 3. شريط التقدم مرفوع لفوق ومقارب */
+        /* 3. شريط التقدم مرفوع لفوق وقريب من النصوص */
         .snd.fullscreen .fs-bar-container {
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
-            max-width: 270px !important;
-            margin-bottom: 12px !important;
+            max-width: 250px !important;
+            margin-bottom: 10px !important;
         }
 
         .snd.fullscreen .fs-rail {
@@ -886,43 +886,43 @@
             justify-content: space-between;
             font-size: 11px;
             color: #b3b3b3;
-            margin-top: 4px;
+            margin-top: 3px;
             direction: ltr !important;
         }
 
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم مرفوعة لفوق تماماً ومتلاصقة بدون فراغات سفليّة */
+        /* 4. أزرار التحكم مرفوعة لفوق تماماً ومتلاصقة مع الشريط بدون فراغ سفلي */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
-            max-width: 270px !important;
+            max-width: 250px !important;
             margin-top: 0px !important;
-            margin-bottom: 10px !important;
+            margin-bottom: 6px !important;
             gap: 0 !important;
         }
 
         .snd.fullscreen .snd-op {
-            width: 38px !important;
-            height: 38px !important;
+            width: 36px !important;
+            height: 36px !important;
             background: transparent !important;
             border-radius: 50% !important;
             opacity: 0.9 !important;
         }
 
         .snd.fullscreen .snd-op svg {
-            width: 18px !important;
-            height: 18px !important;
+            width: 17px !important;
+            height: 17px !important;
             stroke: #ffffff !important;
         }
 
         /* زر التشغيل الكبير بالمنتصف */
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
-            width: 52px !important;
-            height: 52px !important;
+            width: 50px !important;
+            height: 50px !important;
             background: #ffffff !important;
             border-radius: 50% !important;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);

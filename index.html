@@ -720,7 +720,7 @@
             background: transparent !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (التعديلات الجديدة المطلوبة) ── */
+        /* ── وضع ملء الشاشة للموسيقى (بطاقة شفافة مع زيادة الشفافية لإظهار الخلفية) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -730,10 +730,10 @@
             z-index: 10000000 !important;
             margin: 0 !important;
             
-            background: rgba(12, 12, 12, 0.95) !important;
-            backdrop-filter: blur(25px) saturate(150%) !important;
-            -webkit-backdrop-filter: blur(25px) saturate(150%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: rgba(12, 12, 12, 0.45) !important;
+            backdrop-filter: blur(28px) saturate(160%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
 
             display: flex !important;
             flex-direction: column !important;
@@ -770,14 +770,14 @@
             overflow: visible !important;
         }
 
-        /* 1. الصورة نازلة تحت أكثر بشيء بسيط ومتناسق */
+        /* 1. الصورة في وضع متناسق ونازلة تحت شوي */
         .snd.fullscreen .snd-art {
             width: min(84vw, 310px) !important;
             height: min(84vw, 310px) !important;
             border-radius: 20px !important;
             margin-top: 15px !important;
             margin-bottom: 20px !important;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
         }
 
         /* 2. اسم الأغنية والفنان */
@@ -853,7 +853,7 @@
 
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم مرفوعة فوق وتتوسط الشاشة بشكل احترافي */
+        /* 4. أزرار التحكم مرفوعة فوق وموزعة باحترافية */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
@@ -888,7 +888,7 @@
             height: 60px !important;
             background: #ffffff !important;
             border-radius: 50% !important;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) svg {

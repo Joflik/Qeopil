@@ -720,7 +720,7 @@
             background: transparent !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (التعديلات المطلوبة) ── */
+        /* ── وضع ملء الشاشة للموسيقى (التعديلات الجديدة المطلوبة) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -730,7 +730,7 @@
             z-index: 10000000 !important;
             margin: 0 !important;
             
-            background: rgba(12, 12, 12, 0.92) !important;
+            background: rgba(12, 12, 12, 0.95) !important;
             backdrop-filter: blur(25px) saturate(150%) !important;
             -webkit-backdrop-filter: blur(25px) saturate(150%) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -738,11 +738,12 @@
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
-            justify-content: center !important;
-            padding: 10px 16px !important;
+            justify-content: flex-start !important;
+            padding: 16px 16px env(safe-area-inset-bottom, 16px) 16px !important;
             transform-origin: top center;
             animation: slideDownCurtain 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             direction: rtl !important;
+            overflow-y: auto !important;
         }
 
         @keyframes slideDownCurtain {
@@ -750,7 +751,10 @@
             100% { transform: translateY(0%); opacity: 1; }
         }
 
-        .snd.fullscreen .fs-top-bar { display: flex !important; }
+        .snd.fullscreen .fs-top-bar { 
+            display: flex !important; 
+            margin-bottom: 10px !important;
+        }
 
         .snd.fullscreen .snd-box {
             position: relative !important;
@@ -761,19 +765,19 @@
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
-            justify-content: center !important;
+            justify-content: flex-start !important;
             padding: 0 !important;
             overflow: visible !important;
         }
 
-        /* 1. الصورة نازلة تحت شوي */
+        /* 1. الصورة نازلة تحت أكثر بشيء بسيط ومتناسق */
         .snd.fullscreen .snd-art {
-            width: min(82vw, 300px) !important;
-            height: min(82vw, 300px) !important;
+            width: min(84vw, 310px) !important;
+            height: min(84vw, 310px) !important;
             border-radius: 20px !important;
-            margin-top: 14px !important;
-            margin-bottom: 14px !important;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            margin-top: 15px !important;
+            margin-bottom: 20px !important;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
         }
 
         /* 2. اسم الأغنية والفنان */
@@ -787,83 +791,84 @@
             align-items: flex-start !important;
             text-align: right !important;
             width: 100% !important;
-            max-width: 300px !important;
-            margin-bottom: 10px !important;
+            max-width: 310px !important;
+            margin-bottom: 18px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
 
         .snd.fullscreen .snd-title {
-            font-size: 19px !important;
+            font-size: 20px !important;
             font-weight: 700 !important;
-            margin-bottom: 2px !important;
+            margin-bottom: 4px !important;
             white-space: normal !important;
             color: #ffffff !important;
         }
 
         .snd.fullscreen .snd-by { 
-            font-size: 12px !important; 
+            font-size: 13px !important; 
             opacity: 0.75 !important;
             color: #b3b3b3 !important;
         }
 
-        /* 3. شريط التقدم (تم ضبطه ليعمل بسلاسة تامة) */
+        /* 3. شريط التقدم (ظاهر ويعمل بسلاسة تامة) */
         .snd.fullscreen .fs-bar-container {
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
-            max-width: 300px !important;
-            margin-bottom: 12px !important;
+            max-width: 310px !important;
+            margin-bottom: 22px !important;
         }
 
         .snd.fullscreen .fs-rail {
-            display: block;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.25);
-            border-radius: 999px;
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
-            touch-action: none;
+            display: block !important;
+            width: 100% !important;
+            height: 5px !important;
+            background: rgba(255, 255, 255, 0.25) !important;
+            border-radius: 999px !important;
+            overflow: hidden !important;
+            cursor: pointer !important;
+            position: relative !important;
+            touch-action: none !important;
             direction: ltr !important;
         }
 
         .snd.fullscreen .fs-run {
-            height: 100%;
-            width: 0%;
-            background: #ffffff;
-            border-radius: 999px;
-            pointer-events: none;
+            height: 100% !important;
+            width: 0% !important;
+            background: #ffffff !important;
+            border-radius: 999px !important;
+            pointer-events: none !important;
             will-change: width;
         }
 
         .snd.fullscreen .fs-clock {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #b3b3b3;
-            margin-top: 4px;
+            display: flex !important;
+            justify-content: space-between !important;
+            font-size: 12px !important;
+            color: #b3b3b3 !important;
+            margin-top: 6px !important;
             direction: ltr !important;
         }
 
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم مرفوعة فوق */
+        /* 4. أزرار التحكم مرفوعة فوق وتتوسط الشاشة بشكل احترافي */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
-            max-width: 300px !important;
-            margin-top: 0px !important;
-            margin-bottom: 16px !important;
+            max-width: 280px !important;
+            margin-top: 5px !important;
+            margin-bottom: 25px !important;
             gap: 0 !important;
         }
 
         .snd.fullscreen .snd-op {
-            width: 40px !important;
-            height: 40px !important;
+            width: 42px !important;
+            height: 42px !important;
             background: transparent !important;
             border-radius: 50% !important;
             opacity: 0.9 !important;
@@ -873,23 +878,23 @@
         }
 
         .snd.fullscreen .snd-op svg {
-            width: 18px !important;
-            height: 18px !important;
+            width: 20px !important;
+            height: 20px !important;
             stroke: #ffffff !important;
         }
 
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
-            width: 54px !important;
-            height: 54px !important;
+            width: 60px !important;
+            height: 60px !important;
             background: #ffffff !important;
             border-radius: 50% !important;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.45);
         }
 
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) svg {
             stroke: #000000 !important;
-            width: 22px !important;
-            height: 22px !important;
+            width: 24px !important;
+            height: 24px !important;
         }
 
         /* ── تأثير كشف الصور عند التحويم ── */

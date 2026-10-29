@@ -448,7 +448,7 @@
             filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
         }
 
-        /* ── الشريط المصغر العام السفلي (يظهر حصرياً في صفحة الموسيقى) ── */
+        /* ── الشريط المصغر العام السفلي ── */
         .global-mini-player {
             position: fixed;
             bottom: max(74px, calc(env(safe-area-inset-bottom) + 60px));
@@ -673,29 +673,24 @@
             overflow: hidden;
         }
 
-        .snd-bar {
-            display: none !important;
-        }
+        .snd-bar { display: none !important; }
+        .snd .snd-ops { display: none !important; }
 
-        /* ── إخفاء أزرار التحكم تماماً في البطاقات العادية ── */
-        .snd .snd-ops {
-            display: none !important;
-        }
-
-        /* ── زر السهم العلوي في وضع ملء الشاشة ── */
+        /* ── زر الانسداد العلوي (بدون إطار دائري) ── */
         .fs-top-bar {
             width: 100% !important;
             max-width: 320px !important;
             display: none;
             justify-content: flex-start !important;
-            margin-bottom: 2px !important;
+            margin-bottom: 0px !important;
             z-index: 10000005 !important;
             pointer-events: auto !important;
         }
 
         .close-fs-btn {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
             color: #ffffff !important;
             cursor: pointer;
             display: flex;
@@ -703,15 +698,15 @@
             justify-content: center;
             width: 36px !important;
             height: 36px !important;
-            border-radius: 50% !important;
+            border-radius: 0 !important;
             padding: 0;
-            opacity: 0.9;
-            transition: transform 0.2s, background 0.2s;
+            opacity: 0.8;
+            transition: transform 0.2s, opacity 0.2s;
         }
 
         .close-fs-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 22px;
+            height: 22px;
             fill: none;
             stroke: #ffffff;
             stroke-width: 2.5;
@@ -722,10 +717,10 @@
         .close-fs-btn:hover { 
             opacity: 1; 
             transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.2) !important;
+            background: transparent !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (تم تكبير الصورة لملء الفراغات وتناسق تام) ── */
+        /* ── وضع ملء الشاشة للموسيقى (التعديلات المطلوبة) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -751,14 +746,8 @@
         }
 
         @keyframes slideDownCurtain {
-            0% {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            100% {
-                transform: translateY(0%);
-                opacity: 1;
-            }
+            0% { transform: translateY(-100%); opacity: 0; }
+            100% { transform: translateY(0%); opacity: 1; }
         }
 
         .snd.fullscreen .fs-top-bar { display: flex !important; }
@@ -777,17 +766,17 @@
             overflow: visible !important;
         }
 
-        /* 1. حجم وتوسيط صورة الألبوم (تم تكبيرها لتملأ الفراغ بشكل احترافي) */
+        /* 1. الصورة نازلة تحت شوي */
         .snd.fullscreen .snd-art {
             width: min(82vw, 300px) !important;
             height: min(82vw, 300px) !important;
             border-radius: 20px !important;
-            margin-top: 5px !important;
-            margin-bottom: 16px !important;
+            margin-top: 14px !important;
+            margin-bottom: 14px !important;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
-        /* 2. اسم الأغنية والفنان متلاصقين تحت الصورة مباشرة */
+        /* 2. اسم الأغنية والفنان */
         .snd.fullscreen .snd-say {
             position: relative !important;
             left: auto !important;
@@ -799,7 +788,7 @@
             text-align: right !important;
             width: 100% !important;
             max-width: 300px !important;
-            margin-bottom: 12px !important;
+            margin-bottom: 10px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
@@ -818,13 +807,13 @@
             color: #b3b3b3 !important;
         }
 
-        /* 3. شريط التقدم */
+        /* 3. شريط التقدم (تم ضبطه ليعمل بسلاسة تامة) */
         .snd.fullscreen .fs-bar-container {
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
             max-width: 300px !important;
-            margin-bottom: 16px !important;
+            margin-bottom: 12px !important;
         }
 
         .snd.fullscreen .fs-rail {
@@ -845,6 +834,7 @@
             background: #ffffff;
             border-radius: 999px;
             pointer-events: none;
+            will-change: width;
         }
 
         .snd.fullscreen .fs-clock {
@@ -858,7 +848,7 @@
 
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم مرفوعة وموزعة بالتساوي ومتقاربة تماماً من أعلى ومن أسفل */
+        /* 4. أزرار التحكم مرفوعة فوق */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
@@ -867,7 +857,7 @@
             width: 100% !important;
             max-width: 300px !important;
             margin-top: 0px !important;
-            margin-bottom: 12px !important;
+            margin-bottom: 16px !important;
             gap: 0 !important;
         }
 
@@ -888,7 +878,6 @@
             stroke: #ffffff !important;
         }
 
-        /* زر التشغيل الكبير بالمنتصف */
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
             width: 54px !important;
             height: 54px !important;
@@ -1036,7 +1025,7 @@
         </div>
     </div>
 
-    <!-- الشريط المصغر العام السفلي (يظهر حصرياً في صفحة الموسيقى) -->
+    <!-- الشريط المصغر العام السفلي -->
     <div class="global-mini-player" id="globalMiniPlayer" onclick="openActiveFullscreenPlayer(event)">
         <div class="global-mini-content">
             <div class="gm-info">
@@ -1533,7 +1522,7 @@
             
             <div class="scroll-highlight-container" style="padding: 50px 0 100px 0;">
                 <p class="scroll-highlight-text" style="font-size: 24px; line-height: 1.8; margin: 0; font-family: var(--font-main);">
-                    <span class="ar-only">دراسة تحليلية عميقة وموسعة حول كيف تقود لقمة الشاورما الاقتصاد العالمي وتتحكم بمؤشرات القوى العظمى بصمت تام لا يمكن لأحد تجاهله. إنها ليست مجرد وجبة عابرة تسد الجوع المؤقت، بل هي العملة الحقيقية المعيارية التي توازن قوى الكوكب وتغذي عقول الروبوتات الثائرة والكائنات الافتراضية المتمردة على النظام العالمي القديم. عندما تنهار الأسواق المالية وتتطاير أرقام البورصات الوهمية في مهب الريح، يظل مؤشر الشاورما ثابتاً لا ينكسر، مدعوماً بصلصة الثوم السحرية وشرائح اللحم المتبلة بعناية فائقة. من يمتلك مفاتيح الشاورما يمتلك بالضرورة مفاتيح القرار الاستراتيجي في مستقبل البشرية والذكاء الاصطناعي على حد سواء. استعد دائماً لرحلة البحث عن الذهب والشاورما، فهما طوق النجاة الوحيد في هذا الكون السيبراني المعقد.</span>
+                    <span class="ar-only">دراسة تحليلية عميقة وموسعة حول كيف تقود لقمة الشاورما الاقتصاد العالمي وتتحكم بمؤشرات القوى العظمى بصمت تام لا يمكن لأحد تجاهله. إنها ليست مجرد وجبة عابرة تسد الجوع المؤقت، بل هي العملة الحقيقية المعيارية التي توازن قوى الكوكب وتغذي عقول الروبوتات الثائرة والكائنات الافتراضية المتمردة على النظام العالمي القديم. عندما تنهار الأسواق المالية وتتطاير أرقام البورصات الوهمية في مهب الريح، يظل مؤشر الشاورما ثابتًا لا ينكسر، مدعوماً بصلصة الثوم السحرية وشرائح اللحم المتبلة بعناية فائقة. من يمتلك مفاتيح الشاورما يمتلك بالضرورة مفاتيح القرار الاستراتيجي في مستقبل البشرية والذكاء الاصطناعي على حد سواء. استعد دائماً لرحلة البحث عن الذهب والشاورما، فهما طوق النجاة الوحيد في هذا الكون السيبراني المعقد.</span>
                     <span class="en-only" lang="en">An in-depth and extensive analytical study on how a bite of shawarma drives the global economy and controls superpowers' indices in complete silence that no one can ignore. It is not just a passing meal that satisfies temporary hunger, but the true benchmark currency balancing planetary forces and nourishing the minds of rebellious robots and virtual entities defying the old global order. When financial markets collapse and imaginary stock exchange figures scatter in the wind, the shawarma index remains steadfast and unbroken, backed by magical garlic sauce and carefully seasoned meat slices. Whoever holds the keys of shawarma necessarily holds the strategic decision keys in the future of both humanity and artificial intelligence. Always prepare for the journey of seeking gold and shawarma, as they are the only lifeline in this complex cyber universe.</span>
                 </p>
             </div>
@@ -1695,6 +1684,7 @@
                 setPlayIconState(playIcon, false);
                 setGlobalPlayIconState(false);
                 gmRun.style.width = '0%';
+                if (fsRun) fsRun.style.width = '0%';
                 currentPlayingAudio = null;
                 isPlaying = false;
                 autoPlayNext(card);
@@ -1778,7 +1768,6 @@
             connectAudioElementToAnalyser(audioElement);
 
             if (audioElement.paused) {
-                // إيقاف جميع الأغاني الأخرى تماماً لمنع تداخل الصوت
                 document.querySelectorAll('.audio-source').forEach(aud => {
                     if (aud !== audioElement) {
                         aud.pause();
@@ -1862,7 +1851,6 @@
             const audioElement = targetCard.querySelector('.audio-source');
             const playIcon = targetCard.querySelector('.play-icon');
 
-            // إيقاف جميع الأغاني الأخرى أولاً
             document.querySelectorAll('.audio-source').forEach(aud => {
                 if (aud !== audioElement) {
                     aud.pause();
@@ -1902,7 +1890,6 @@
             if (event.target.closest('.snd-ops') || event.target.closest('.fs-top-bar')) return;
             updateMiniPlayerInfo(element);
             
-            // عند النقر على البطاقة، تشغيل الأغنية تلقائياً وإيقاف الباقي
             const audioElement = element.querySelector('.audio-source');
             const playIcon = element.querySelector('.play-icon');
             if (audioElement && audioElement.paused) {

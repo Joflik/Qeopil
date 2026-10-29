@@ -63,9 +63,9 @@
         body.cream-mode .glass-nav-container,
         body.cream-mode .global-mini-player,
         body.cream-mode .snd.fullscreen {
-            background: rgba(255, 255, 255, 0.4) !important;
-            border: 1px solid rgba(0, 0, 0, 0.05) !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+            background: rgba(255, 255, 255, 0.2) !important;
+            border: 1px solid rgba(0, 0, 0, 0.03) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02) !important;
         }
 
         body.cream-mode .glass-nav-item {
@@ -78,14 +78,14 @@
 
         body.cream-mode .glass-nav-item.active {
             color: #1f1b18 !important;
-            background: rgba(92, 79, 65, 0.1) !important;
-            border: 1px solid rgba(92, 79, 65, 0.2) !important;
+            background: rgba(92, 79, 65, 0.06) !important;
+            border: 1px solid rgba(92, 79, 65, 0.15) !important;
         }
 
         body.cream-mode .glass-lang-btn,
         body.cream-mode .glass-theme-btn {
-            background: rgba(92, 79, 65, 0.1) !important;
-            border: 1px solid rgba(92, 79, 65, 0.2) !important;
+            background: rgba(92, 79, 65, 0.06) !important;
+            border: 1px solid rgba(92, 79, 65, 0.15) !important;
             color: #3b3530 !important;
         }
 
@@ -103,20 +103,20 @@
         body.silk-mode .glass-nav-container,
         body.silk-mode .global-mini-player,
         body.silk-mode .snd.fullscreen {
-            background: rgba(0, 17, 124, 0.2) !important;
-            border: 1px solid rgba(25, 227, 255, 0.15) !important;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) !important;
+            background: rgba(0, 17, 124, 0.08) !important;
+            border: 1px solid rgba(25, 227, 255, 0.1) !important;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2) !important;
         }
 
         body.silk-mode .glass-nav-item.active {
-            background: rgba(25, 227, 255, 0.2) !important;
-            border: 1px solid rgba(25, 227, 255, 0.35) !important;
+            background: rgba(25, 227, 255, 0.12) !important;
+            border: 1px solid rgba(25, 227, 255, 0.25) !important;
         }
 
         body.silk-mode .glass-lang-btn,
         body.silk-mode .glass-theme-btn {
-            background: rgba(25, 227, 255, 0.15) !important;
-            border: 1px solid rgba(25, 227, 255, 0.25) !important;
+            background: rgba(25, 227, 255, 0.08) !important;
+            border: 1px solid rgba(25, 227, 255, 0.15) !important;
             color: #ffffff !important;
         }
 
@@ -213,7 +213,7 @@
             font-family: var(--font-en); 
         }
 
-        /* ── الصندوق العلوي ── */
+        /* ── الصندوق العلوي (شفافية عالية) ── */
         .glass-header-container {
             position: fixed;
             top: 14px;
@@ -226,12 +226,12 @@
             align-items: center;
             justify-content: space-between;
             padding: 4px 16px;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px) saturate(150%);
-            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(10px) saturate(140%);
+            -webkit-backdrop-filter: blur(10px) saturate(140%);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
@@ -255,10 +255,10 @@
             width: 34px;
             height: 34px;
             border-radius: 8px;
-            background: rgba(255, 0, 127, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 0, 127, 0.2);
+            background: rgba(255, 0, 127, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 127, 0.12);
             color: #ffffff;
             font-size: 13px;
             display: flex;
@@ -276,7 +276,7 @@
 
         .glass-lang-btn:hover, .glass-theme-btn:hover {
             transform: scale(1.05);
-            background: rgba(255, 0, 127, 0.2);
+            background: rgba(255, 0, 127, 0.15);
         }
 
         .section { display: none; }
@@ -385,7 +385,7 @@
             font-family: var(--font-main);
         }
 
-        /* ── الصندوق السفلي (القائمة العائمة) ── */
+        /* ── الصندوق السفلي (شفافية عالية) ── */
         .glass-nav-container {
             position: fixed;
             bottom: max(14px, env(safe-area-inset-bottom));
@@ -398,12 +398,12 @@
             align-items: center;
             justify-content: space-around;
             padding: 4px 6px;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px) saturate(150%);
-            -webkit-backdrop-filter: blur(12px) saturate(150%);
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(10px) saturate(140%);
+            -webkit-backdrop-filter: blur(10px) saturate(140%);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
             direction: ltr !important;
         }
@@ -439,8 +439,8 @@
 
         .glass-nav-item.active {
             color: #ffffff;
-            background: rgba(255, 0, 127, 0.15);
-            border: 1px solid rgba(255, 0, 127, 0.3);
+            background: rgba(255, 0, 127, 0.08);
+            border: 1px solid rgba(255, 0, 127, 0.2);
         }
 
         .glass-nav-item.active svg {
@@ -448,7 +448,7 @@
             filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
         }
 
-        /* ── الشريط المصغر العام السفلي ── */
+        /* ── الشريط المصغر العام السفلي (شفافية عالية) ── */
         .global-mini-player {
             position: fixed;
             bottom: max(74px, calc(env(safe-area-inset-bottom) + 60px));
@@ -457,12 +457,12 @@
             width: min(92vw, 420px);
             height: 58px;
             z-index: 998;
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: blur(16px) saturate(150%);
-            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            background: rgba(15, 15, 15, 0.55);
+            backdrop-filter: blur(14px) saturate(140%);
+            -webkit-backdrop-filter: blur(14px) saturate(140%);
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             display: none;
             flex-direction: column;
             justify-content: center;
@@ -620,7 +620,7 @@
         }
 
         .snd:hover {
-            background: rgba(255, 255, 255, 0.03) !important;
+            background: rgba(255, 255, 255, 0.02) !important;
         }
 
         .snd-box {
@@ -720,7 +720,7 @@
             background: transparent !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى ── */
+        /* ── وضع ملء الشاشة للموسيقى (شفافية عالية لإظهار الخلفية) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -730,10 +730,10 @@
             z-index: 10000000 !important;
             margin: 0 !important;
             
-            background: rgba(12, 12, 12, 0.85) !important;
-            backdrop-filter: blur(28px) saturate(160%) !important;
-            -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: rgba(10, 10, 10, 0.6) !important;
+            backdrop-filter: blur(20px) saturate(140%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(140%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
 
             display: flex !important;
             flex-direction: column !important;
@@ -810,7 +810,7 @@
             color: #b3b3b3 !important;
         }
 
-        /* ── شريط التقدم الوردي المظهر (مفعل بالكامل) ── */
+        /* ── شريط التقدم الوردي المظهر ── */
         .fs-bar-container {
             display: none;
             flex-direction: column;

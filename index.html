@@ -446,7 +446,7 @@
             filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
         }
 
-        /* ── الشريط المصغر العام المطابق لسبوتيفاي (فوق القائمة العائمة مباشرة) ── */
+        /* ── الشريط المصغر العام السفلي (يظهر حصرياً في صفحة الموسيقى) ── */
         .global-mini-player {
             position: fixed;
             bottom: max(74px, calc(env(safe-area-inset-bottom) + 60px));
@@ -461,13 +461,17 @@
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             padding: 0 12px;
             cursor: pointer;
             transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
             direction: rtl;
+        }
+
+        body.music-active .global-mini-player {
+            display: flex;
         }
 
         .global-mini-content {
@@ -555,7 +559,6 @@
             transform: scale(1.1);
         }
 
-        /* شريط التمرير الرفيع أسفل الشريط المصغر */
         .gm-rail {
             position: absolute;
             bottom: 3px;
@@ -577,7 +580,6 @@
             pointer-events: none;
         }
 
-        /* إخفاء القوائم والشريط المصغر عند تفعيل وضع ملء الشاشة */
         body.fullscreen-active .glass-header-container,
         body.fullscreen-active .glass-nav-container,
         body.fullscreen-active .global-mini-player {
@@ -596,7 +598,7 @@
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
-            padding: 10px 0 120px 0;
+            padding: 10px 0 140px 0;
         }
 
         .snd {
@@ -669,7 +671,6 @@
             overflow: hidden;
         }
 
-        /* إخفاء شريط التقدم القديم داخل عناصر القائمة (لأننا أضفناه في الشريط المصغر السفلي) */
         .snd-bar {
             display: none !important;
         }
@@ -712,31 +713,51 @@
             transform: scale(1.1);
         }
 
-        /* ── زر الإنزلاق والإغلاق (سهم ⌄ مطابق لسبوتيفاي) ── */
-        .close-fs-btn {
-            position: absolute;
-            top: 24px;
-            left: 24px;
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-size: 28px;
-            cursor: pointer;
+        /* ── الهيدر العلوي المستقل (مرفوع قليلاً للأعلى ومنقول لأقصى اليمين تماماً بدون خلفية دائرية) ── */
+        .fs-top-bar {
+            position: fixed !important;
+            top: max(8px, env(safe-area-inset-top)) !important;
+            left: 20px !important;
+            right: 20px !important;
+            height: 38px !important;
             display: none;
             align-items: center;
+            justify-content: flex-end !important; /* نقل السهم إلى أقصى اليمين تماماً */
+            z-index: 10000005 !important;
+            pointer-events: auto !important;
+        }
+
+        .close-fs-btn {
+            background: transparent !important;
+            border: none !important;
+            color: #ffffff !important;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            z-index: 10000002;
-            opacity: 0.85;
-            transition: opacity 0.2s;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            opacity: 0.9;
+            transition: transform 0.2s;
         }
 
-        .close-fs-btn:hover {
-            opacity: 1;
+        .close-fs-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (ينسدل من الأعلى ويغطي الشاشة بالكامل) ── */
+        .close-fs-btn:hover { 
+            opacity: 1; 
+            transform: scale(1.15);
+        }
+
+        /* ── وضع ملء الشاشة للموسيقى (توازن ممتاز للمسافات العلوية) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -749,19 +770,29 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 40px 24px !important;
-            animation: slideDownModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            padding: 85px 24px 30px 24px !important;
+            transform-origin: top center;
+            animation: slideDownCurtain 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            direction: rtl !important;
         }
 
-        @keyframes slideDownModal {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0%); opacity: 1; }
+        @keyframes slideDownCurtain {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0%);
+                opacity: 1;
+            }
         }
+
+        .snd.fullscreen .fs-top-bar { display: flex !important; }
 
         .snd.fullscreen .snd-box {
             position: relative !important;
             width: 100% !important;
-            max-width: 340px !important;
+            max-width: 360px !important;
             height: auto !important;
             background: transparent !important;
             display: flex !important;
@@ -772,18 +803,16 @@
             overflow: visible !important;
         }
 
-        .snd.fullscreen .close-fs-btn { display: flex !important; }
-
-        /* 1. الغلاف مربع وكبير وبارز في الأعلى */
+        /* 1. الغلاف عريض وممتلئ من الجانبين مثل سبوتيفاي وبدون فراغات مبالغ فيها */
         .snd.fullscreen .snd-art {
-            width: min(78vw, 280px) !important;
-            height: min(78vw, 280px) !important;
+            width: min(86vw, 330px) !important;
+            height: min(86vw, 330px) !important;
             border-radius: 12px !important;
-            margin-bottom: 30px !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            margin-bottom: 22px !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
-        /* 2. اسم الأغنية والفنان تحته مباشرة */
+        /* 2. اسم الأغنية والفنان تحته مباشرة بتنسيق متوازن */
         .snd.fullscreen .snd-say {
             position: relative !important;
             left: auto !important;
@@ -794,7 +823,7 @@
             align-items: flex-start !important;
             text-align: right !important;
             width: 100% !important;
-            margin-bottom: 20px !important;
+            margin-bottom: 18px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
@@ -802,7 +831,7 @@
         .snd.fullscreen .snd-title {
             font-size: 22px !important;
             font-weight: 700 !important;
-            margin-bottom: 6px !important;
+            margin-bottom: 4px !important;
             white-space: normal !important;
             color: #ffffff !important;
         }
@@ -818,7 +847,7 @@
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
-            margin-bottom: 30px !important;
+            margin-bottom: 22px !important;
         }
 
         .snd.fullscreen .fs-rail {
@@ -846,14 +875,13 @@
             justify-content: space-between;
             font-size: 11px;
             color: #b3b3b3;
-            margin-top: 8px;
+            margin-top: 6px;
             direction: ltr !important;
         }
 
-        /* عناصر مؤقتة لشريط التقدم داخل وضع ملء الشاشة */
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم بأسلوب سبوتيفاي السفلي */
+        /* 4. أزرار التحكم بأسلوب سبوتيفاي المتناسق السفلي */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
@@ -861,13 +889,13 @@
             justify-content: space-between !important;
             width: 100% !important;
             max-width: 320px !important;
-            margin-top: 10px !important;
+            margin-top: 4px !important;
             gap: 0 !important;
         }
 
         .snd.fullscreen .snd-op {
-            width: 44px !important;
-            height: 44px !important;
+            width: 42px !important;
+            height: 42px !important;
             background: transparent !important;
             border-radius: 50% !important;
             opacity: 0.9 !important;
@@ -881,11 +909,11 @@
 
         /* زر التشغيل الكبير بالمنتصف */
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
-            width: 64px !important;
-            height: 64px !important;
+            width: 62px !important;
+            height: 62px !important;
             background: #ffffff !important;
             border-radius: 50% !important;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
 
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) svg {
@@ -1027,7 +1055,7 @@
         </div>
     </div>
 
-    <!-- الشريط المصغر العام السفلي (المطابق لسبوتيفاي) -->
+    <!-- الشريط المصغر العام السفلي (يظهر حصرياً في صفحة الموسيقى) -->
     <div class="global-mini-player" id="globalMiniPlayer" onclick="openActiveFullscreenPlayer(event)">
         <div class="global-mini-content">
             <div class="gm-info">
@@ -1085,7 +1113,11 @@
                 
                 <!-- Track 1 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="SugarCrash" data-by="Elyozeth Hub" data-art="https://i.ibb.co/HT7MLQFQ/file-00000000ac9c8211b46b2359589eff0b.png">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="SugarCrash.m4a" type="audio/mp4">
@@ -1096,7 +1128,6 @@
                             <span class="snd-title">SugarCrash</span>
                             <span class="snd-by">Elyozeth Hub</span>
                         </div>
-                        <!-- شريط التقدم لملء الشاشة -->
                         <div class="fs-bar-container">
                             <span class="fs-rail"><span class="fs-run"></span></span>
                             <span class="fs-clock"><span class="current-time">0:00</span><span class="duration-time">0:00</span></span>
@@ -1117,7 +1148,11 @@
 
                 <!-- Track 2 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Charlotte Ending" data-by="Anime OST" data-art="https://i.ibb.co/q37x9YRM/file-00000000a8fc821195faf366dd6fa93a.png">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Charlotte Ending.m4a" type="audio/mp4">
@@ -1148,7 +1183,11 @@
 
                 <!-- Track 3 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="everybody dance now" data-by="C+C Music Factory" data-art="https://i.ibb.co/FkPSvr5G/1792772075572.jpg">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="everybody dance now.m4a" type="audio/mp4">
@@ -1179,7 +1218,11 @@
 
                 <!-- Track 4 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Heaven, Wait" data-by="Ghostly Kisses" data-art="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=60">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Ghostly Kisses - Heaven, Wait.m4a" type="audio/mp4">
@@ -1210,7 +1253,11 @@
 
                 <!-- Track 5 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="New Life (Sun)" data-by="Thomas Bergersen" data-art="https://images.unsplash.com/photo-1549887534-1541e9326642?w=500&auto=format&fit=crop&q=60">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Thomas Bergersen - New Life (Sun).m4a" type="audio/mp4">
@@ -1241,7 +1288,11 @@
 
                 <!-- Track 6 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Feek El Ebar" data-by="Ahmed Batshan" data-art="https://images.unsplash.com/photo-1582561226105-02195f2d6b38?w=500&auto=format&fit=crop&q=60">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="metadata" crossorigin="anonymous">
                             <source src="Ahmed Batshan – Feek El Ebar.mp3" type="audio/mpeg">
@@ -1273,7 +1324,11 @@
 
                 <!-- Track 7 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Maaol" data-by="Fadel Chaker" data-art="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=60">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Fadel Chaker - Maaol.m4a" type="audio/mp4">
@@ -1304,7 +1359,11 @@
 
                 <!-- Track 8 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Hoa El Fraa" data-by="Khaled" data-art="https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=500&auto=format&fit=crop&q=60">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Khaled - Hoa El Fraa.m4a" type="audio/mp4">
@@ -1335,7 +1394,11 @@
 
                 <!-- Track 9 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Patient Zero" data-by="Elyozeth Hub" data-art="https://i.ibb.co/6Cz7smM/HT41-J6as-AALlif.jpg">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="metadata" crossorigin="anonymous">
                             <source src="Patient Zero.mp3" type="audio/mpeg">
@@ -1366,7 +1429,11 @@
 
                 <!-- Track 10 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Let Me Down Slowly" data-by="Alec Benjamin" data-art="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60">
-                    <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();">⌄</button>
+                    <div class="fs-top-bar">
+                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                    </div>
                     <div class="snd-box">
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Alec Benjamin - Let Me Down Slowly.m4a" type="audio/mp4">
@@ -1554,7 +1621,7 @@
         let dataArray = null;
         let audioSourcesMap = new WeakMap();
         let isPlaying = false;
-        let activeCard = null; // البطاقة النشطة حالياً
+        let activeCard = null;
 
         function initAudioContext() {
             if (!audioCtx) {
@@ -1598,7 +1665,6 @@
             return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        // إعداد الشريط المصغر السفلي وشريط التقدم العام
         const gmRun = document.getElementById('gmRun');
         const gmRail = document.getElementById('gmRail');
         const gmTitle = document.getElementById('gmTitle');
@@ -1606,7 +1672,6 @@
         const gmArt = document.getElementById('gmArt');
         const globalMiniPlayer = document.getElementById('globalMiniPlayer');
 
-        // تحديد أول بطاقة كافتراضية للشريط المصغر
         const allCards = Array.from(document.querySelectorAll('.snd'));
         if (allCards.length > 0) {
             activeCard = allCards[0];
@@ -1621,7 +1686,6 @@
             gmArt.src = card.getAttribute('data-art');
         }
 
-        // ربط أحداث الصوت لكل بطاقة
         allCards.forEach(card => {
             const audio = card.querySelector('.audio-source');
             const playIcon = card.querySelector('.play-icon');
@@ -1655,7 +1719,6 @@
                 autoPlayNext(card);
             });
 
-            // تفاعل شريط التقدم بوضع ملء الشاشة
             if (fsRail) {
                 let isSeekingFS = false;
                 const handleFSSeek = (e) => {
@@ -1675,7 +1738,6 @@
             }
         });
 
-        // تفاعل شريط التقدم في الشريط المصغر السفلي
         let isSeekingGM = false;
         const handleGMSeek = (e) => {
             if (!activeCard) return;
@@ -1843,7 +1905,7 @@
         }
 
         function openFullscreenPlayer(element, event) {
-            if (event.target.closest('.snd-ops') || event.target.closest('.close-fs-btn')) return;
+            if (event.target.closest('.snd-ops') || event.target.closest('.fs-top-bar')) return;
             updateMiniPlayerInfo(element);
             element.classList.add('fullscreen');
             document.body.classList.add('fullscreen-active');
@@ -2445,6 +2507,12 @@
             const targetSection = document.getElementById(id);
             if (targetSection) targetSection.classList.add('active');
             window.scrollTo(0, 0);
+
+            if (id === 'music') {
+                document.body.classList.add('music-active');
+            } else {
+                document.body.classList.remove('music-active');
+            }
 
             document.querySelectorAll('.glass-nav-item').forEach(item => item.classList.remove('active'));
             

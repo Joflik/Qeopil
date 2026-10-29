@@ -833,6 +833,7 @@
         }
 
         .snd.fullscreen .fs-run {
+            display: block !important;
             height: 100% !important;
             width: 0% !important;
             background: #ff007f !important;
@@ -1672,12 +1673,14 @@
             });
 
             audio.addEventListener('timeupdate', () => {
-                if (audio.duration) {
+                if (audio.duration && !isNaN(audio.duration)) {
                     const percent = (audio.currentTime / audio.duration) * 100;
                     if (card === activeCard) {
                         gmRun.style.width = percent + '%';
                     }
-                    if (fsRun) fsRun.style.width = percent + '%';
+                    if (fsRun) {
+                        fsRun.style.width = percent + '%';
+                    }
                     if (currentTimeEl) currentTimeEl.innerText = formatTime(audio.currentTime);
                     if (durationTimeEl) durationTimeEl.innerText = formatTime(audio.duration);
                 }
@@ -1702,6 +1705,7 @@
                     const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
                     const percentage = clickX / rect.width;
                     audio.currentTime = percentage * audio.duration;
+                    if (fsRun) fsRun.style.width = (percentage * 100) + '%';
                 };
                 fsRail.addEventListener('mousedown', (e) => { isSeekingFS = true; handleFSSeek(e); });
                 fsRail.addEventListener('touchstart', (e) => { isSeekingFS = true; handleFSSeek(e); }, { passive: true });
@@ -1722,6 +1726,7 @@
             const clickX = Math.max(0, Math.min(clientX - rect.left, rect.width));
             const percentage = clickX / rect.width;
             audio.currentTime = percentage * audio.duration;
+            gmRun.style.width = (percentage * 100) + '%';
         };
         gmRail.addEventListener('mousedown', (e) => { isSeekingGM = true; handleGMSeek(e); });
         gmRail.addEventListener('touchstart', (e) => { isSeekingGM = true; handleGMSeek(e); }, { passive: true });
@@ -1948,7 +1953,7 @@
 
             card.addEventListener('touchstart', (e) => {
                 if (!card.classList.contains('fullscreen')) return;
-                // السماح بالسحب فقط إذا كان المستخدم أعلى البطاقة أو في مناطق فارغة لتفادي تعارض شريط التقدم أو محتوى الأغنية
+                if (e.target.closest('.fs-bar-container') || e.target.closest('.snd-ops') || e.target.closest('.fs-top-bar')) return;
                 startY = e.touches[0].clientY;
                 currentY = startY;
                 isDragging = true;
@@ -1959,7 +1964,6 @@
                 if (!isDragging || !card.classList.contains('fullscreen')) return;
                 currentY = e.touches[0].clientY;
                 const diff = currentY - startY;
-                // السماح فقط بالسحب نحو الأسفل (diff > 0)
                 if (diff > 0) {
                     card.style.transform = `translateY(${diff}px)`;
                     card.style.opacity = `${Math.max(0.3, 1 - (diff / 350))}`;
@@ -1973,7 +1977,6 @@
                 const diff = currentY - startY;
                 
                 if (diff > 120) {
-                    // إذا سحب المسافة الكافية للأسفل، أغلق البطاقة بانيميشن ناعم
                     card.style.transform = `translateY(100vh)`;
                     card.style.opacity = '0';
                     setTimeout(() => {
@@ -1984,7 +1987,6 @@
                         card.style.opacity = '';
                     }, 250);
                 } else {
-                    // إذا لم يكمل السحب، أعد البطاقة لمكانها الأصلي بسلاسة
                     card.style.transform = 'translateY(0)';
                     card.style.opacity = '1';
                 }

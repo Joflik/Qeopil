@@ -713,37 +713,31 @@
             transform: scale(1.1);
         }
 
-        /* ── زر السهم (مدمج بدقة داخل الزاوية العلوية اليمنى للألبوم مباشرة) ── */
+        /* ── زر السهم العلوي (في الفراغ فوق الألبوم مباشرة داخل شاشة ملء الشاشة) ── */
         .fs-top-bar {
-            position: absolute !important;
-            top: 12px !important;
-            right: 12px !important;
-            width: 36px !important;
-            height: 36px !important;
+            width: 100% !important;
+            max-width: 320px !important;
             display: none;
-            align-items: center;
-            justify-content: center;
+            justify-content: flex-start !important;
+            margin-bottom: 16px !important;
             z-index: 10000005 !important;
             pointer-events: auto !important;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 50%;
         }
 
         .close-fs-btn {
-            background: transparent !important;
-            border: none !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
             color: #ffffff !important;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            height: 100%;
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 50% !important;
             padding: 0;
             opacity: 0.9;
-            transition: transform 0.2s;
+            transition: transform 0.2s, background 0.2s;
         }
 
         .close-fs-btn svg {
@@ -758,10 +752,11 @@
 
         .close-fs-btn:hover { 
             opacity: 1; 
-            transform: scale(1.15);
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2) !important;
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (مضغوط، متناسق، وبدون أي فراغات مبالغ فيها) ── */
+        /* ── وضع ملء الشاشة للموسيقى (مضغوط، متناسق ككتلة واحدة بدون أي فراغات عملاقة) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -775,7 +770,7 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 10px 20px !important;
+            padding: 20px !important;
             transform-origin: top center;
             animation: slideDownCurtain 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             direction: rtl !important;
@@ -803,21 +798,21 @@
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
-            justify-content: center !important;
+            justify-content: flex-start !important;
             padding: 0 !important;
             overflow: visible !important;
         }
 
-        /* 1. الألبوم نزل شوي وصار يتوسط الشاشة بشكل ممتاز */
+        /* 1. الألبوم بحجم مثالي ومتوسط الشاشة */
         .snd.fullscreen .snd-art {
-            width: min(84vw, 320px) !important;
-            height: min(84vw, 320px) !important;
-            border-radius: 14px !important;
+            width: min(80vw, 300px) !important;
+            height: min(80vw, 300px) !important;
+            border-radius: 16px !important;
             margin-bottom: 16px !important;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
-        /* 2. النصوص تحت الألبوم مباشرة بدون مسافات فارغة ضخمة */
+        /* 2. النصوص تحت الألبوم مباشرة بقرب تام وبدون فراغات */
         .snd.fullscreen .snd-say {
             position: relative !important;
             left: auto !important;
@@ -828,16 +823,16 @@
             align-items: flex-start !important;
             text-align: right !important;
             width: 100% !important;
-            max-width: 320px !important;
-            margin-bottom: 16px !important;
+            max-width: 300px !important;
+            margin-bottom: 14px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
 
         .snd.fullscreen .snd-title {
-            font-size: 21px !important;
+            font-size: 20px !important;
             font-weight: 700 !important;
-            margin-bottom: 3px !important;
+            margin-bottom: 2px !important;
             white-space: normal !important;
             color: #ffffff !important;
         }
@@ -853,8 +848,8 @@
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
-            max-width: 320px !important;
-            margin-bottom: 18px !important;
+            max-width: 300px !important;
+            margin-bottom: 16px !important;
         }
 
         .snd.fullscreen .fs-rail {
@@ -888,14 +883,14 @@
 
         .fs-bar-container { display: none; }
 
-        /* 4. أزرار التحكم السفلية */
+        /* 4. أزرار التحكم متقاربة ومتناسقة أسفل الشريط */
         .snd.fullscreen .snd-ops {
             position: relative !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
-            max-width: 310px !important;
+            max-width: 300px !important;
             margin-top: 0px !important;
             gap: 0 !important;
         }
@@ -916,8 +911,8 @@
 
         /* زر التشغيل الكبير بالمنتصف */
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
-            width: 58px !important;
-            height: 58px !important;
+            width: 56px !important;
+            height: 56px !important;
             background: #ffffff !important;
             border-radius: 50% !important;
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
@@ -1120,12 +1115,12 @@
                 
                 <!-- Track 1 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="SugarCrash" data-by="Elyozeth Hub" data-art="https://i.ibb.co/HT7MLQFQ/file-00000000ac9c8211b46b2359589eff0b.png">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="SugarCrash.m4a" type="audio/mp4">
                             <source src="SugarCrash.mp3" type="audio/mpeg">
@@ -1155,12 +1150,12 @@
 
                 <!-- Track 2 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Charlotte Ending" data-by="Anime OST" data-art="https://i.ibb.co/q37x9YRM/file-00000000a8fc821195faf366dd6fa93a.png">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Charlotte Ending.m4a" type="audio/mp4">
                             <source src="Charlotte Ending.mp3" type="audio/mpeg">
@@ -1190,12 +1185,12 @@
 
                 <!-- Track 3 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="everybody dance now" data-by="C+C Music Factory" data-art="https://i.ibb.co/FkPSvr5G/1792772075572.jpg">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="everybody dance now.m4a" type="audio/mp4">
                             <source src="everybody dance now.mp3" type="audio/mpeg">
@@ -1225,12 +1220,12 @@
 
                 <!-- Track 4 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Heaven, Wait" data-by="Ghostly Kisses" data-art="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=60">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Ghostly Kisses - Heaven, Wait.m4a" type="audio/mp4">
                             <source src="Ghostly Kisses - Heaven, Wait.mp3" type="audio/mpeg">
@@ -1260,12 +1255,12 @@
 
                 <!-- Track 5 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="New Life (Sun)" data-by="Thomas Bergersen" data-art="https://images.unsplash.com/photo-1549887534-1541e9326642?w=500&auto=format&fit=crop&q=60">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Thomas Bergersen - New Life (Sun).m4a" type="audio/mp4">
                             <source src="Thomas Bergersen - New Life (Sun).mp3" type="audio/mpeg">
@@ -1295,12 +1290,12 @@
 
                 <!-- Track 6 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Feek El Ebar" data-by="Ahmed Batshan" data-art="https://images.unsplash.com/photo-1582561226105-02195f2d6b38?w=500&auto=format&fit=crop&q=60">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="metadata" crossorigin="anonymous">
                             <source src="Ahmed Batshan – Feek El Ebar.mp3" type="audio/mpeg">
                             <source src="Ahmed Batshan - Feek El Ebar.mp3" type="audio/mpeg">
@@ -1331,12 +1326,12 @@
 
                 <!-- Track 7 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Maaol" data-by="Fadel Chaker" data-art="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500&auto=format&fit=crop&q=60">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Fadel Chaker - Maaol.m4a" type="audio/mp4">
                             <source src="Fadel Chaker - Maaol.mp3" type="audio/mpeg">
@@ -1366,12 +1361,12 @@
 
                 <!-- Track 8 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Hoa El Fraa" data-by="Khaled" data-art="https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=500&auto=format&fit=crop&q=60">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Khaled - Hoa El Fraa.m4a" type="audio/mp4">
                             <source src="Khaled - Hoa El Fraa.mp3" type="audio/mpeg">
@@ -1401,12 +1396,12 @@
 
                 <!-- Track 9 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Patient Zero" data-by="Elyozeth Hub" data-art="https://i.ibb.co/6Cz7smM/HT41-J6as-AALlif.jpg">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="metadata" crossorigin="anonymous">
                             <source src="Patient Zero.mp3" type="audio/mpeg">
                             <source src="Patient Zero.m4a" type="audio/mp4">
@@ -1436,12 +1431,12 @@
 
                 <!-- Track 10 -->
                 <div class="snd" onclick="openFullscreenPlayer(this, event); playAudioClick();" data-title="Let Me Down Slowly" data-by="Alec Benjamin" data-art="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60">
-                    <div class="fs-top-bar">
-                        <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                    </div>
                     <div class="snd-box">
+                        <div class="fs-top-bar">
+                            <button class="close-fs-btn" onclick="closeFullscreenPlayer(this, event); playAudioClick();" title="إغلاق">
+                                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
                         <audio class="audio-source" preload="none" crossorigin="anonymous">
                             <source src="Alec Benjamin - Let Me Down Slowly.m4a" type="audio/mp4">
                             <source src="Alec Benjamin - Let Me Down Slowly.mp3" type="audio/mpeg">

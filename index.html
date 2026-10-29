@@ -713,17 +713,17 @@
             transform: scale(1.1);
         }
 
-        /* ── الهيدر العلوي المستقل (مضبوط בדיוק ليطابق أبعاد الموقع الحقيقي فوق الألبوم مباشرة يميناً) ── */
+        /* ── زر السهم العلوي بوضع ملء الشاشة (محاذاة دقيقة جداً لأقصى اليمين وفوق الألبوم مباشرة) ── */
         .fs-top-bar {
             position: absolute !important;
-            top: calc(50% - min(43vw, 175px) - 45px) !important;
+            top: calc(50% - min(43vw, 170px) - 44px) !important;
             left: 50% !important;
             transform: translateX(-50%) !important;
             width: min(86vw, 330px) !important;
             height: 36px !important;
             display: none;
             align-items: center;
-            justify-content: flex-end !important; /* ملاصق لأقصى اليمين تماماً وفوق الألبوم مباشرة */
+            justify-content: flex-start !important; /* بما أن الاتجاه RTL، فالـ flex-start يضعه في أقصى اليمين تماماً! */
             z-index: 10000005 !important;
             pointer-events: auto !important;
         }
@@ -758,7 +758,7 @@
             transform: scale(1.15);
         }
 
-        /* ── وضع ملء الشاشة للموسيقى (مدروس للمتصفحات والمواقع الحقيقية) ── */
+        /* ── وضع ملء الشاشة للموسيقى (إزالة الفراغات المبالغ فيها وترتيب العناصر بالمنتصف) ── */
         .snd.fullscreen {
             position: fixed !important;
             inset: 0 !important;
@@ -771,7 +771,7 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 20px 24px 30px 24px !important;
+            padding: 10px 24px 20px 24px !important;
             transform-origin: top center;
             animation: slideDownCurtain 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             direction: rtl !important;
@@ -802,7 +802,7 @@
             justify-content: center !important;
             padding: 0 !important;
             overflow: visible !important;
-            margin-top: 35px !important;
+            margin-top: 15px !important;
         }
 
         /* 1. الغلاف عريض وممتلئ من الجانبين */
@@ -810,7 +810,7 @@
             width: min(86vw, 330px) !important;
             height: min(86vw, 330px) !important;
             border-radius: 12px !important;
-            margin-bottom: 20px !important;
+            margin-bottom: 16px !important;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
@@ -825,13 +825,13 @@
             align-items: flex-start !important;
             text-align: right !important;
             width: 100% !important;
-            margin-bottom: 16px !important;
+            margin-bottom: 14px !important;
             margin-left: 0 !important;
             direction: rtl !important;
         }
 
         .snd.fullscreen .snd-title {
-            font-size: 22px !important;
+            font-size: 21px !important;
             font-weight: 700 !important;
             margin-bottom: 4px !important;
             white-space: normal !important;
@@ -839,7 +839,7 @@
         }
 
         .snd.fullscreen .snd-by { 
-            font-size: 14px !important; 
+            font-size: 13px !important; 
             opacity: 0.7 !important;
             color: #b3b3b3 !important;
         }
@@ -849,7 +849,7 @@
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
-            margin-bottom: 20px !important;
+            margin-bottom: 16px !important;
         }
 
         .snd.fullscreen .fs-rail {
@@ -877,7 +877,7 @@
             justify-content: space-between;
             font-size: 11px;
             color: #b3b3b3;
-            margin-top: 6px;
+            margin-top: 5px;
             direction: ltr !important;
         }
 
@@ -890,29 +890,29 @@
             align-items: center !important;
             justify-content: space-between !important;
             width: 100% !important;
-            max-width: 320px !important;
-            margin-top: 4px !important;
+            max-width: 310px !important;
+            margin-top: 2px !important;
             gap: 0 !important;
         }
 
         .snd.fullscreen .snd-op {
-            width: 42px !important;
-            height: 42px !important;
+            width: 40px !important;
+            height: 40px !important;
             background: transparent !important;
             border-radius: 50% !important;
             opacity: 0.9 !important;
         }
 
         .snd.fullscreen .snd-op svg {
-            width: 20px !important;
-            height: 20px !important;
+            width: 19px !important;
+            height: 19px !important;
             stroke: #ffffff !important;
         }
 
         /* زر التشغيل الكبير بالمنتصف */
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) {
-            width: 62px !important;
-            height: 62px !important;
+            width: 58px !important;
+            height: 58px !important;
             background: #ffffff !important;
             border-radius: 50% !important;
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
@@ -920,8 +920,8 @@
 
         .snd.fullscreen .snd-ops .snd-op:nth-child(2) svg {
             stroke: #000000 !important;
-            width: 24px !important;
-            height: 24px !important;
+            width: 22px !important;
+            height: 22px !important;
         }
 
         /* ── تأثير كشف الصور عند التحويم ── */
